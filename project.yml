@@ -4,6 +4,9 @@ options:
   deploymentTarget:
     iOS: "17.0"
 packages:
+  ZIPFoundation:
+    url: https://github.com/weichsel/ZIPFoundation
+    from: 0.9.19
   SwiftLlama:
     url: https://github.com/pgorzelany/swift-llama-cpp
     branch: main
@@ -16,6 +19,8 @@ targets:
     dependencies:
       - package: SwiftLlama
         product: SwiftLlama
+      - package: ZIPFoundation
+        product: ZIPFoundation
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.r347h4ck3r.omniforge
