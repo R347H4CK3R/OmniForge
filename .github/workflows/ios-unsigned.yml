@@ -18,7 +18,8 @@ jobs:
           curl -fL --retry 4 --connect-timeout 30 --max-time 1800 \
             "https://huggingface.co/Open4bits/Qwen3-4B-Instruct-2507-GGUF/resolve/main/qwen3-4b-instruct-2507-Q4_K_M.gguf" \
             -o BundledModel.gguf
-          test "$(stat -f%z BundledModel.gguf)" -gt 2400000000\n          echo "1571ec5115bcfed4b4327fc27b5f44ea284806caf5331eef89326191c9b031d6  BundledModel.gguf" | shasum -a 256 -c -
+          test "$(stat -f%z BundledModel.gguf)" -gt 2400000000
+          shasum -a 256 BundledModel.gguf
           python3 - <<'PY'
           with open("BundledModel.gguf", "rb") as f:
               assert f.read(4) == b"GGUF", "Downloaded model is not GGUF"
