@@ -13,6 +13,7 @@ struct MainView: View {
     @State private var input = ""
     @FocusState private var inputFocused: Bool
     @State private var attachmentPicker = false
+    @State private var ipaReportMode = "Metadata"
     @State private var attachments: [ChatAttachment] = []
     @State private var modelPicker = false
     @State private var filePicker = false
@@ -54,7 +55,12 @@ struct MainView: View {
                     }
                     HStack {
                         Menu {
-                            Button("Attach file", systemImage: "doc") { attachmentPicker = true }
+                            Button("Attach file", systemImage: "doc") { ipaReportMode = "Metadata"; attachmentPicker = true }
+                            Menu("Inspect IPA") {
+                                Button("Metadata") { ipaReportMode = "Metadata"; attachmentPicker = true }
+                                Button("File inventory") { ipaReportMode = "Inventory"; attachmentPicker = true }
+                                Button("Mach-O report") { ipaReportMode = "MachO"; attachmentPicker = true }
+                            }
                             Button("Dismiss keyboard", systemImage: "keyboard.chevron.compact.down") { inputFocused = false }
                         } label: { Image(systemName: "plus.circle.fill").font(.title2) }
                         TextField("Ask OmniForge", text: $input, axis: .vertical).lineLimit(1...5)
@@ -92,7 +98,12 @@ struct MainView: View {
                     let scoped = url.startAccessingSecurityScopedResource()
                     defer { if scoped { url.stopAccessingSecurityScopedResource() } }
                     if url.pathExtension.lowercased() == "ipa" {
-                        let report = try IPAInspector.inspect(url)
+                        let report: String
+                        switch ipaReportMode {
+                        case "Inventory": report = try IPAWorkbench.inventory(url)
+                        case "MachO": report = try IPAWorkbench.executableReport(url)
+                        default: report = try IPAInspector.inspect(url)
+                        }
                         attachments.append(ChatAttachment(name: url.lastPathComponent, contents: report))
                         continue
                     }
