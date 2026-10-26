@@ -72,6 +72,17 @@ In Chat, tap **+ → Inspect IPA**, and choose Metadata, File inventory, Mach-O 
 
 **Security/technical limits:** archive-path checks, entry count/size limits and bounded resource export are built in. Code-signature reports describe the presence of related files only, not validity. The application does not execute imported IPAs or establish that they can be installed. Reconstructed source cannot be assumed identical to original source. Arbitrary repackaging, binary rewriting, full disassembly, cryptographic signature verification and signing are not yet implemented. Modified apps need valid re-signing to install.
 
+
+## Optional GitHub Actions IPA workbench
+
+The separate **IPA Workbench (macOS)** workflow accepts an IPA stored as an asset on a GitHub Release in this repository. Start the workflow manually from Actions, provide the exact release tag and IPA asset name, and retrieve the analysis artifact. It uses macOS `otool`, `codesign` and a bounded Python ZIP inspector; it **does not** reconstruct exact original source code.
+
+To make a modified unsigned IPA, additionally provide a replacement resource asset name and its exact path inside the IPA (for example `Payload/Example.app/settings.json`). Only known non-executable file extensions are permitted. Do not publish proprietary IPA assets to a public release unless you have redistribution rights. Private repositories or authorized self-hosted workflows are preferable for sensitive app packages.
+
+The iPhone interface includes an offline reconstruction **report** under **+ → Inspect IPA → Create reconstruction report**; it saves metadata and the file inventory to the app Documents folder. This is not a compilable project or decompiler.
+
+Signing requires a legitimately controlled Apple signing identity and provisioning profile. This workflow deliberately does not accept or store signing credentials and produces unsigned/invalidated-signature repackaged IPAs. The official app build workflow still runs separately and requires a real-device launch test.
+
 ## Contributing
 
 Issues and pull requests are welcome. Keep default functionality offline, avoid paid API dependencies, disclose third-party licenses, and include reproduction steps or tests with bug reports.
