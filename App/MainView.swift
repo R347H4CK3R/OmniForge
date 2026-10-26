@@ -62,6 +62,7 @@ struct MainView: View {
                                 Button("Mach-O report") { ipaReportMode = "MachO"; attachmentPicker = true }
                                 Button("Signing structure") { ipaReportMode = "Signing"; attachmentPicker = true }
                                 Button("Export supported resources") { ipaReportMode = "Export"; attachmentPicker = true }
+                                Button("Create reconstruction report") { ipaReportMode = "Reconstruct"; attachmentPicker = true }
                             }
                             Button("Dismiss keyboard", systemImage: "keyboard.chevron.compact.down") { inputFocused = false }
                         } label: { Image(systemName: "plus.circle.fill").font(.title2) }
@@ -105,6 +106,9 @@ struct MainView: View {
                         case "Inventory": report = try IPAWorkbench.inventory(url)
                         case "MachO": report = try IPAWorkbench.executableReport(url)
                         case "Signing": report = try IPAWorkbench.signingReport(url)
+                        case "Reconstruct":
+                            let output = try IPAReconstruction.generateReport(url)
+                            report = "Created reconstruction inventory: Files → On My iPhone → OmniForge → Reconstructions → \(output.lastPathComponent). This does not recover original source."
                         case "Export":
                             let root = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                             let output = root.appendingPathComponent("IPAExports", isDirectory: true).appendingPathComponent(UUID().uuidString, isDirectory: true)
