@@ -14,6 +14,10 @@ struct MainView: View {
     @FocusState private var inputFocused: Bool
     @State private var attachmentPicker = false
     @State private var ipaReportMode = "Metadata"
+    @State private var repackIPA: URL?
+    @State private var repackResourcePicker = false
+    @State private var repackPath = ""
+    @State private var showRepackPath = false
     @State private var attachments: [ChatAttachment] = []
     @State private var modelPicker = false
     @State private var filePicker = false
@@ -63,6 +67,7 @@ struct MainView: View {
                                 Button("Signing structure") { ipaReportMode = "Signing"; attachmentPicker = true }
                                 Button("Export supported resources") { ipaReportMode = "Export"; attachmentPicker = true }
                                 Button("Create reconstruction report") { ipaReportMode = "Reconstruct"; attachmentPicker = true }
+                                Button("Replace resource in IPA") { ipaReportMode = "Repack"; attachmentPicker = true }
                             }
                             Button("Dismiss keyboard", systemImage: "keyboard.chevron.compact.down") { inputFocused = false }
                         } label: { Image(systemName: "plus.circle.fill").font(.title2) }
@@ -106,6 +111,11 @@ struct MainView: View {
                         case "Inventory": report = try IPAWorkbench.inventory(url)
                         case "MachO": report = try IPAWorkbench.executableReport(url)
                         case "Signing": report = try IPAWorkbench.signingReport(url)
+                        case "Repack":
+                            repackIPA = url
+                            repackPath = ""
+                            showRepackPath = true
+                            report = "Choose the exact resource path in the IPA and replacement file."
                         case "Reconstruct":
                             let output = try IPAReconstruction.generateReport(url)
                             report = "Created reconstruction inventory: Files → On My iPhone → OmniForge → Reconstructions → \(output.lastPathComponent). This does not recover original source."
@@ -130,6 +140,29 @@ struct MainView: View {
                     }
                     attachments.append(ChatAttachment(name: url.lastPathComponent, contents: String(text.prefix(100_000))))
                 }
+            } catch { alert(error) }
+        }
+        .alert("IPA resource path", isPresented: $showRepackPath) {
+            TextField("Payload/App.app/settings.json", text: $repackPath)
+            Button("Choose replacement") { repackResourcePicker = true }
+            Button("Cancel", role: .cancel) { repackIPA = nil }
+        } message: {
+            Text("Only supported non-executable resource types. The output is a separate unsigned IPA.")
+        }
+        .fileImporter(isPresented: $repackResourcePicker, allowedContentTypes: [.item]) { r in
+            do {
+                guard let ipa = repackIPA else { return }
+                let replacement = try r.get()
+                let accessIPA = ipa.startAccessingSecurityScopedResource()
+                let accessReplacement = replacement.startAccessingSecurityScopedResource()
+                defer {
+                    if accessIPA { ipa.stopAccessingSecurityScopedResource() }
+                    if accessReplacement { replacement.stopAccessingSecurityScopedResource() }
+                    repackIPA = nil
+                }
+                let output = try IPARepacker.replaceResource(ipa: ipa, archivePath: repackPath, replacement: replacement)
+                attachments.append(ChatAttachment(name: output.lastPathComponent,
+                    contents: "Unsigned repackaged IPA saved to Files → On My iPhone → OmniForge → Repacked → \(output.lastPathComponent). The modified app must be signed before installation."))
             } catch { alert(error) }
         }
         .fileImporter(isPresented: $modelPicker, allowedContentTypes: [UTType(filenameExtension: "gguf") ?? .data]) { r in
