@@ -1,0 +1,36 @@
+name: Build OmniForge iPhone IPA
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: macos-15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Build unsigned iOS app
+        run: |
+          set -o pipefail
+          xcodebuild -project OmniForge.xcodeproj -scheme OmniForge -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath ./DerivedData CODE_SIGNING_ALLOWED=NO build 2>&1 | tee build.log
+      - name: Package unsigned IPA
+        if: success()
+        run: |
+          mkdir -p Payload
+          cp -R DerivedData/Build/Products/Release-iphoneos/OmniForge.app Payload/
+          zip -qry OmniForge-unsigned.ipa Payload
+          unzip -t OmniForge-unsigned.ipa
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: OmniForge-build-and-logs
+          path: |
+            OmniForge-unsigned.ipa
+            build.log
+          if-no-files-found: warn
+          retention-days: 30
