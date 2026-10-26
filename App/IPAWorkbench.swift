@@ -50,6 +50,28 @@ enum IPAWorkbench {
                 ["Executable inspection is structural. It cannot reconstruct original Swift/Objective-C source."]).joined(separator: "\n")
     }
 
+    static func signingReport(_ url: URL) throws -> String {
+        let archive = try Archive(url: url, accessMode: .read)
+        var signatures: [String] = []
+        var profiles: [String] = []
+        var binaries = 0
+        var files = 0
+        for entry in archive {
+            files += 1
+            if files > 150_000 { throw failure("Too many archive entries") }
+            guard isSafe(entry.path) else { throw failure("Unsafe entry path") }
+            if entry.path.contains("/_CodeSignature/") { signatures.append(entry.path) }
+            if entry.path.hasSuffix("/embedded.mobileprovision") { profiles.append(entry.path) }
+            if entry.path.hasSuffix(".app/CodeResources") { signatures.append(entry.path) }
+            if entry.path.hasSuffix(".dylib") { binaries += 1 }
+        }
+        return (["IPA SIGNING STRUCTURE", "Code-signature resources: \(signatures.count)",
+                 "Embedded provisioning profiles: \(profiles.count)", "Dylib entries: \(binaries)"] +
+                signatures.prefix(40) + profiles.prefix(20) +
+                ["Presence of signature files DOES NOT verify cryptographic validity, entitlements, or installability.",
+                 "Signature validation and signing require appropriate Apple platform facilities and credentials."]).joined(separator: "\n")
+    }
+
     static func exportResources(_ url: URL, destination: URL) throws -> Int {
         let archive = try Archive(url: url, accessMode: .read)
         try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
