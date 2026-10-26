@@ -14,6 +14,12 @@ struct ChatLine: Identifiable, Codable {
     @Published var busy = false
     @Published var status = "Offline"
     private var engine: LlamaService?
+    private var bundledModel: URL? { Bundle.main.url(forResource: "BundledModel", withExtension: "gguf") }
+    private var selectedModel: URL? {
+        let imported = modelFolder.appendingPathComponent(modelName)
+        if !modelName.isEmpty && FileManager.default.fileExists(atPath: imported.path) { return imported }
+        return bundledModel
+    }
     private var task: Task<Void, Never>?
     private var generation = UUID()
     private var docs: URL { FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0] }
@@ -24,6 +30,9 @@ struct ChatLine: Identifiable, Codable {
         return folder
     }
     init() {
+        if modelName.isEmpty && Bundle.main.url(forResource: "BundledModel", withExtension: "gguf") != nil {
+            status = "Bundled offline model ready"
+        }
         if let data = try? Data(contentsOf: history), let lines = try? JSONDecoder().decode([ChatLine].self, from: data) { messages = lines }
     }
     private func persist() {
@@ -48,7 +57,7 @@ struct ChatLine: Identifiable, Codable {
         modelName = dest.lastPathComponent
         UserDefaults.standard.set(modelName, forKey: "modelName")
         engine = nil
-        status = "Model ready"
+        status = "Imported model ready"
     }
     func send(_ text: String) {
         let prompt = text.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -62,9 +71,8 @@ struct ChatLine: Identifiable, Codable {
         status = "Generating locally"
         task = Task {
             do {
-                let path = modelFolder.appendingPathComponent(modelName)
-                guard FileManager.default.fileExists(atPath: path.path) else {
-                    throw NSError(domain: "OmniForge", code: 3, userInfo: [NSLocalizedDescriptionKey: "Import a GGUF model first"])
+                guard let path = selectedModel else {
+                    throw NSError(domain: "OmniForge", code: 3, userInfo: [NSLocalizedDescriptionKey: "Built-in model missing; import a GGUF model"])
                 }
                 if engine == nil {
                     engine = LlamaService(modelUrl: path, config: .init(batchSize: 256, maxTokenCount: 2048, useGPU: true))
