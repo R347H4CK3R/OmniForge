@@ -65,6 +65,13 @@ OmniForge is designed to avoid subscriptions and paid hosted APIs. File access s
 - [ ] Add opt-in offline voice support
 - [ ] Improve accessibility, troubleshooting and plugin documentation
 
+
+## IPA workbench (in development)
+
+In Chat, tap **+ → Inspect IPA**, and choose Metadata, File inventory, Mach-O report, Signing structure, or Export supported resources. The export command saves selected non-executable files to the app's Documents/IPAExports directory (visible in Files → On My iPhone → OmniForge after file sharing is enabled). All processing is local. Files larger than 1 MB remain attachable when recognized as IPA archives; ordinary text chat attachments remain limited to 1 MB.
+
+**Security/technical limits:** archive-path checks, entry count/size limits and bounded resource export are built in. Code-signature reports describe the presence of related files only, not validity. The application does not execute imported IPAs or establish that they can be installed. Reconstructed source cannot be assumed identical to original source. Arbitrary repackaging, binary rewriting, full disassembly, cryptographic signature verification and signing are not yet implemented. Modified apps need valid re-signing to install.
+
 ## Contributing
 
 Issues and pull requests are welcome. Keep default functionality offline, avoid paid API dependencies, disclose third-party licenses, and include reproduction steps or tests with bug reports.
