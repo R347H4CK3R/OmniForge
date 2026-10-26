@@ -91,13 +91,18 @@ struct MainView: View {
                 for url in try r.get() {
                     let scoped = url.startAccessingSecurityScopedResource()
                     defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+                    if url.pathExtension.lowercased() == "ipa" {
+                        let report = try IPAInspector.inspect(url)
+                        attachments.append(ChatAttachment(name: url.lastPathComponent, contents: report))
+                        continue
+                    }
                     let values = try url.resourceValues(forKeys: [.fileSizeKey])
                     guard (values.fileSize ?? 0) <= 1_000_000 else {
                         throw NSError(domain: "OmniForge", code: 4, userInfo: [NSLocalizedDescriptionKey: "Chat attachments must be 1 MB or smaller; use Tools for larger files."])
                     }
                     let data = try Data(contentsOf: url)
                     guard let text = String(data: data, encoding: .utf8) else {
-                        throw NSError(domain: "OmniForge", code: 5, userInfo: [NSLocalizedDescriptionKey: "Chat attachments currently support UTF-8 text files only."])
+                        throw NSError(domain: "OmniForge", code: 5, userInfo: [NSLocalizedDescriptionKey: "Chat attachments support UTF-8 text and IPA packages. Other binary formats are not yet supported."])
                     }
                     attachments.append(ChatAttachment(name: url.lastPathComponent, contents: String(text.prefix(100_000))))
                 }
