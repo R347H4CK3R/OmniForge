@@ -4,7 +4,7 @@
 
 OmniForge is an open-source project for a native, fully offline iPhone AI assistant and developer toolkit. The goal is to provide useful local intelligence and user-controlled tools **without subscriptions, paid AI APIs, telemetry, daily message quotas, or deliberately locked features**.
 
-> **Status: early source prototype.** This repository does not yet contain a verified, installable OmniForge IPA. Runtime functionality, iOS compilation, signing, and physical-device tests must be completed and verified before claiming a working release.
+> **Status: early source prototype.** GitHub Actions builds unsigned IPA artifacts; successful launch and on-device offline inference still require testing. Runtime functionality, iOS compilation, signing, and physical-device tests must be completed and verified before claiming a working release.
 
 ## Design principles
 
@@ -47,9 +47,9 @@ No artificial restrictions does **not** mean bypassing iOS entitlements, code si
 3. Compile for a physical iPhone target and resolve any actual compiler or package errors.
 4. Alternatively, start the provided GitHub Actions iOS workflow **after it has been committed**. Its outcome must be checked; an artifact is not proof of an app that launches.
 5. A successful build may produce an **unsigned** IPA. Sign/provision it through a valid method supported on your device before installing. An unsigned IPA is not directly installable.
-6. Import a compatible, legally acquired instruction-tuned GGUF model (a small quantized model is a sensible initial test), then validate inference with the phone offline.
+6. The bundled GGUF should load automatically when the app opens; confirm this with airplane mode enabled. Importing a different compatible GGUF is optional.
 
-Building may use free GitHub Actions minutes subject to GitHub's current quotas and runner availability. Model weights are separate from the app; review their own license and size before use.
+Building may use free GitHub Actions minutes subject to GitHub's current quotas and runner availability. The GitHub Actions workflow now downloads a Qwen2.5 0.5B Instruct Q4_K_M GGUF model during the build and embeds it in the IPA. This makes the installed app self-contained for basic local chat. The model is approximately 400 MB and is distributed under Apache-2.0; see https://huggingface.co/bartowski/Qwen2.5-0.5B-Instruct-GGUF . Other imported models retain their own licenses.
 
 ## Privacy and legal scope
 
@@ -59,7 +59,7 @@ OmniForge is designed to avoid subscriptions and paid hosted APIs. File access s
 
 - [ ] Publish the renamed OmniForge source tree and build configuration
 - [ ] Pass reproducible Xcode/iOS compile checks
-- [ ] Produce an unsigned IPA using GitHub Actions
+- [x] Add a GitHub Actions unsigned IPA packaging workflow\n- [x] Add build-time download and inclusion of a starter GGUF model\n- [ ] Verify that the all-in-one IPA passes GitHub Actions
 - [ ] Verify app launch, local model import, and streamed offline chat on a physical device
 - [ ] Verify each local plugin with tests and representative files
 - [ ] Add opt-in offline voice support
