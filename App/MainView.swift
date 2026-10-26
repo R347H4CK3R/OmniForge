@@ -5,6 +5,9 @@ import CryptoKit
 struct MainView: View {
     @EnvironmentObject var store: AssistantStore
     @State private var input = ""
+    @FocusState private var inputFocused: Bool
+    @State private var attachmentPicker = false
+    @State private var attachments: [String] = []
     @State private var modelPicker = false
     @State private var filePicker = false
     @State private var tool = "Read text"
@@ -29,13 +32,35 @@ struct MainView: View {
                             }
                         }.padding()
                     }
+                    if !attachments.isEmpty {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(Array(attachments.enumerated()), id: \.offset) { index, name in
+                                    HStack {
+                                        Text(name).lineLimit(1)
+                                        Button { attachments.remove(at: index) } label: { Image(systemName: "xmark.circle.fill") }
+                                    }
+                                    .font(.caption).padding(7)
+                                    .background(.secondary.opacity(0.14), in: Capsule())
+                                }
+                            }.padding(.horizontal)
+                        }
+                    }
                     HStack {
+                        Menu {
+                            Button("Attach file", systemImage: "doc") { attachmentPicker = true }
+                            Button("Dismiss keyboard", systemImage: "keyboard.chevron.compact.down") { inputFocused = false }
+                        } label: { Image(systemName: "plus.circle.fill").font(.title2) }
                         TextField("Ask OmniForge", text: $input, axis: .vertical).lineLimit(1...5)
+                            .focused($inputFocused)
+                            .submitLabel(.send)
                         if store.busy { Button("Stop") { store.stop() } }
-                        else { Button("Send") { let value = input; input = ""; store.send(value) }.disabled(input.isEmpty) }
+                        else { Button("Send") { sendMessage() }.disabled(input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && attachments.isEmpty) }
+                        Button { inputFocused = false } label: { Image(systemName: "keyboard.chevron.compact.down") }
                     }.padding()
                     Text(store.status).font(.caption).foregroundStyle(.secondary)
                 }.navigationTitle("OmniForge")
+                .scrollDismissesKeyboard(.interactively)
                 .toolbar { Button("Clear") { store.clear() } }
             }.tabItem { Label("Chat", systemImage: "bubble.left") }
             NavigationStack {
@@ -56,6 +81,23 @@ struct MainView: View {
                 }.navigationTitle("Models")
             }.tabItem { Label("Models", systemImage: "cpu") }
         }
+        .fileImporter(isPresented: $attachmentPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { r in
+            do {
+                for url in try r.get() {
+                    let scoped = url.startAccessingSecurityScopedResource()
+                    defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+                    let values = try url.resourceValues(forKeys: [.fileSizeKey])
+                    guard (values.fileSize ?? 0) <= 1_000_000 else {
+                        throw NSError(domain: "OmniForge", code: 4, userInfo: [NSLocalizedDescriptionKey: "Chat attachments must be 1 MB or smaller; use Tools for larger files."])
+                    }
+                    let data = try Data(contentsOf: url)
+                    guard let text = String(data: data, encoding: .utf8) else {
+                        throw NSError(domain: "OmniForge", code: 5, userInfo: [NSLocalizedDescriptionKey: "Chat attachments currently support UTF-8 text files only."])
+                    }
+                    attachments.append("FILE: \(url.lastPathComponent)\n\(text.prefix(100_000))")
+                }
+            } catch { alert(error) }
+        }
         .fileImporter(isPresented: $modelPicker, allowedContentTypes: [UTType(filenameExtension: "gguf") ?? .data]) { r in
             do { try store.importModel(r.get()) } catch { alert(error) }
         }
@@ -63,6 +105,13 @@ struct MainView: View {
             do { try execute(r.get()) } catch { alert(error) }
         }
         .alert("OmniForge error", isPresented: $showError) { Button("OK", role: .cancel) {} } message: { Text(errorText) }
+    }
+    func sendMessage() {
+        let joined = ([input] + attachments).joined(separator: "\n\n")
+        input = ""
+        attachments.removeAll()
+        inputFocused = false
+        store.send(joined)
     }
     func alert(_ error: Error) { errorText = error.localizedDescription; showError = true }
     func execute(_ url: URL) throws {
