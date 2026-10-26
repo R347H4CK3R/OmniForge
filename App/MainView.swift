@@ -112,7 +112,9 @@ struct MainView: View {
                         case "MachO": report = try IPAWorkbench.executableReport(url)
                         case "Signing": report = try IPAWorkbench.signingReport(url)
                         case "Repack":
-                            repackIPA = url
+                            let temporary = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".ipa")
+                            try FileManager.default.copyItem(at: url, to: temporary)
+                            repackIPA = temporary
                             repackPath = ""
                             showRepackPath = true
                             report = "Choose the exact resource path in the IPA and replacement file."
@@ -145,7 +147,7 @@ struct MainView: View {
         .alert("IPA resource path", isPresented: $showRepackPath) {
             TextField("Payload/App.app/settings.json", text: $repackPath)
             Button("Choose replacement") { repackResourcePicker = true }
-            Button("Cancel", role: .cancel) { repackIPA = nil }
+            Button("Cancel", role: .cancel) { if let ipa = repackIPA { try? FileManager.default.removeItem(at: ipa) }; repackIPA = nil }
         } message: {
             Text("Only supported non-executable resource types. The output is a separate unsigned IPA.")
         }
@@ -153,11 +155,10 @@ struct MainView: View {
             do {
                 guard let ipa = repackIPA else { return }
                 let replacement = try r.get()
-                let accessIPA = ipa.startAccessingSecurityScopedResource()
                 let accessReplacement = replacement.startAccessingSecurityScopedResource()
                 defer {
-                    if accessIPA { ipa.stopAccessingSecurityScopedResource() }
                     if accessReplacement { replacement.stopAccessingSecurityScopedResource() }
+                    try? FileManager.default.removeItem(at: ipa)
                     repackIPA = nil
                 }
                 let output = try IPARepacker.replaceResource(ipa: ipa, archivePath: repackPath, replacement: replacement)
