@@ -41,10 +41,10 @@ struct MainView: View {
                     if !attachments.isEmpty {
                         ScrollView(.horizontal) {
                             HStack {
-                                ForEach(Array(attachments.enumerated()), id: \.element.id) { index, attachment in
+                                ForEach(attachments) { attachment in
                                     HStack {
                                         Text(attachment.name).lineLimit(1)
-                                        Button { attachments.remove(at: index) } label: { Image(systemName: "xmark.circle.fill") }
+                                        Button { attachments.removeAll { $0.id == attachment.id } } label: { Image(systemName: "xmark.circle.fill") }
                                     }
                                     .font(.caption).padding(7)
                                     .background(.secondary.opacity(0.14), in: Capsule())
