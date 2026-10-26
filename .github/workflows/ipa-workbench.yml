@@ -1,0 +1,80 @@
+name: IPA Workbench (macOS)
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "GitHub release tag containing an IPA you own or are authorized to inspect"
+        required: true
+        type: string
+      ipa_asset:
+        description: "Exact IPA asset filename in that release"
+        required: true
+        type: string
+      resource_asset:
+        description: "Optional replacement file asset in the same release"
+        required: false
+        type: string
+      resource_path:
+        description: "Optional path inside IPA for the replacement resource"
+        required: false
+        type: string
+permissions:
+  contents: read
+jobs:
+  analyze:
+    runs-on: macos-15
+    timeout-minutes: 45
+    env:
+      GH_TOKEN: ${{ github.token }}
+      RELEASE_TAG: ${{ inputs.release_tag }}
+      IPA_ASSET: ${{ inputs.ipa_asset }}
+      RESOURCE_ASSET: ${{ inputs.resource_asset }}
+      RESOURCE_PATH: ${{ inputs.resource_path }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download selected GitHub Release assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p work results
+          [[ "$IPA_ASSET" == *.ipa && "$IPA_ASSET" != */* && "$IPA_ASSET" != *..* ]] || exit 1
+          gh release download "$RELEASE_TAG" --pattern "$IPA_ASSET" --dir work
+          if [[ -n "$RESOURCE_ASSET" ]]; then
+            [[ "$RESOURCE_ASSET" != */* && "$RESOURCE_ASSET" != *..* ]] || exit 1
+            gh release download "$RELEASE_TAG" --pattern "$RESOURCE_ASSET" --dir work
+          fi
+      - name: Validate and inspect IPA
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/ipa_workbench.py inspect "work/$IPA_ASSET" results
+      - name: Native macOS binary and signature reports
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/ipa_workbench.py unpack "work/$IPA_ASSET" work/extracted
+          find work/extracted/Payload -type f -maxdepth 8 -print0 | while IFS= read -r -d '' f; do
+            file "$f" | grep -q 'Mach-O' || continue
+            echo "===== ${f#work/extracted/} =====" >> results/macho.txt
+            otool -hv "$f" >> results/macho.txt 2>&1 || true
+            otool -L "$f" >> results/macho.txt 2>&1 || true
+            codesign -dvv --entitlements :- "$f" >> results/signatures.txt 2>&1 || true
+          done
+          find work/extracted/Payload -type d -name '*.app' -maxdepth 3 -print0 | while IFS= read -r -d '' app; do
+            echo "===== ${app#work/extracted/} =====" >> results/signatures.txt
+            codesign --verify --deep --strict --verbose=2 "$app" >> results/signatures.txt 2>&1 || true
+          done
+      - name: Optional resource replacement (unsigned IPA)
+        if: ${{ inputs.resource_asset != '' && inputs.resource_path != '' }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/ipa_workbench.py replace "work/$IPA_ASSET" "$RESOURCE_PATH" "work/$RESOURCE_ASSET" results/OmniForge-modified-unsigned.ipa
+      - name: Upload reports and any modified unsigned IPA
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: IPA-workbench-results
+          path: results/
+          if-no-files-found: warn
+          retention-days: 14
