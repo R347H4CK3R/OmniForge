@@ -2,12 +2,18 @@ import SwiftUI
 import UniformTypeIdentifiers
 import CryptoKit
 
+private struct ChatAttachment: Identifiable {
+    let id = UUID()
+    let name: String
+    let contents: String
+}
+
 struct MainView: View {
     @EnvironmentObject var store: AssistantStore
     @State private var input = ""
     @FocusState private var inputFocused: Bool
     @State private var attachmentPicker = false
-    @State private var attachments: [String] = []
+    @State private var attachments: [ChatAttachment] = []
     @State private var modelPicker = false
     @State private var filePicker = false
     @State private var tool = "Read text"
@@ -31,13 +37,13 @@ struct MainView: View {
                                 }
                             }
                         }.padding()
-                    }
+                    }.scrollDismissesKeyboard(.interactively)
                     if !attachments.isEmpty {
                         ScrollView(.horizontal) {
                             HStack {
-                                ForEach(Array(attachments.enumerated()), id: \.offset) { index, name in
+                                ForEach(Array(attachments.enumerated()), id: \.element.id) { index, attachment in
                                     HStack {
-                                        Text(name).lineLimit(1)
+                                        Text(attachment.name).lineLimit(1)
                                         Button { attachments.remove(at: index) } label: { Image(systemName: "xmark.circle.fill") }
                                     }
                                     .font(.caption).padding(7)
@@ -60,7 +66,6 @@ struct MainView: View {
                     }.padding()
                     Text(store.status).font(.caption).foregroundStyle(.secondary)
                 }.navigationTitle("OmniForge")
-                .scrollDismissesKeyboard(.interactively)
                 .toolbar { Button("Clear") { store.clear() } }
             }.tabItem { Label("Chat", systemImage: "bubble.left") }
             NavigationStack {
@@ -94,7 +99,7 @@ struct MainView: View {
                     guard let text = String(data: data, encoding: .utf8) else {
                         throw NSError(domain: "OmniForge", code: 5, userInfo: [NSLocalizedDescriptionKey: "Chat attachments currently support UTF-8 text files only."])
                     }
-                    attachments.append("FILE: \(url.lastPathComponent)\n\(text.prefix(100_000))")
+                    attachments.append(ChatAttachment(name: url.lastPathComponent, contents: String(text.prefix(100_000))))
                 }
             } catch { alert(error) }
         }
@@ -107,7 +112,7 @@ struct MainView: View {
         .alert("OmniForge error", isPresented: $showError) { Button("OK", role: .cancel) {} } message: { Text(errorText) }
     }
     func sendMessage() {
-        let joined = ([input] + attachments).joined(separator: "\n\n")
+        let joined = ([input] + attachments.map { "Attached file: \($0.name)\n\($0.contents)" }).joined(separator: "\n\n")
         input = ""
         attachments.removeAll()
         inputFocused = false
