@@ -12,6 +12,17 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install XcodeGen
         run: brew install xcodegen
+      - name: Fetch redistributable bundled GGUF (build-time only)
+        run: |
+          set -euo pipefail
+          curl -fL --retry 4 --connect-timeout 30 --max-time 1800 \
+            "https://huggingface.co/bartowski/Qwen2.5-0.5B-Instruct-GGUF/resolve/main/Qwen2.5-0.5B-Instruct-Q4_K_M.gguf" \
+            -o BundledModel.gguf
+          test "$(stat -f%z BundledModel.gguf)" -gt 300000000
+          python3 - <<'PY'
+          with open("BundledModel.gguf", "rb") as f:
+              assert f.read(4) == b"GGUF", "Downloaded model is not GGUF"
+          PY
       - name: Generate Xcode project
         run: xcodegen generate
       - name: Build unsigned iOS app
@@ -23,6 +34,8 @@ jobs:
         run: |
           mkdir -p Payload
           cp -R DerivedData/Build/Products/Release-iphoneos/OmniForge.app Payload/
+          cp BundledModel.gguf Payload/OmniForge.app/BundledModel.gguf
+          test -s Payload/OmniForge.app/BundledModel.gguf
           zip -qry OmniForge-unsigned.ipa Payload
           unzip -t OmniForge-unsigned.ipa
       - uses: actions/upload-artifact@v4
