@@ -4,6 +4,7 @@ Runs locally. No automatic arbitrary shell execution or privilege escalation.
 """
 import json
 import sqlite3
+from contextlib import contextmanager
 import threading
 import uuid
 from datetime import datetime, timezone
@@ -22,8 +23,14 @@ class JobQueue:
             db.execute("CREATE INDEX IF NOT EXISTS idx_jobs_status ON jobs(status,created)")
             db.execute("UPDATE jobs SET status='queued', updated=? WHERE status='running'", (now(),))
 
+    @contextmanager
     def _db(self):
-        return sqlite3.connect(self.filename, timeout=30)
+        connection = sqlite3.connect(self.filename, timeout=30)
+        try:
+            with connection:
+                yield connection
+        finally:
+            connection.close()
 
     def submit(self, prompt):
         if not isinstance(prompt,str) or not prompt.strip() or len(prompt)>20000:

@@ -2,6 +2,7 @@
 import json
 import pathlib
 import sqlite3
+from contextlib import contextmanager
 from datetime import datetime, timezone
 
 class KnowledgeVault:
@@ -11,8 +12,14 @@ class KnowledgeVault:
         with self.connect() as c:
             c.execute("CREATE TABLE IF NOT EXISTS entries (id INTEGER PRIMARY KEY, source TEXT, title TEXT, content TEXT, created TEXT)")
             c.execute("CREATE VIRTUAL TABLE IF NOT EXISTS entries_index USING fts5(title,content)")
+    @contextmanager
     def connect(self):
-        return sqlite3.connect(str(self.path))
+        connection = sqlite3.connect(str(self.path))
+        try:
+            with connection:
+                yield connection
+        finally:
+            connection.close()
     def add(self,title,content,source="manual"):
         if not isinstance(content,str) or not content.strip(): return False
         with self.connect() as c:

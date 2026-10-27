@@ -1,5 +1,6 @@
 """Read-only, bounded OmniForge diagnostic checks. No destructive test operations."""
 import json, os, pathlib, shutil, sqlite3, subprocess, tempfile, urllib.request
+from contextlib import closing
 from datetime import datetime, timezone
 
 def check(name, fn):
@@ -22,7 +23,7 @@ def run_self_test(workspace, ollama_url="http://127.0.0.1:11434", model="qwen3:8
     def database(name):
         file=root/".omniforge-private"/name
         if not file.exists(): return "SKIP","Database not initialized"
-        with sqlite3.connect(str(file)) as db:
+        with closing(sqlite3.connect(str(file))) as db:
             ok=db.execute("PRAGMA quick_check").fetchone()[0]
         if ok!="ok": return "FAIL",ok
         return "PASS","SQLite integrity verified"

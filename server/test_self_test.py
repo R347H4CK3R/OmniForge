@@ -1,4 +1,5 @@
 import json
+from contextlib import closing
 import tempfile
 import unittest
 from pathlib import Path
@@ -22,7 +23,7 @@ class TestSelfTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temp:
             db=Path(temp)/".omniforge-private"
             db.mkdir()
-            with sqlite3.connect(db/"knowledge.sqlite3") as conn:
+            with closing(sqlite3.connect(db/"knowledge.sqlite3")) as conn:
                 conn.execute("CREATE TABLE example (id INTEGER)")
             report=run_self_test(temp,"http://127.0.0.1:1","missing")
             self.assertEqual(next(c for c in report["checks"] if c["name"]=="knowledge_database")["status"],"PASS")
