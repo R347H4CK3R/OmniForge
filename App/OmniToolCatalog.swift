@@ -6,7 +6,7 @@ enum OmniToolCatalog {
     static let help = """
     OmniForge tools (free, no paid API required):
     /tools — show this list
-    /selftest — run real local filesystem, write/read, and JSON validation checks
+    /self-test — run local and paired Windows diagnostics\n    /selftest — alias
     /web https://example.org — retrieve a public HTTPS page (requires internet)
     /search your query — search via configured SearXNG instance
     /sha256 text — SHA-256 of the supplied text (offline)
@@ -22,7 +22,7 @@ enum OmniToolCatalog {
     Not currently integrated: ChatGPT proprietary tools, account connectors, arbitrary shell execution, general web search, autonomous plugin installation, or guaranteed app-source recovery.
     """
     static func handles(_ prompt: String) -> Bool {
-        ["/tools","/selftest","/device","/web ","/search ","/sha256 ","/base64 ","/unbase64 ","/json "]
+        ["/tools","/self-test","/selftest","/device","/web ","/search ","/sha256 ","/base64 ","/unbase64 ","/json "]
             .contains { prompt == $0 || prompt.hasPrefix($0) }
     }
     private static func runSelfTest() -> String {
@@ -53,7 +53,7 @@ enum OmniToolCatalog {
     }
     static func execute(_ prompt: String) async throws -> String {
         if prompt == "/tools" { return help }
-        if prompt == "/selftest" { return runSelfTest() }
+        if prompt == "/selftest" || prompt == "/self-test" { return await OmniSelfTest.run(local: runSelfTest()) }
         if prompt == "/device" {
             let bundle = Bundle.main
             return "Bundle ID: \(bundle.bundleIdentifier ?? "unknown")\nVersion: \(bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "?")\nBuild: \(bundle.object(forInfoDictionaryKey: "CFBundleVersion") ?? "?")\nRuntime: iOS sandbox; no arbitrary external executables."
