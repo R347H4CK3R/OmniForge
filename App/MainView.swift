@@ -120,6 +120,20 @@ struct MainView: View {
             }.tabItem { Label("Rebuild", systemImage: "hammer") }
             NavigationStack {
                 List {
+                    Section("AI engine") {
+                        Toggle("Use my own online server", isOn: $store.onlineEnabled)
+                        if store.onlineEnabled {
+                            TextField("HTTPS endpoint", text: $store.onlineEndpoint)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                                .keyboardType(.URL)
+                            TextField("Model ID (example qwen3:8b)", text: $store.onlineModel)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                            Text("Use https://YOUR-TAILSCALE-DEVICE/v1/chat/completions. Your laptop runs Ollama; no paid AI API is required. When offline mode is selected, your imported GGUF runs on this iPhone.")
+                                .font(.footnote)
+                        }
+                    }
                     Text(store.modelName.isEmpty ? "No model selected" : store.modelName)
                     Button("Import GGUF from Files") { modelPicker = true }
                     Button("Scan local model files") { store.scanModels() }
