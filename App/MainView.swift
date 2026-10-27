@@ -65,6 +65,7 @@ struct MainView: View {
                                 Button("Metadata") { ipaReportMode = "Metadata"; attachmentPicker = true }
                                 Button("File inventory") { ipaReportMode = "Inventory"; attachmentPicker = true }
                                 Button("Mach-O report") { ipaReportMode = "MachO"; attachmentPicker = true }
+                                Button("Reverse engineer IPA") { ipaReportMode = "ReverseEngineer"; attachmentPicker = true }
                                 Button("Signing structure") { ipaReportMode = "Signing"; attachmentPicker = true }
                                 Button("Export supported resources") { ipaReportMode = "Export"; attachmentPicker = true }
                                 Button("Create reconstruction report") { ipaReportMode = "Reconstruct"; attachmentPicker = true }
@@ -144,6 +145,7 @@ struct MainView: View {
                         switch ipaReportMode {
                         case "Inventory": report = try IPAWorkbench.inventory(url)
                         case "MachO": report = try IPAWorkbench.executableReport(url)
+                        case "ReverseEngineer": report = try IPAReverseEngineer.report(url)
                         case "Signing": report = try IPAWorkbench.signingReport(url)
                         case "Repack":
                             let temporary = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".ipa")
