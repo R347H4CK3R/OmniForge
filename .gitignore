@@ -1,0 +1,8 @@
+.omniforge-private/
+**/.omniforge-private/
+**/knowledge.sqlite3
+**/knowledge.sqlite3-*
+*.ipa
+*.mobileprovision
+.env
+__pycache__/
