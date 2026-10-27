@@ -6,6 +6,7 @@ enum OmniToolCatalog {
     static let help = """
     OmniForge tools (free, no paid API required):
     /tools — show this list
+    /selftest — run real local filesystem, write/read, and JSON validation checks
     /web https://example.org — retrieve a public HTTPS page (requires internet)
     /search your query — search via configured SearXNG instance
     /sha256 text — SHA-256 of the supplied text (offline)
@@ -21,11 +22,38 @@ enum OmniToolCatalog {
     Not currently integrated: ChatGPT proprietary tools, account connectors, arbitrary shell execution, general web search, autonomous plugin installation, or guaranteed app-source recovery.
     """
     static func handles(_ prompt: String) -> Bool {
-        ["/tools","/device","/web ","/search ","/sha256 ","/base64 ","/unbase64 ","/json "]
+        ["/tools","/selftest","/device","/web ","/search ","/sha256 ","/base64 ","/unbase64 ","/json "]
             .contains { prompt == $0 || prompt.hasPrefix($0) }
+    }
+    private static func runSelfTest() -> String {
+        let fm = FileManager.default
+        let folder = fm.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            .appendingPathComponent("AgentWorkspace", isDirectory: true)
+        let file = folder.appendingPathComponent(".omniforge-selftest-" + UUID().uuidString + ".json")
+        defer { try? fm.removeItem(at: file) }
+        do {
+            try fm.createDirectory(at: folder, withIntermediateDirectories: true)
+            let payload = Data(#"{"test":"omniforge","ok":true}"#.utf8)
+            try payload.write(to: file, options: .atomic)
+            let readback = try Data(contentsOf: file)
+            guard readback == payload else { return "FAIL: Written bytes did not match readback." }
+            let parsed = try JSONSerialization.jsonObject(with: readback) as? [String: Any]
+            guard parsed?["ok"] as? Bool == true,
+                  parsed?["test"] as? String == "omniforge" else {
+                return "FAIL: JSON data validation failed."
+            }
+            let listing = try fm.contentsOfDirectory(atPath: folder.path)
+            guard listing.contains(file.lastPathComponent) else {
+                return "FAIL: Workspace listing did not show written file."
+            }
+            return "PASS: Workspace created; file written; file listed; bytes read and matched; JSON decoded. Temporary test file scheduled for removal."
+        } catch {
+            return "FAIL: " + error.localizedDescription
+        }
     }
     static func execute(_ prompt: String) async throws -> String {
         if prompt == "/tools" { return help }
+        if prompt == "/selftest" { return runSelfTest() }
         if prompt == "/device" {
             let bundle = Bundle.main
             return "Bundle ID: \(bundle.bundleIdentifier ?? "unknown")\nVersion: \(bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "?")\nBuild: \(bundle.object(forInfoDictionaryKey: "CFBundleVersion") ?? "?")\nRuntime: iOS sandbox; no arbitrary external executables."
