@@ -20,6 +20,8 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: true
+      - name: Static release checks
+        run: python3 scripts/release_gate.py
       - name: Install XcodeGen
         run: brew install xcodegen
       - name: Generate OmniForge app icon
