@@ -21,11 +21,13 @@ app = {"name": "OmniForge", "bundleIdentifier": "com.r347h4ck3r.omniforge",
 existing = next((item for item in source.get("apps", []) if item.get("bundleIdentifier") == app["bundleIdentifier"]), None)
 if existing:
     app.update(existing)
-version = {"version": "1.0", "buildVersion": build,
+version = {"version": f"1.0.{build}", "buildVersion": build,
            "date": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
            "localizedDescription": f"LiveContainer update {build}",
            "downloadURL": url, "size": size, "minOSVersion": "17.0"}
 app["versions"] = [version] + [v for v in app.get("versions", []) if v.get("buildVersion") != build][:9]
+app["iconURL"] = f"https://github.com/R347H4CK3R/OmniForge/releases/download/{tag}/OmniForgeIcon.png"
+source["iconURL"] = app["iconURL"]
 app["downloadURL"] = url
 app["version"] = version["version"]
 app["versionDate"] = version["date"]
