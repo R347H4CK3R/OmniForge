@@ -8,12 +8,12 @@ import SwiftLlama
             .appendingPathComponent("AgentWorkspace", isDirectory: true)
     }
     private static func located(_ path: String) throws -> URL {
-        guard !path.isEmpty && !path.hasPrefix("/") && !path.contains("\\") else {
+        guard !path.hasPrefix("/") && !path.contains("\\") else {
             throw NSError(domain:"OmniForge.Agent",code:1,userInfo:[NSLocalizedDescriptionKey:"Invalid workspace path"])
         }
         let base = root.standardizedFileURL.resolvingSymlinksInPath()
         let result = base.appendingPathComponent(path).standardizedFileURL.resolvingSymlinksInPath()
-        guard result.path.hasPrefix(base.path + "/") else {
+        guard result.path == base.path || result.path.hasPrefix(base.path + "/") else {
             throw NSError(domain:"OmniForge.Agent",code:2,userInfo:[NSLocalizedDescriptionKey:"Path outside AgentWorkspace"])
         }
         return result
@@ -21,6 +21,8 @@ import SwiftLlama
     private static func execute(name: String, args: [String: String], allowEdits: Bool) async throws -> String {
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         switch name {
+        case "workspace_info":
+            return "Workspace ready: \(root.path)\nWritable: \(FileManager.default.isWritableFile(atPath: root.path))\nAvailable items: \((try? FileManager.default.contentsOfDirectory(atPath: root.path).count) ?? 0)"
         case "list_files":
             let folder = try located(args["path"] ?? ".")
             return try FileManager.default.contentsOfDirectory(atPath: folder.path).prefix(100).joined(separator:"\n")
@@ -43,8 +45,17 @@ import SwiftLlama
             _=try JSONSerialization.jsonObject(with:data,options:[.fragmentsAllowed])
             return "PASS: JSON parses"
         case "inspect_ipa":
-            let url=try located(args["path"] ?? "")
-            return try IPAInspector.inspect(url)
+            let supplied = args["path"] ?? ""
+            let file: URL
+            if supplied.isEmpty {
+                let files = try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil)
+                guard let first = files.first(where: { $0.pathExtension.lowercased() == "ipa" }) else {
+                    return "BLOCKED: No imported IPA is available in AgentWorkspace. Import an IPA through Chat + first."
+                }
+                file = first
+            } else { file = try located(supplied) }
+            guard FileManager.default.fileExists(atPath: file.path) else { return "BLOCKED: IPA not found: \(file.lastPathComponent)" }
+            return try IPAInspector.inspect(file)
         case "read_web":
             return try await ExternalToolRuntime.fetchPage(args["url"] ?? "")
         default: return "ERROR: Unknown tool \(name)"
@@ -61,19 +72,19 @@ import SwiftLlama
                 do {
                     let metadata = try IPAInspector.inspect(file)
                     let inventory = try IPAWorkbench.inventory(file)
-                    verifiedEvidence = "ACTUAL TOOL RESULTS for \\(file.lastPathComponent):\\n" +
-                        String(metadata.prefix(4500)) + "\\n" + String(inventory.prefix(4500))
+                    verifiedEvidence = "ACTUAL TOOL RESULTS for \(file.lastPathComponent):\n" +
+                        String(metadata.prefix(4500)) + "\n" + String(inventory.prefix(4500))
                 } catch {
                     verifiedEvidence = "IPA inspection failed: " + error.localizedDescription
                 }
             }
             if ipas.isEmpty {
-                return "No IPA in AgentWorkspace. Attach an IPA using + → Inspect IPA, then retry. No analysis was performed."
+                verifiedEvidence = "No IPA has been imported into AgentWorkspace. This is not a filesystem failure; use + to import an IPA before IPA tests."
             }
         }
         let instruction = """
         You are OmniForge's ON-DEVICE coding agent. Output exactly one JSON object per response, with
-        either {"tool":"list_files|read_file|write_file|validate_json|inspect_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
+        either {"tool":"workspace_info|list_files|read_file|write_file|validate_json|inspect_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
         or {"final":"your grounded answer"}.
         All local paths are relative to AgentWorkspace. First inspect files before edits. Test every change using available validation.
         You have no shell, Xcode, GitHub runtime, or unrestricted filesystem access. Never claim to have used a tool until its result is observed.
@@ -81,7 +92,7 @@ import SwiftLlama
         """
         var transcript=[LlamaChatMessage(role:.system,content:instruction),
                         LlamaChatMessage(role:.user,content:prompt + (verifiedEvidence.isEmpty ? "" : "\\n\\n" + verifiedEvidence + "\\nAnalyze these measured results, not guesses."))]
-        var observations:[String]=verifiedEvidence.isEmpty ? [] : ["PASS: inspected IPA metadata and file inventory"]
+        var observations:[String]=ipas.isEmpty ? [] : ["PASS: inspected IPA metadata and file inventory"]
         var step = 0
         var lastAction = ""
         var repeatedActions = 0
