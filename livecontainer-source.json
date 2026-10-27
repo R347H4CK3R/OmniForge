@@ -3,7 +3,37 @@
   "identifier": "com.r347h4ck3r.omniforge.source",
   "subtitle": "Offline AI developer toolkit",
   "description": "Official OmniForge LiveContainer IPA update catalog. A version is added after the first successful publish workflow.",
-  "apps": [],
+  "apps": [
+    {
+      "name": "OmniForge",
+      "bundleIdentifier": "com.r347h4ck3r.omniforge",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Offline AI development workbench",
+      "localizedDescription": "Imports local GGUF models; analyzes IPA and development files.",
+      "versions": [
+        {
+          "version": "1.0",
+          "buildVersion": "1",
+          "date": "2026-10-27T02:18:44+00:00",
+          "localizedDescription": "LiveContainer update 1",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-1/OmniForge-LiveContainer.ipa",
+          "size": 3028549,
+          "minOSVersion": "17.0"
+        }
+      ],
+      "tintColor": "4065B5",
+      "iconURL": "https://github.com/R347H4CK3R.png",
+      "category": "developer",
+      "appPermissions": {
+        "entitlements": [],
+        "privacy": {}
+      },
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-1/OmniForge-LiveContainer.ipa",
+      "version": "1.0",
+      "versionDate": "2026-10-27T02:18:44+00:00",
+      "size": 3028549
+    }
+  ],
   "news": [],
   "iconURL": "https://github.com/R347H4CK3R.png"
 }
