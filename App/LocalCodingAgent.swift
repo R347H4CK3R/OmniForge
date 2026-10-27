@@ -24,7 +24,8 @@ import SwiftLlama
         case "workspace_info":
             return "Workspace ready: \(root.path)\nWritable: \(FileManager.default.isWritableFile(atPath: root.path))\nAvailable items: \((try? FileManager.default.contentsOfDirectory(atPath: root.path).count) ?? 0)"
         case "list_files":
-            let folder = try located(args["path"] ?? ".")
+            let requested = args["path"] ?? "."
+            let folder = try located(requested == "/" || requested == "AgentWorkspace" ? "." : requested)
             return try FileManager.default.contentsOfDirectory(atPath: folder.path).prefix(100).joined(separator:"\n")
         case "read_file":
             let url = try located(args["path"] ?? "")
@@ -111,10 +112,10 @@ import SwiftLlama
             }
         }
         let instruction = """
-        You are OmniForge's ON-DEVICE coding agent. Output exactly one JSON object per response, with
+        You are OmniForge's ON-DEVICE coding agent. Output JSON tool actions, preferably one per response, with
         either {"tool":"workspace_info|list_files|read_file|write_file|validate_json|inspect_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
         or {"final":"your grounded answer"}.
-        All local paths are relative to AgentWorkspace. First inspect files before edits. Test every change using available validation.
+        All local paths are relative to AgentWorkspace. Use dot (.) for the workspace root. First inspect files before edits. Test every change using available validation.
         You have no shell, Xcode, GitHub runtime, or unrestricted filesystem access. Never claim to have used a tool until its result is observed.
         Avoid claiming full source code recovery from compiled IPAs. Stop when the task is complete or a real blocker is encountered. There is no fixed tool-call count.
         """
