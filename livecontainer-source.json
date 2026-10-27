@@ -12,6 +12,15 @@
       "localizedDescription": "Imports local GGUF models; analyzes IPA and development files.",
       "versions": [
         {
+          "version": "1.0.14",
+          "buildVersion": "14",
+          "date": "2026-10-27T04:01:30+00:00",
+          "localizedDescription": "LiveContainer update 14",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-14/OmniForge-LiveContainer.ipa",
+          "size": 3226848,
+          "minOSVersion": "17.0"
+        },
+        {
           "version": "1.0.10",
           "buildVersion": "10",
           "date": "2026-10-27T03:55:11+00:00",
@@ -67,18 +76,18 @@
         }
       ],
       "tintColor": "4065B5",
-      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-10/OmniForgeIcon.png",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-14/OmniForgeIcon.png",
       "category": "developer",
       "appPermissions": {
         "entitlements": [],
         "privacy": {}
       },
-      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-10/OmniForge-LiveContainer.ipa",
-      "version": "1.0.10",
-      "versionDate": "2026-10-27T03:55:11+00:00",
-      "size": 3206173
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-14/OmniForge-LiveContainer.ipa",
+      "version": "1.0.14",
+      "versionDate": "2026-10-27T04:01:30+00:00",
+      "size": 3226848
     }
   ],
   "news": [],
-  "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-10/OmniForgeIcon.png"
+  "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-14/OmniForgeIcon.png"
 }
