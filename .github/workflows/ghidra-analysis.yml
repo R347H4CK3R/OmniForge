@@ -1,0 +1,62 @@
+name: Ghidra IPA Reverse Engineering
+on:
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Release containing an IPA you may analyze"
+        required: true
+        type: string
+      ipa_asset:
+        description: "IPA asset filename"
+        required: true
+        type: string
+permissions:
+  contents: read
+jobs:
+  decompile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '25'
+      - name: Fetch authorized IPA
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.release_tag }}
+          IPA: ${{ inputs.ipa_asset }}
+        run: |
+          set -euo pipefail
+          [[ "$IPA" == *.ipa && "$IPA" != */* && "$IPA" != *..* ]] || exit 1
+          mkdir -p input output
+          gh release download "$TAG" --pattern "$IPA" --dir input
+          python3 scripts/prepare_ghidra_ipa.py "input/$IPA" output
+      - name: Download official Ghidra release
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import urllib.request,json,os
+          req=urllib.request.Request('https://api.github.com/repos/NationalSecurityAgency/ghidra/releases/latest',headers={'User-Agent':'OmniForge-Ghidra'})
+          data=json.load(urllib.request.urlopen(req,timeout=30))
+          matches=[x for x in data['assets'] if x['name'].endswith('.zip') and x['name'].startswith('ghidra_')]
+          if len(matches)!=1:raise SystemExit('Unexpected Ghidra release assets')
+          urllib.request.urlretrieve(matches[0]['browser_download_url'],'ghidra.zip')
+          PY
+          unzip -q ghidra.zip -d ghidra-dist
+          GHIDRA_DIR=$(find ghidra-dist -mindepth 1 -maxdepth 1 -type d | head -n 1)
+          echo "GHIDRA_DIR=$GHIDRA_DIR" >> "$GITHUB_ENV"
+      - name: Headless pseudocode (bounded)
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/omniforge-ghidra-project
+          timeout 1400 "$GHIDRA_DIR/support/analyzeHeadless" /tmp/omniforge-ghidra-project OmniForge -import output/main_macho -scriptPath "$GITHUB_WORKSPACE/ghidra_scripts" -postScript OmniForgeDecompile.java "$GITHUB_WORKSPACE/output/pseudocode.c" -deleteProject > output/ghidra.log 2>&1 || { tail -n 60 output/ghidra.log; exit 1; }
+          test -s output/pseudocode.c
+          rm -f output/main_macho
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: OmniForge-ghidra-analysis
+          path: output/
+          retention-days: 7
