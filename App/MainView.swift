@@ -173,9 +173,8 @@ struct MainView: View {
                     .task { await updates.check() }
             }.tabItem { Label("Updates", systemImage: "arrow.down.circle") }
         }
-        .fileImporter(isPresented: $attachmentPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { r in
-            do {
-                for url in try r.get() {
+        .sheet(isPresented: $attachmentPicker) { OmniDocumentPicker(multiple: true, onPick: { urls in            do {
+                for url in urls {
                     let scoped = url.startAccessingSecurityScopedResource()
                     defer { if scoped { url.stopAccessingSecurityScopedResource() } }
                     if url.pathExtension.lowercased() == "ipa" {
@@ -217,7 +216,7 @@ struct MainView: View {
                     attachments.append(ChatAttachment(name: url.lastPathComponent, contents: String(text.prefix(100_000))))
                 }
             } catch { alert(error) }
-        }
+        }, onCancel: {}) }
         .alert("IPA resource path", isPresented: $showRepackPath) {
             TextField("Payload/App.app/settings.json", text: $repackPath)
             Button("Choose replacement") { repackResourcePicker = true }
@@ -225,10 +224,9 @@ struct MainView: View {
         } message: {
             Text("Only supported non-executable resource types. The output is a separate unsigned IPA.")
         }
-        .fileImporter(isPresented: $repackResourcePicker, allowedContentTypes: [.item]) { r in
-            do {
+        .sheet(isPresented: $repackResourcePicker) { OmniDocumentPicker(multiple: false, onPick: { urls in            do {
                 guard let ipa = repackIPA else { return }
-                let replacement = try r.get()
+                let replacement = urls
                 let accessReplacement = replacement.startAccessingSecurityScopedResource()
                 defer {
                     if accessReplacement { replacement.stopAccessingSecurityScopedResource() }
@@ -239,13 +237,11 @@ struct MainView: View {
                 attachments.append(ChatAttachment(name: output.lastPathComponent,
                     contents: "Unsigned repackaged IPA saved to Files → On My iPhone → OmniForge → Repacked → \(output.lastPathComponent). The modified app must be signed before installation."))
             } catch { alert(error) }
-        }
-        .fileImporter(isPresented: $modelPicker, allowedContentTypes: [.item]) { r in
-            do { try store.importModel(r.get()) } catch { alert(error) }
-        }
-        .fileImporter(isPresented: $filePicker, allowedContentTypes: [.item]) { r in
-            do { try execute(r.get()) } catch { alert(error) }
-        }
+        }, onCancel: {}) }
+        .sheet(isPresented: $modelPicker) { OmniDocumentPicker(multiple: false, onPick: { urls in            do { try store.importModel(urls.first!) } catch { alert(error) }
+        }, onCancel: {}) }
+        .sheet(isPresented: $filePicker) { OmniDocumentPicker(multiple: false, onPick: { urls in            do { try execute(urls.first!) } catch { alert(error) }
+        }, onCancel: {}) }
         .alert("OmniForge error", isPresented: $showError) { Button("OK", role: .cancel) {} } message: { Text(errorText) }
     }
     func sendMessage() {
