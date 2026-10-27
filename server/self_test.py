@@ -47,3 +47,10 @@ def run_self_test(workspace, ollama_url="http://127.0.0.1:11434", model="qwen3:8
     results.append(check("agent_authentication",configured))
     statuses=[r["status"] for r in results]
     return {"schema":1,"generated_at":datetime.now(timezone.utc).isoformat(),"device":"windows-host","overall":"FAIL" if "FAIL" in statuses else "PASS" if "SKIP" not in statuses else "PARTIAL","counts":{s:statuses.count(s) for s in ("PASS","FAIL","SKIP")},"checks":results,"note":"Smoke test only: no macOS runner, real IPA install, or remote iPhone pairing is verified here."}
+
+if __name__=="__main__":
+    import sys
+    workspace=os.environ.get("OMNIFORGE_WORKSPACE",os.getcwd())
+    report=run_self_test(workspace,os.environ.get("OLLAMA_URL","http://127.0.0.1:11434"),os.environ.get("OLLAMA_MODEL","qwen3:8b"))
+    print(json.dumps(report,indent=2))
+    sys.exit(1 if report["overall"]=="FAIL" else 0)
