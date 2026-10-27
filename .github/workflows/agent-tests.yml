@@ -1,0 +1,23 @@
+name: Agent Python Tests
+on:
+  push:
+    paths:
+      - 'server/**'
+      - '.github/workflows/agent-tests.yml'
+  pull_request:
+    paths:
+      - 'server/**'
+      - '.github/workflows/agent-tests.yml'
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Compile server modules
+        run: python -m compileall -q server
+      - name: Run unittest suite
+        run: python -m unittest discover -s server -p 'test_*.py' -v
