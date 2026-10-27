@@ -91,6 +91,14 @@ The separate `Sign authorized IPA (macOS)` manual workflow needs a valid Apple s
 
 These flows are optional and require GitHub network access and macOS runners. A successful macOS codesign check does not guarantee installability: the selected certificate, app identifier, entitlements, target device and provisioning profile must all be compatible. This has not been tested with an actual signing identity.
 
+## Optional updates (GitHub-backed)
+
+OmniForge includes an **Updates** tab. When opened, it checks the latest successful run of the public iOS build workflow and compares its build number with the installed app. You can also use **Check for update** manually. The app only contacts GitHub for this feature; local AI chat and file tools do not require an internet connection.
+
+A successful GitHub Actions run uploads an unsigned IPA. Tap the GitHub link in Updates, download its artifact, then **sign and install it with your existing authorized sideloading setup**. GitHub Actions artifacts require appropriate GitHub access and expire after the configured retention period. This is **not** a silent over-the-air installer, and it does not automatically replace the currently installed app; iOS code signing and sandbox restrictions prevent that general capability. Keeping the same bundle identifier and compatible signing identity may allow installation over the existing app while retaining local data, but back up important data first.
+
+Large bundled-model artifacts may need to be downloaded from GitHub directly, since transfer services can reject multi-gigabyte attachments.
+
 ## Contributing
 
 Issues and pull requests are welcome. Keep default functionality offline, avoid paid API dependencies, disclose third-party licenses, and include reproduction steps or tests with bug reports.
