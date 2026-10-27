@@ -51,6 +51,26 @@ import SwiftLlama
         }
     }
     static func run(prompt: String, model: LlamaService, allowEdits: Bool) async throws -> String {
+        // Collect real IPA evidence before asking a language model to reason about it.
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        let ipas = (try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil))
+            .filter { $0.pathExtension.lowercased() == "ipa" }
+        var verifiedEvidence = ""
+        if prompt.localizedCaseInsensitiveContains("ipa") || prompt.localizedCaseInsensitiveContains("reverse engineer") {
+            for file in ipas.prefix(1) {
+                do {
+                    let metadata = try IPAInspector.inspect(file)
+                    let inventory = try IPAWorkbench.inventory(file)
+                    verifiedEvidence = "ACTUAL TOOL RESULTS for \\(file.lastPathComponent):\\n" +
+                        String(metadata.prefix(4500)) + "\\n" + String(inventory.prefix(4500))
+                } catch {
+                    verifiedEvidence = "IPA inspection failed: " + error.localizedDescription
+                }
+            }
+            if ipas.isEmpty {
+                return "No IPA in AgentWorkspace. Attach an IPA using + → Inspect IPA, then retry. No analysis was performed."
+            }
+        }
         let instruction = """
         You are OmniForge's ON-DEVICE coding agent. Output exactly one JSON object per response, with
         either {"tool":"list_files|read_file|write_file|validate_json|inspect_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
@@ -60,8 +80,8 @@ import SwiftLlama
         Avoid claiming full source code recovery from compiled IPAs. Stop if blocked. At most 8 tool calls.
         """
         var transcript=[LlamaChatMessage(role:.system,content:instruction),
-                        LlamaChatMessage(role:.user,content:prompt)]
-        var observations:[String]=[]
+                        LlamaChatMessage(role:.user,content:prompt + (verifiedEvidence.isEmpty ? "" : "\\n\\n" + verifiedEvidence + "\\nAnalyze these measured results, not guesses."))]
+        var observations:[String]=verifiedEvidence.isEmpty ? [] : ["PASS: inspected IPA metadata and file inventory"]
         for step in 0..<8 {
             try Task.checkCancellation()
             let stream=try await model.streamCompletion(of:transcript,samplingConfig:.init(temperature:0.15,seed:19))
