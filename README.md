@@ -83,6 +83,12 @@ The iPhone interface includes an offline reconstruction **report** under **+ →
 
 Signing requires a legitimately controlled Apple signing identity and provisioning profile. This workflow deliberately does not accept or store signing credentials and produces unsigned/invalidated-signature repackaged IPAs. The official app build workflow still runs separately and requires a real-device launch test.
 
+## Reverse engineering imported IPAs
+
+Open **Chat → + → Inspect IPA → Reverse engineer IPA** and select a user-owned or authorized IPA. OmniForge performs bounded, read-only scanning of Mach-O executable headers, ARM64 identification, embedded printable strings, and framework references, and includes the report in your chat attachment. Nothing is executed.
+
+For more detailed instruction-level disassembly, run the optional GitHub **IPA Workbench (macOS)** with an authorized IPA. That workflow generates structural reports and a limited LLVM disassembly excerpt; it is not an automated equivalent of Ghidra/Hopper or a source-code recovery engine. Static analysis of encrypted or protected binaries may not reveal useful machine code. Do not assume reconstructed scaffolds reproduce the original app.
+
 ## Advanced macOS workflows
 
 The `IPA Workbench (macOS)` manual workflow provides capped Mach-O disassembly excerpts using `llvm-objdump`, `otool` dependency inspection, code signature diagnostics, safe resource modification, and a **new clean-room SwiftUI scaffold** generated from basic IPA metadata. The scaffold is original placeholder code, **not recovered source or a functioning clone**, and compilation must be independently validated.
