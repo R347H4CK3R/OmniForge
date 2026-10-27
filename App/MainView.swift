@@ -13,6 +13,7 @@ struct MainView: View {
     @StateObject private var updates = OmniForgeUpdates()
     @StateObject private var ipaUploader = IPAJobUploader()
     @State private var directIPAPicker = false
+    @State private var agentSecret = ""
     @State private var input = ""
     @FocusState private var inputFocused: Bool
     @State private var attachmentPicker = false
@@ -249,6 +250,12 @@ struct MainView: View {
                                 .textInputAutocapitalization(.never)
                                 .autocorrectionDisabled()
                                 .keyboardType(.URL)
+                            SecureField("Private agent access key", text: $agentSecret)
+                                .textContentType(.password)
+                            Button("Save private agent key") {
+                                OnlineModelClient.saveKey(agentSecret)
+                                agentSecret = ""
+                            }
                             TextField("Model ID (example qwen3:8b)", text: $store.onlineModel)
                                 .textInputAutocapitalization(.never)
                                 .autocorrectionDisabled()
