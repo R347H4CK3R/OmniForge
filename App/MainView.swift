@@ -79,6 +79,7 @@ struct MainView: View {
                             repackPath = ""
                             showRepackPath = true
                             report = "Choose the exact resource path in the IPA and replacement file."
+                        case "AutoRebuild": report = try AutoRebuildAdvisor.report(for: url)
                         case "Reconstruct":
                             let output = try IPAReconstruction.generateReport(url)
                             report = "Created reconstruction inventory: Files → On My iPhone → OmniForge → Reconstructions → \(output.lastPathComponent). This does not recover original source."
@@ -178,6 +179,7 @@ struct MainView: View {
                                 Button("Reverse engineer IPA") { ipaReportMode = "ReverseEngineer"; attachmentPicker = true }
                                 Button("Signing structure") { ipaReportMode = "Signing"; attachmentPicker = true }
                                 Button("Export supported resources") { ipaReportMode = "Export"; attachmentPicker = true }
+                                Button("Automatically choose rebuild or patch path") { ipaReportMode = "AutoRebuild"; attachmentPicker = true }
                                 Button("Create reconstruction report") { ipaReportMode = "Reconstruct"; attachmentPicker = true }
                                 Button("Replace resource in IPA") { ipaReportMode = "Repack"; attachmentPicker = true }
                             }
