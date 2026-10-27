@@ -14,6 +14,7 @@ struct MainView: View {
     @StateObject private var ipaUploader = IPAJobUploader()
     @State private var directIPAPicker = false
     @State private var agentSecret = ""
+    @State private var searxngURL = UserDefaults.standard.string(forKey: "searxngURL") ?? ""
     @State private var input = ""
     @FocusState private var inputFocused: Bool
     @State private var attachmentPicker = false
@@ -248,6 +249,16 @@ struct MainView: View {
                         Toggle("Permit edits in AgentWorkspace", isOn: $store.agentCanEdit)
                             .disabled(!store.localAgentEnabled)
                         Text("The agent can inspect files, create or edit text files inside OmniForge/Documents/AgentWorkspace, validate JSON, analyze accessible IPAs and retrieve HTTPS pages. It executes up to 8 steps per request. It cannot run arbitrary shell commands or Xcode on iOS.")
+                            .font(.footnote)
+                    }
+                    Section("Free internet search") {
+                        TextField("SearXNG HTTPS URL", text: $searxngURL)
+                            .textInputAutocapitalization(.never).autocorrectionDisabled()
+                            .keyboardType(.URL)
+                        Button("Save search endpoint") {
+                            UserDefaults.standard.set(searxngURL.trimmingCharacters(in: .whitespacesAndNewlines), forKey: "searxngURL")
+                        }
+                        Text("Use /search followed by a query. SearXNG must support JSON output.")
                             .font(.footnote)
                     }
                     Section("AI engine") {
