@@ -125,6 +125,14 @@ GitHub may reject release creation with HTTP 403 if the repository's Actions tok
 
 The installed guest may need a manual **source refresh / update confirmation** inside LiveContainer; background silent installation is not guaranteed.
 
+## Autonomous execution entirely on the iPhone
+
+The **Models → On-device autonomous agent** setting enables a bounded local plan/act/observe loop using the imported GGUF model. No laptop, hosted LLM, subscription, or paid API is required. The agent can list/read local workspace files, create or edit text files when explicitly enabled, validate JSON, inspect IPA metadata, and fetch an HTTPS page if network access is available. It runs at most 8 steps per user request and reports tool results and failures. Work takes place under `Documents/AgentWorkspace`, which iOS/LiveContainer may expose through their file manager.
+
+This is an actual on-device tool loop rather than a prompt pretending tools were run. However, local-model reliability depends on the GGUF model's ability to output structured JSON actions; it is not guaranteed. Unsupported operations must be reported as unsupported. iOS does not provide unrestricted shell access, an Xcode toolchain, macOS codesigning, or unconfined file access. Those cannot be achieved simply by adding an agent prompt or mode.
+
+Keep **Permit edits in AgentWorkspace** disabled when performing read-only analysis. Back up any important files before using the editing mode.
+
 ## Contributing
 
 Issues and pull requests are welcome. Keep default functionality offline, avoid paid API dependencies, disclose third-party licenses, and include reproduction steps or tests with bug reports.
