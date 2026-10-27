@@ -25,8 +25,14 @@ version = {"version": f"1.0.{build}", "buildVersion": build,
            "date": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
            "localizedDescription": f"LiveContainer update {build}",
            "downloadURL": url, "size": size, "minOSVersion": "17.0"}
-app["versions"] = [version] + [v for v in app.get("versions", []) if v.get("buildVersion") != build][:9]
-app["iconURL"] = f"https://github.com/R347H4CK3R/OmniForge/releases/download/{tag}/OmniForgeIcon.png"
+app["versions"] = sorted(
+    [version] + [v for v in app.get("versions", []) if v.get("buildVersion") != build],
+    key=lambda v: int(v.get("buildVersion", 0)), reverse=True
+)[:10]
+version = app["versions"][0]
+url = version["downloadURL"]
+size = version["size"]
+app["iconURL"] = f"https://github.com/R347H4CK3R/OmniForge/releases/download/lc-{version['buildVersion']}/OmniForgeIcon.png"
 source["iconURL"] = app["iconURL"]
 app["downloadURL"] = url
 app["version"] = version["version"]
