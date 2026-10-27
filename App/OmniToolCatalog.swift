@@ -7,6 +7,7 @@ enum OmniToolCatalog {
     OmniForge tools (free, no paid API required):
     /tools — show this list
     /web https://example.org — retrieve a public HTTPS page (requires internet)
+    /search your query — search via configured SearXNG instance
     /sha256 text — SHA-256 of the supplied text (offline)
     /base64 text — Base64-encode text (offline)
     /unbase64 text — decode Base64 as UTF-8 (offline)
@@ -20,7 +21,7 @@ enum OmniToolCatalog {
     Not currently integrated: ChatGPT proprietary tools, account connectors, arbitrary shell execution, general web search, autonomous plugin installation, or guaranteed app-source recovery.
     """
     static func handles(_ prompt: String) -> Bool {
-        ["/tools","/device","/web ","/sha256 ","/base64 ","/unbase64 ","/json "]
+        ["/tools","/device","/web ","/search ","/sha256 ","/base64 ","/unbase64 ","/json "]
             .contains { prompt == $0 || prompt.hasPrefix($0) }
     }
     static func execute(_ prompt: String) async throws -> String {
@@ -28,6 +29,9 @@ enum OmniToolCatalog {
         if prompt == "/device" {
             let bundle = Bundle.main
             return "Bundle ID: \(bundle.bundleIdentifier ?? "unknown")\nVersion: \(bundle.object(forInfoDictionaryKey: "CFBundleShortVersionString") ?? "?")\nBuild: \(bundle.object(forInfoDictionaryKey: "CFBundleVersion") ?? "?")\nRuntime: iOS sandbox; no arbitrary external executables."
+        }
+        if prompt.hasPrefix("/search ") {
+            return try await OmniSearch.search(String(prompt.dropFirst(8)))
         }
         if prompt.hasPrefix("/web ") {
             return try await ExternalToolRuntime.fetchPage(String(prompt.dropFirst(5)).trimmingCharacters(in: .whitespacesAndNewlines))
