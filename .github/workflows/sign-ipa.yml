@@ -52,6 +52,7 @@ jobs:
           security list-keychains -d user -s "$KEYCHAIN"
           security cms -D -i "$RUNNER_TEMP/profile.mobileprovision" > "$RUNNER_TEMP/profile.plist"
           /usr/libexec/PlistBuddy -c 'Print :ExpirationDate' "$RUNNER_TEMP/profile.plist"
+          /usr/libexec/PlistBuddy -x -c 'Print :Entitlements' "$RUNNER_TEMP/profile.plist" > "$RUNNER_TEMP/entitlements.plist"
           find work/unsigned/Payload -maxdepth 1 -name '*.app' -type d -print -quit > "$RUNNER_TEMP/app_path"
           test -s "$RUNNER_TEMP/app_path"
           APP=$(cat "$RUNNER_TEMP/app_path")
@@ -64,14 +65,14 @@ jobs:
           while IFS= read -r item; do
             codesign --force --sign "$SIGN_IDENTITY" --timestamp=none "$item"
           done < <(find "$APP" -depth \( -name '*.framework' -o -name '*.appex' -o -name '*.dylib' \) -print)
-          codesign --force --sign "$SIGN_IDENTITY" --timestamp=none "$APP"
+          codesign --force --sign "$SIGN_IDENTITY" --entitlements "$RUNNER_TEMP/entitlements.plist" --timestamp=none "$APP"
           codesign --verify --deep --strict --verbose=2 "$APP"
           (cd work/unsigned && zip -qry "$GITHUB_WORKSPACE/results/OmniForge-signed.ipa" Payload)
           unzip -t results/OmniForge-signed.ipa
       - name: Remove temporary credentials
         if: always()
         run: |
-          rm -f "$RUNNER_TEMP/sign.p12" "$RUNNER_TEMP/profile.mobileprovision" "$RUNNER_TEMP/profile.plist"
+          rm -f "$RUNNER_TEMP/sign.p12" "$RUNNER_TEMP/profile.mobileprovision" "$RUNNER_TEMP/profile.plist" "$RUNNER_TEMP/entitlements.plist"
           security delete-keychain "$RUNNER_TEMP/omniforge-sign.keychain-db" || true
       - uses: actions/upload-artifact@v4
         if: success()
