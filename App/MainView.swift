@@ -173,7 +173,9 @@ struct MainView: View {
                     .task { await updates.check() }
             }.tabItem { Label("Updates", systemImage: "arrow.down.circle") }
         }
-        .sheet(isPresented: $attachmentPicker) { OmniDocumentPicker(multiple: true, onPick: { urls in            do {
+        .sheet(isPresented: $attachmentPicker) { OmniDocumentPicker(multiple: true, onPick: { urls in
+            attachmentPicker = false
+            do {
                 for url in urls {
                     let scoped = url.startAccessingSecurityScopedResource()
                     defer { if scoped { url.stopAccessingSecurityScopedResource() } }
@@ -224,7 +226,9 @@ struct MainView: View {
         } message: {
             Text("Only supported non-executable resource types. The output is a separate unsigned IPA.")
         }
-        .sheet(isPresented: $repackResourcePicker) { OmniDocumentPicker(multiple: false, onPick: { urls in            do {
+        .sheet(isPresented: $repackResourcePicker) { OmniDocumentPicker(multiple: false, onPick: { urls in
+            repackResourcePicker = false
+            do {
                 guard let ipa = repackIPA else { return }
                 let replacement = urls
                 let accessReplacement = replacement.startAccessingSecurityScopedResource()
@@ -238,9 +242,13 @@ struct MainView: View {
                     contents: "Unsigned repackaged IPA saved to Files → On My iPhone → OmniForge → Repacked → \(output.lastPathComponent). The modified app must be signed before installation."))
             } catch { alert(error) }
         }, onCancel: {}) }
-        .sheet(isPresented: $modelPicker) { OmniDocumentPicker(multiple: false, onPick: { urls in            do { try store.importModel(urls.first!) } catch { alert(error) }
+        .sheet(isPresented: $modelPicker) { OmniDocumentPicker(multiple: false, onPick: { urls in
+            modelPicker = false
+            do { try store.importModel(urls.first ?? URL(fileURLWithPath: "/dev/null")) } catch { alert(error) }
         }, onCancel: {}) }
-        .sheet(isPresented: $filePicker) { OmniDocumentPicker(multiple: false, onPick: { urls in            do { try execute(urls.first!) } catch { alert(error) }
+        .sheet(isPresented: $filePicker) { OmniDocumentPicker(multiple: false, onPick: { urls in
+            filePicker = false
+            do { try execute(urls.first ?? URL(fileURLWithPath: "/dev/null")) } catch { alert(error) }
         }, onCancel: {}) }
         .alert("OmniForge error", isPresented: $showError) { Button("OK", role: .cancel) {} } message: { Text(errorText) }
     }
