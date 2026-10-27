@@ -96,6 +96,30 @@ struct MainView: View {
             }.tabItem { Label("Tools", systemImage: "wrench") }
             NavigationStack {
                 List {
+                    Section("On-device reconstruction") {
+                        Button("Select IPA and export reconstruction inventory") {
+                            ipaReportMode = "Reconstruct"
+                            attachmentPicker = true
+                        }
+                        Button("Reverse engineer an IPA locally") {
+                            ipaReportMode = "ReverseEngineer"
+                            attachmentPicker = true
+                        }
+                        Text("The local report identifies files and metadata. It cannot reconstruct an original application's Swift source or full UI.")
+                            .font(.footnote)
+                    }
+                    Section("GitHub reconstruction tools") {
+                        Link("Generate editable SwiftUI project", destination: URL(string: "https://github.com/R347H4CK3R/OmniForge/actions/workflows/ipa-workbench.yml")!)
+                        Link("Run Ghidra pseudocode analysis", destination: URL(string: "https://github.com/R347H4CK3R/OmniForge/actions/workflows/ghidra-analysis.yml")!)
+                        Link("View workflow results", destination: URL(string: "https://github.com/R347H4CK3R/OmniForge/actions")!)
+                        Text("Upload an authorized IPA as a GitHub Release asset, then run the matching workflow with the release tag and filename. The macOS workbench generates an editable clean-room project; Ghidra produces pseudocode reports. Importing the result directly into this app is not yet supported.")
+                            .font(.footnote)
+                    }
+                }
+                .navigationTitle("Reconstruction")
+            }.tabItem { Label("Rebuild", systemImage: "hammer") }
+            NavigationStack {
+                List {
                     Text(store.modelName.isEmpty ? "No model selected" : store.modelName)
                     Button("Import GGUF from Files") { modelPicker = true }
                     Button("Scan local model files") { store.scanModels() }
