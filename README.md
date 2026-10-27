@@ -111,6 +111,14 @@ In LiveContainer, open **Sources**, press **+**, paste the URL, refresh, and ins
 
 The LiveContainer publishing workflow is **manual** to avoid publishing untested intermediate builds. The source currently lists no installable version until its first successful publish. This implementation has not yet been end-to-end tested in LiveContainer.
 
+### Automatic publishing permissions
+
+On every app/source change, the LiveContainer publishing workflow builds and attempts to publish a new IPA and refresh the source catalog. A successful iOS compilation does **not** establish a published update.
+
+GitHub may reject release creation with HTTP 403 if the repository's Actions token lacks write permission. First check **Settings → Actions → General → Workflow permissions** and select **Read and write permissions** if available. If release publishing is still denied, create a fine-grained personal access token scoped **only to this repository**, with **Contents: Read and write** permission, and add it under **Settings → Secrets and variables → Actions → New repository secret** as `OMNIFORGE_PUBLISH_TOKEN`. Never place the token in issues or chat. The workflow can use that secret for release publication and catalog updates. GitHub token settings remain under your control.
+
+The installed guest may need a manual **source refresh / update confirmation** inside LiveContainer; background silent installation is not guaranteed.
+
 ## Contributing
 
 Issues and pull requests are welcome. Keep default functionality offline, avoid paid API dependencies, disclose third-party licenses, and include reproduction steps or tests with bug reports.
