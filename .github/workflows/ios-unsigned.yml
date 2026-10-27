@@ -38,7 +38,7 @@ jobs:
       - name: Build unsigned iOS app
         run: |
           set -o pipefail
-          xcodebuild -project OmniForge.xcodeproj -scheme OmniForge -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath ./DerivedData CODE_SIGNING_ALLOWED=NO build 2>&1 | tee build.log
+          xcodebuild -project OmniForge.xcodeproj -scheme OmniForge -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath ./DerivedData CODE_SIGNING_ALLOWED=NO CURRENT_PROJECT_VERSION=${{ github.run_number }} MARKETING_VERSION=1.0 build 2>&1 | tee build.log
       - name: Package unsigned IPA
         if: success()
         run: |
