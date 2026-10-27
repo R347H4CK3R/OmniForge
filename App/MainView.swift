@@ -243,6 +243,13 @@ struct MainView: View {
     private var modelsTab: some View {
         NavigationStack {
                 List {
+                    Section("On-device autonomous agent") {
+                        Toggle("Use local agent in Chat", isOn: $store.localAgentEnabled)
+                        Toggle("Permit edits in AgentWorkspace", isOn: $store.agentCanEdit)
+                            .disabled(!store.localAgentEnabled)
+                        Text("The agent can inspect files, create or edit text files inside OmniForge/Documents/AgentWorkspace, validate JSON, analyze accessible IPAs and retrieve HTTPS pages. It executes up to 8 steps per request. It cannot run arbitrary shell commands or Xcode on iOS.")
+                            .font(.footnote)
+                    }
                     Section("AI engine") {
                         Toggle("Use my own online server", isOn: $store.onlineEnabled)
                         if store.onlineEnabled {
