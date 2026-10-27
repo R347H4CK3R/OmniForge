@@ -213,6 +213,11 @@ struct MainView: View {
     private var rebuildTab: some View {
         NavigationStack {
                 List {
+                    Section("Editable source workspace") {
+                        NavigationLink("Open Code Editor") { WorkspaceCodeEditor() }
+                        Text("Edit recovered pseudocode and clean-room SwiftUI projects. This cannot magically recompile a decompiled IPA.")
+                            .font(.footnote)
+                    }
                     Section("On-device reconstruction") {
                         Button("Select IPA and export reconstruction inventory") {
                             ipaReportMode = "Reconstruct"
