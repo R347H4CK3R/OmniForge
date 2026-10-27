@@ -17,8 +17,8 @@ enum IPARepacker {
         try FileManager.default.copyItem(at: ipa, to: target)
         do {
             guard let archive = Archive(url: target, accessMode: .update) else { throw failure("Unable to open IPA for update") }
-            guard archive[archivePath] != nil else { throw failure("Resource not found inside IPA") }
-            try archive.remove(archivePath)
+            guard let existing = archive[archivePath] else { throw failure("Resource not found inside IPA") }
+            try archive.remove(existing)
             try archive.addEntry(with: archivePath, fileURL: replacement, compressionMethod: .deflate)
             // The signature is no longer valid after changing a resource. This file is unsigned/invalidly signed.
             return target
