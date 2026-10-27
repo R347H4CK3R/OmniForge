@@ -75,6 +75,7 @@ jobs:
         shell: bash
         run: |
           python3 scripts/generate_scaffold.py "work/$IPA_ASSET" results/CleanRoomProject
+          python3 scripts/enhance_reconstruction.py results/CleanRoomProject results/ReverseEngineering
           (cd results && zip -qry CleanRoomProject.zip CleanRoomProject)
       - name: Compile clean-room scaffold
         shell: bash
