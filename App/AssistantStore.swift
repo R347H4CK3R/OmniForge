@@ -21,6 +21,12 @@ struct ChatLine: Identifiable, Codable {
     @Published var onlineModel = UserDefaults.standard.string(forKey: "onlineModel") ?? "qwen3:8b" {
         didSet { UserDefaults.standard.set(onlineModel, forKey: "onlineModel") }
     }
+    @Published var localAgentEnabled = UserDefaults.standard.bool(forKey: "localAgentEnabled") {
+        didSet { UserDefaults.standard.set(localAgentEnabled, forKey: "localAgentEnabled") }
+    }
+    @Published var agentCanEdit = UserDefaults.standard.bool(forKey: "agentCanEdit") {
+        didSet { UserDefaults.standard.set(agentCanEdit, forKey: "agentCanEdit") }
+    }
     @Published var busy = false
     @Published var status = "Offline"
     private var engine: LlamaService?
@@ -109,6 +115,23 @@ struct ChatLine: Identifiable, Codable {
                     if !Task.isCancelled && generation == token && messages.indices.contains(index) {
                         messages[index].text = report
                         status = "Tool completed"
+                    }
+                    if generation == token { busy = false; task = nil }
+                    return
+                }
+                if localAgentEnabled && !onlineEnabled {
+                    guard let path = selectedModel else {
+                        throw NSError(domain: "OmniForge", code: 3,
+                          userInfo: [NSLocalizedDescriptionKey: "Import a GGUF model before starting the local agent"])
+                    }
+                    if engine == nil {
+                        engine = LlamaService(modelUrl: path, config: .init(batchSize: 256, maxTokenCount: 2048, useGPU: true))
+                    }
+                    guard let engine else { return }
+                    let report = try await LocalCodingAgent.run(prompt: prompt, model: engine, allowEdits: agentCanEdit)
+                    if generation == token && !Task.isCancelled && messages.indices.contains(index) {
+                        messages[index].text = report
+                        status = "Local agent completed"
                     }
                     if generation == token { busy = false; task = nil }
                     return
