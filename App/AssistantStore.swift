@@ -11,11 +11,16 @@ struct ChatLine: Identifiable, Codable {
 @MainActor final class AssistantStore: ObservableObject {
     @Published var messages: [ChatLine] = [] { didSet { persist() } }
     @Published var modelName = UserDefaults.standard.string(forKey: "modelName") ?? ""
+    @Published var localModels: [URL] = []
     @Published var busy = false
     @Published var status = "Offline"
     private var engine: LlamaService?
     private var bundledModel: URL? { Bundle.main.url(forResource: "BundledModel", withExtension: "gguf") }
     private var selectedModel: URL? {
+        if let saved = UserDefaults.standard.string(forKey: "modelPath") {
+            let savedURL = URL(fileURLWithPath: saved)
+            if FileManager.default.fileExists(atPath: savedURL.path) { return savedURL }
+        }
         let imported = modelFolder.appendingPathComponent(modelName)
         if !modelName.isEmpty && FileManager.default.fileExists(atPath: imported.path) { return imported }
         return bundledModel
@@ -33,7 +38,27 @@ struct ChatLine: Identifiable, Codable {
         if modelName.isEmpty && Bundle.main.url(forResource: "BundledModel", withExtension: "gguf") != nil {
             status = "Bundled offline model ready"
         }
+        scanModels()
         if let data = try? Data(contentsOf: history), let lines = try? JSONDecoder().decode([ChatLine].self, from: data) { messages = lines }
+    }
+    func scanModels() {
+        let fm = FileManager.default
+        let folders = [modelFolder, docs, docs.appendingPathComponent("Documents"), docs.appendingPathComponent("Inbox")]
+        var found: [URL] = []
+        for folder in folders {
+            guard let contents = try? fm.contentsOfDirectory(at: folder, includingPropertiesForKeys: [.isRegularFileKey], options: [.skipsHiddenFiles]) else { continue }
+            found += contents.filter { $0.pathExtension.lowercased() == "gguf" && (try? $0.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) == true }
+        }
+        localModels = Array(Set(found.map { $0.standardizedFileURL })).sorted { $0.lastPathComponent < $1.lastPathComponent }
+        if modelName.isEmpty && localModels.count == 1 { selectModel(localModels[0]) }
+    }
+    func selectModel(_ url: URL) {
+        guard FileManager.default.fileExists(atPath: url.path) else { return }
+        modelName = url.lastPathComponent
+        UserDefaults.standard.set(modelName, forKey: "modelName")
+        UserDefaults.standard.set(url.path, forKey: "modelPath")
+        engine = nil
+        status = "Selected: " + modelName
     }
     private func persist() {
         if let data = try? JSONEncoder().encode(messages) { try? data.write(to: history, options: .atomic) }
@@ -54,9 +79,8 @@ struct ChatLine: Identifiable, Codable {
             if FileManager.default.fileExists(atPath: dest.path) { try FileManager.default.removeItem(at: dest) }
             try FileManager.default.moveItem(at: temp, to: dest)
         }
-        modelName = dest.lastPathComponent
-        UserDefaults.standard.set(modelName, forKey: "modelName")
-        engine = nil
+        selectModel(dest)
+        scanModels()
         status = "Imported model ready"
     }
     func send(_ text: String) {
