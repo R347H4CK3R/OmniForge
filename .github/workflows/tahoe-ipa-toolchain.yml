@@ -1,0 +1,46 @@
+name: macOS Tahoe IPA Toolchain Lab
+on:
+  workflow_dispatch:
+    inputs:
+      run_unsigned_build:
+        description: "Build current OmniForge iOS project (without downloading bundled model)"
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  tahoe-toolchain:
+    runs-on: macos-26
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect Tahoe / Xcode environment
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts
+          bash scripts/tahoe_toolchain_report.sh | tee artifacts/tahoe-toolchain.txt
+      - name: Install project generation utility
+        if: inputs.run_unsigned_build
+        shell: bash
+        run: brew install xcodegen
+      - name: Build iOS project (no signing)
+        if: inputs.run_unsigned_build
+        shell: bash
+        run: |
+          set -euo pipefail
+          xcodegen generate
+          xcodebuild -project OmniForge.xcodeproj -scheme OmniForge -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath ./DerivedData CODE_SIGNING_ALLOWED=NO build > artifacts/xcodebuild.log 2>&1 || { tail -n 120 artifacts/xcodebuild.log; exit 1; }
+          test -d DerivedData/Build/Products/Release-iphoneos/OmniForge.app
+          mkdir -p Payload
+          cp -R DerivedData/Build/Products/Release-iphoneos/OmniForge.app Payload/
+          zip -qry artifacts/OmniForge-Tahoe-unsigned.ipa Payload
+          unzip -t artifacts/OmniForge-Tahoe-unsigned.ipa > artifacts/ipa-archive-check.txt
+      - name: Upload Tahoe diagnostics and optional unsigned IPA
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: OmniForge-Tahoe-toolchain
+          path: artifacts/
+          retention-days: 21
+          if-no-files-found: warn
