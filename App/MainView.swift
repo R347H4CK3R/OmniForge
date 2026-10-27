@@ -96,7 +96,26 @@ struct MainView: View {
             NavigationStack {
                 List {
                     Text(store.modelName.isEmpty ? "No model selected" : store.modelName)
-                    Button("Import GGUF model") { modelPicker = true }
+                    Button("Import GGUF from Files") { modelPicker = true }
+                    Button("Scan local model files") { store.scanModels() }
+                    if !store.localModels.isEmpty {
+                        Section("Available local GGUF models") {
+                            ForEach(store.localModels, id: \.path) { url in
+                                Button {
+                                    store.selectModel(url)
+                                } label: {
+                                    HStack {
+                                        Image(systemName: store.modelName == url.lastPathComponent ? "checkmark.circle.fill" : "circle")
+                                        Text(url.lastPathComponent).lineLimit(2)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Section("LiveContainer fallback") {
+                        Text("If the Files picker cannot select a GGUF, use LiveContainer's app data/file manager to place the .gguf file in OmniForge/Documents/Models or OmniForge/Documents. Return here and tap Scan local model files, then select it.")
+                            .font(.footnote)
+                    }
                     Text("Inference runs locally. A compatible quantized model is required.")
                 }.navigationTitle("Models")
             }.tabItem { Label("Models", systemImage: "cpu") }
@@ -181,7 +200,7 @@ struct MainView: View {
                     contents: "Unsigned repackaged IPA saved to Files → On My iPhone → OmniForge → Repacked → \(output.lastPathComponent). The modified app must be signed before installation."))
             } catch { alert(error) }
         }
-        .fileImporter(isPresented: $modelPicker, allowedContentTypes: [UTType(filenameExtension: "gguf") ?? .data]) { r in
+        .fileImporter(isPresented: $modelPicker, allowedContentTypes: [.item]) { r in
             do { try store.importModel(r.get()) } catch { alert(error) }
         }
         .fileImporter(isPresented: $filePicker, allowedContentTypes: [.item]) { r in
