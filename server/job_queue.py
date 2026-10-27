@@ -45,8 +45,10 @@ class JobQueue:
             row=db.execute("SELECT id FROM jobs WHERE status='queued' ORDER BY created LIMIT 1").fetchone()
             if row:
                 db.execute("UPDATE jobs SET status='running',updated=?,attempts=attempts+1 WHERE id=?",(now(),row[0]))
-                return self.get(row[0])
-        return None
+                claimed_id=row[0]
+            else:
+                claimed_id=None
+        return self.get(claimed_id) if claimed_id else None
 
     def complete(self, jid, result, failed=False):
         with self.lock, self._db() as db:
