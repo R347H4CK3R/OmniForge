@@ -194,6 +194,7 @@ struct MainView: View {
                     Picker("Local tool", selection: $tool) {
                         ForEach(tools, id: \.self) { Text($0) }
                     }
+                    Button("Show available AI tools") { result = OmniToolCatalog.help }
                     Button("Select file") { filePicker = true }
                     Text(result).font(.system(.caption, design: .monospaced)).textSelection(.enabled)
                     ShareLink(item: result) { Text("Export tool result") }
