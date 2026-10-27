@@ -1,0 +1,54 @@
+name: Publish OmniForge Windows Update
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'server/**'
+      - 'windows/**'
+      - '.github/workflows/windows-publish.yml'
+permissions:
+  contents: write
+concurrency:
+  group: omniforge-windows-publish
+  cancel-in-progress: false
+jobs:
+  release:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Unit tests
+        run: python -m unittest discover -s server -p "test_*.py" -v
+      - name: Build EXEs
+        run: |
+          python -m pip install pyinstaller==6.16.0
+          python -m PyInstaller --clean --onefile --name OmniForgeHost --paths server --hidden-import knowledge_vault server/agent_server.py
+          python -m PyInstaller --clean --onefile --name OmniForgeWorker --paths server --hidden-import knowledge_vault --hidden-import agent_server --hidden-import job_queue server/job_worker.py
+      - name: Zip package and checksum
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path WindowsRelease | Out-Null
+          Copy-Item dist/OmniForgeHost.exe,dist/OmniForgeWorker.exe WindowsRelease/
+          Copy-Item windows/Start-OmniForge.ps1,windows/Update-OmniForge.ps1,windows/README.md WindowsRelease/
+          Compress-Archive -Path WindowsRelease/* -DestinationPath OmniForge-Windows.zip -Force
+          $hash = (Get-FileHash OmniForge-Windows.zip -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$hash  OmniForge-Windows.zip" | Set-Content OmniForge-Windows.zip.sha256 -Encoding ascii
+      - name: Publish immutable Windows release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag="win-${{ github.run_number }}"
+          gh release create $tag OmniForge-Windows.zip OmniForge-Windows.zip.sha256 --title "OmniForge Windows $tag" --notes "Windows host and worker. Verified by CI tests; requires Ollama, and secure remote setup." --target "${{ github.sha }}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: OmniForge-Windows-release
+          path: |
+            OmniForge-Windows.zip
+            OmniForge-Windows.zip.sha256
+          retention-days: 30
