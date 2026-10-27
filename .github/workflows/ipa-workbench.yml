@@ -52,6 +52,8 @@ jobs:
         run: |
           set -euo pipefail
           python3 scripts/ipa_workbench.py inspect "work/$IPA_ASSET" results
+      - name: Evidence-driven proprietary resource format inspection
+        run: python3 scripts/evidence_probe.py "work/$IPA_ASSET" results/format_evidence.json
       - name: Native macOS binary and signature reports
         shell: bash
         run: |
