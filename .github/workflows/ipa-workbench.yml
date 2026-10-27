@@ -77,6 +77,10 @@ jobs:
         shell: bash
         run: |
           python3 scripts/ipa_ui_symbols.py work/extracted results/ReverseEngineering
+      - name: Determine supported rebuild or patch path
+        shell: bash
+        run: |
+          python3 scripts/auto_rebuild_path.py "work/$IPA_ASSET" results/BuildDecision
       - name: Generate clean-room project scaffold
         shell: bash
         run: |
