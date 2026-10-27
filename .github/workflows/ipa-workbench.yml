@@ -67,6 +67,10 @@ jobs:
             echo "===== ${app#work/extracted/} =====" >> results/signatures.txt
             codesign --verify --deep --strict --verbose=2 "$app" >> results/signatures.txt 2>&1 || true
           done
+      - name: Recover available class/method clues and packaged UI resources
+        shell: bash
+        run: |
+          python3 scripts/ipa_ui_symbols.py work/extracted results/ReverseEngineering
       - name: Generate clean-room project scaffold
         shell: bash
         run: |
