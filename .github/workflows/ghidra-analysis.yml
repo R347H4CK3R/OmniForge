@@ -10,6 +10,10 @@ on:
         description: "IPA asset filename"
         required: true
         type: string
+      screenshots_asset:
+        description: "Optional ZIP of authorized UI screenshots from the same release"
+        required: false
+        type: string
 permissions:
   contents: read
 jobs:
@@ -27,12 +31,18 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.release_tag }}
           IPA: ${{ inputs.ipa_asset }}
+          SCREENSHOTS: ${{ inputs.screenshots_asset }}
         run: |
           set -euo pipefail
           [[ "$IPA" == *.ipa && "$IPA" != */* && "$IPA" != *..* ]] || exit 1
           mkdir -p input output
           gh release download "$TAG" --pattern "$IPA" --dir input
           python3 scripts/prepare_ghidra_ipa.py "input/$IPA" output
+          if [[ -n "$SCREENSHOTS" ]]; then
+            [[ "$SCREENSHOTS" == *.zip && "$SCREENSHOTS" != */* && "$SCREENSHOTS" != *..* ]] || exit 1
+            gh release download "$TAG" --pattern "$SCREENSHOTS" --dir input
+            python3 scripts/prepare_ui_screenshots.py "input/$SCREENSHOTS" output
+          fi
       - name: Download official Ghidra release
         run: |
           set -euo pipefail
