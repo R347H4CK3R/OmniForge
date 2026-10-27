@@ -92,7 +92,7 @@ struct MainView: View {
             repackResourcePicker = false
             do {
                 guard let ipa = repackIPA else { return }
-                let replacement = urls
+                guard let replacement = urls.first else { return }
                 let accessReplacement = replacement.startAccessingSecurityScopedResource()
                 defer {
                     if accessReplacement { replacement.stopAccessingSecurityScopedResource() }
