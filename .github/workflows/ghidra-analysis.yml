@@ -65,9 +65,21 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/omniforge-ghidra-project
-          timeout 1400 "$GHIDRA_DIR/support/analyzeHeadless" /tmp/omniforge-ghidra-project OmniForge -import output/main_macho -scriptPath "$GITHUB_WORKSPACE/ghidra_scripts" -postScript OmniForgeDecompile.java "$GITHUB_WORKSPACE/output/pseudocode.c" -deleteProject > output/ghidra.log 2>&1 || { tail -n 60 output/ghidra.log; exit 1; }
-          test -s output/pseudocode.c
-          rm -f output/main_macho
+          python3 - <<'PY'
+          import json,pathlib,subprocess,os
+          root=pathlib.Path('output')
+          for item in json.loads((root/'architectures.json').read_text())['slices']:
+              label=item['name']
+              binary=root/item['file']
+              target=root/('pseudocode_'+label+'.c')
+              log=root/('ghidra_'+label+'.log')
+              cmd=[str(pathlib.Path(os.environ['GHIDRA_DIR'])/'support/analyzeHeadless'),'/tmp/omniforge-ghidra-project','OmniForge_'+label,'-import',str(binary.resolve()),'-scriptPath',str(pathlib.Path('ghidra_scripts').resolve()),'-postScript','OmniForgeDecompile.java',str(target.resolve()),'-deleteProject']
+              with log.open('w') as f:
+                  proc=subprocess.run(cmd,stdout=f,stderr=subprocess.STDOUT,timeout=1400)
+              if proc.returncode or not target.is_file() or not target.stat().st_size:
+                  raise SystemExit('Ghidra failed for '+label+'; see '+str(log))
+          PY
+          rm -f output/main_macho output/main_*.macho
       - uses: actions/upload-artifact@v4
         if: always()
         with:
