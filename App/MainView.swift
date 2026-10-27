@@ -261,7 +261,7 @@ struct MainView: View {
                         Toggle("Use local agent in Chat", isOn: $store.localAgentEnabled)
                         Toggle("Permit edits in AgentWorkspace", isOn: $store.agentCanEdit)
                             .disabled(!store.localAgentEnabled)
-                        Text("The agent can inspect files, create or edit text files inside OmniForge/Documents/AgentWorkspace, validate JSON, analyze accessible IPAs and retrieve HTTPS pages. It executes up to 8 steps per request. It cannot run arbitrary shell commands or Xcode on iOS.")
+                        Text("The agent can inspect files, create or edit text files inside OmniForge/Documents/AgentWorkspace, validate JSON, analyze accessible IPAs and retrieve HTTPS pages. There is no fixed execution-step limit. You can stop it; repeated identical actions are halted to prevent loops. It cannot run arbitrary shell commands or Xcode on iOS.")
                             .font(.footnote)
                     }
                     Section("Free internet search") {
