@@ -44,7 +44,7 @@ jobs:
           test "$(stat -f%z OmniForge-LiveContainer.ipa)" -lt 2000000000
       - name: Publish immutable tagged release asset
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.OMNIFORGE_PUBLISH_TOKEN || github.token }}
         run: |
           set -euo pipefail
           TAG="lc-${{ github.run_number }}"
@@ -53,7 +53,7 @@ jobs:
           gh release view "$TAG" --json assets --jq '.assets[].name' | grep -Fx 'OmniForgeIcon.png'
       - name: Update public LiveContainer source only after release succeeds
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ secrets.OMNIFORGE_PUBLISH_TOKEN || github.token }}
         run: |
           set -euo pipefail
           python3 scripts/update_livecontainer_source.py "lc-${{ github.run_number }}" "${{ github.run_number }}" OmniForge-LiveContainer.ipa livecontainer-source.json
@@ -62,7 +62,7 @@ jobs:
           git add livecontainer-source.json
           git commit -m "catalog: publish LiveContainer build ${{ github.run_number }}"
           git pull --rebase origin main
-          git push origin HEAD:main
+          git -c http.extraheader="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$GH_TOKEN" | base64)" push origin HEAD:main
       - uses: actions/upload-artifact@v4
         if: always()
         with:
