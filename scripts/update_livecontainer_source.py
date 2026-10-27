@@ -13,11 +13,11 @@ if target.exists():
     source = json.loads(target.read_text())
 else:
     source = {"name": "OmniForge LiveContainer", "identifier": "com.r347h4ck3r.omniforge.source",
-              "subtitle": "Offline AI developer tools", "description": "Unsigned LiveContainer IPA updates.", "apps": [], "news": []}
+              "subtitle": "Offline AI developer tools", "iconURL": "https://github.com/R347H4CK3R.png", "description": "Unsigned LiveContainer IPA updates.", "apps": [], "news": []}
 app = {"name": "OmniForge", "bundleIdentifier": "com.r347h4ck3r.omniforge",
        "developerName": "R347H4CK3R", "subtitle": "Offline AI development workbench",
        "localizedDescription": "Imports local GGUF models; analyzes IPA and development files.",
-       "versions": [], "tintColor": "4065B5"}
+       "versions": [], "tintColor": "4065B5", "iconURL": "https://github.com/R347H4CK3R.png", "category": "developer", "appPermissions": {"entitlements": [], "privacy": {}}}
 existing = next((item for item in source.get("apps", []) if item.get("bundleIdentifier") == app["bundleIdentifier"]), None)
 if existing:
     app.update(existing)
