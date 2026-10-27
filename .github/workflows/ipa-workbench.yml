@@ -1,5 +1,9 @@
 name: IPA Workbench (macOS)
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/ipa-workbench.yml'
   workflow_dispatch:
     inputs:
       release_tag:
@@ -26,8 +30,8 @@ jobs:
     timeout-minutes: 45
     env:
       GH_TOKEN: ${{ github.token }}
-      RELEASE_TAG: ${{ inputs.release_tag }}
-      IPA_ASSET: ${{ inputs.ipa_asset }}
+      RELEASE_TAG: ${{ inputs.release_tag || 'lc-6' }}
+      IPA_ASSET: ${{ inputs.ipa_asset || 'OmniForge-LiveContainer.ipa' }}
       RESOURCE_ASSET: ${{ inputs.resource_asset }}
       RESOURCE_PATH: ${{ inputs.resource_path }}
     steps:
