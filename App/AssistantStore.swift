@@ -12,6 +12,15 @@ struct ChatLine: Identifiable, Codable {
     @Published var messages: [ChatLine] = [] { didSet { persist() } }
     @Published var modelName = UserDefaults.standard.string(forKey: "modelName") ?? ""
     @Published var localModels: [URL] = []
+    @Published var onlineEnabled = UserDefaults.standard.bool(forKey: "onlineEnabled") {
+        didSet { UserDefaults.standard.set(onlineEnabled, forKey: "onlineEnabled") }
+    }
+    @Published var onlineEndpoint = UserDefaults.standard.string(forKey: "onlineEndpoint") ?? "" {
+        didSet { UserDefaults.standard.set(onlineEndpoint, forKey: "onlineEndpoint") }
+    }
+    @Published var onlineModel = UserDefaults.standard.string(forKey: "onlineModel") ?? "qwen3:8b" {
+        didSet { UserDefaults.standard.set(onlineModel, forKey: "onlineModel") }
+    }
     @Published var busy = false
     @Published var status = "Offline"
     private var engine: LlamaService?
@@ -92,9 +101,19 @@ struct ChatLine: Identifiable, Codable {
         let index = messages.count
         messages.append(ChatLine(role: "assistant", text: ""))
         busy = true
-        status = "Generating locally"
+        status = onlineEnabled ? "Connecting to your AI server" : "Generating locally"
         task = Task {
             do {
+                if onlineEnabled {
+                    let history = Array(messages.dropLast())
+                    let response = try await OnlineModelClient.respond(endpoint: onlineEndpoint, model: onlineModel, messages: history)
+                    if !Task.isCancelled && generation == token && messages.indices.contains(index) {
+                        messages[index].text = response
+                        status = "Answered by your server"
+                    }
+                    if generation == token { busy = false; task = nil }
+                    return
+                }
                 guard let path = selectedModel else {
                     throw NSError(domain: "OmniForge", code: 3, userInfo: [NSLocalizedDescriptionKey: "Built-in model missing; import a GGUF model"])
                 }
