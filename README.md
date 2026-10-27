@@ -83,6 +83,14 @@ The iPhone interface includes an offline reconstruction **report** under **+ →
 
 Signing requires a legitimately controlled Apple signing identity and provisioning profile. This workflow deliberately does not accept or store signing credentials and produces unsigned/invalidated-signature repackaged IPAs. The official app build workflow still runs separately and requires a real-device launch test.
 
+## Advanced macOS workflows
+
+The `IPA Workbench (macOS)` manual workflow provides capped Mach-O disassembly excerpts using `llvm-objdump`, `otool` dependency inspection, code signature diagnostics, safe resource modification, and a **new clean-room SwiftUI scaffold** generated from basic IPA metadata. The scaffold is original placeholder code, **not recovered source or a functioning clone**, and compilation must be independently validated.
+
+The separate `Sign authorized IPA (macOS)` manual workflow needs a valid Apple signing identity and an appropriately matching provisioning profile. Configure these in GitHub repository settings: Actions secrets `IOS_SIGNING_CERT_BASE64` (base64 .p12), `IOS_SIGNING_CERT_PASSWORD` and `IOS_PROVISIONING_PROFILE_BASE64` (base64 .mobileprovision), and Actions variable `IOS_SIGNING_IDENTITY` (identity string from `security find-identity -v -p codesigning`). Supply a release tag and IPA asset filename when running the workflow. Never place signing secrets in a public issue, commit, or release.
+
+These flows are optional and require GitHub network access and macOS runners. A successful macOS codesign check does not guarantee installability: the selected certificate, app identifier, entitlements, target device and provisioning profile must all be compatible. This has not been tested with an actual signing identity.
+
 ## Contributing
 
 Issues and pull requests are welcome. Keep default functionality offline, avoid paid API dependencies, disclose third-party licenses, and include reproduction steps or tests with bug reports.
