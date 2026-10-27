@@ -8,6 +8,10 @@ try:
 except ImportError:
     from server.knowledge_vault import KnowledgeVault
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
+try:
+    from self_test import run_self_test
+except ImportError:
+    from server.self_test import run_self_test
 
 ROOT=pathlib.Path(os.environ.get("OMNIFORGE_WORKSPACE", ".")).resolve()
 KEY=os.environ.get("OMNIFORGE_AGENT_KEY","")
@@ -102,6 +106,10 @@ def agent(messages,model):
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
+        if self.path=="/v1/self-test":
+            if not KEY or not hmac.compare_digest(self.headers.get("Authorization",""),"Bearer "+KEY):
+                self.reply(401,{"error":"Unauthorized"});return
+            self.reply(200,run_self_test(ROOT,OLLAMA,MODEL));return
         if self.path!="/health": self.send_error(404);return
         self.reply(200,{"ok":True,"model":MODEL,"workspace_configured":True,"tool_count":len(SPECS)})
     def do_POST(self):
@@ -113,7 +121,11 @@ class Handler(BaseHTTPRequestHandler):
             if not 0<count<=MAX_BODY:raise ValueError("Request too large")
             body=json.loads(self.rfile.read(count))
             if not isinstance(body.get("messages"),list):raise ValueError("Missing messages")
-            result=agent(body["messages"],body.get("model") or MODEL)
+            last=next((str(m.get("content","")).strip().lower() for m in reversed(body["messages"]) if isinstance(m,dict) and m.get("role")=="user"),"")
+            if last in ("/self-test","/selftest"):
+                result=json.dumps(run_self_test(ROOT,OLLAMA,MODEL),indent=2)
+            else:
+                result=agent(body["messages"],body.get("model") or MODEL)
             self.reply(200,{"choices":[{"message":{"role":"assistant","content":result},"finish_reason":"stop","index":0}]})
         except Exception as e:self.reply(400,{"error":str(e)[:300]})
     def reply(self,status,data):
