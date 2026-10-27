@@ -3,6 +3,10 @@ Invoke: python server/agent_server.py
 Set OMNIFORGE_WORKSPACE, OMNIFORGE_AGENT_KEY, OLLAMA_URL, OLLAMA_MODEL.
 """
 import json, os, pathlib, subprocess, urllib.request, urllib.error, hmac
+try:
+    from knowledge_vault import KnowledgeVault
+except ImportError:
+    from server.knowledge_vault import KnowledgeVault
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 
 ROOT=pathlib.Path(os.environ.get("OMNIFORGE_WORKSPACE", ".")).resolve()
@@ -12,6 +16,7 @@ MODEL=os.environ.get("OLLAMA_MODEL","qwen3:8b")
 MAX_STEPS=12
 MAX_BODY=100_000
 ROOT.mkdir(parents=True,exist_ok=True)
+VAULT=KnowledgeVault(ROOT / ".omniforge-private" / "knowledge.sqlite3")
 
 def safe_path(value):
     if not isinstance(value,str) or not value or "\0" in value:
@@ -47,6 +52,12 @@ def tool_run(name,args):
         if key not in presets: raise ValueError("Unknown allowlisted check")
         proc=subprocess.run(presets[key],cwd=ROOT,text=True,capture_output=True,timeout=90,shell=False)
         return json.dumps({"returncode":proc.returncode,"stdout":proc.stdout[-12000:],"stderr":proc.stderr[-6000:]})
+    if name=="knowledge_search":
+        return json.dumps(VAULT.search(args.get("query","")))
+    if name=="knowledge_import":
+        file=safe_path(args["path"])
+        if file.suffix.lower() not in (".json",".jsonl"): raise ValueError("Expected JSON or JSONL export")
+        return json.dumps({"imported":VAULT.import_file(file)})
     if name=="workspace_info":
         return json.dumps({"root":str(ROOT),"allowed_checks":["git_status","git_diff","python_tests","python_syntax"]})
     raise ValueError("Tool unavailable")
@@ -55,6 +66,8 @@ SPECS=[{"type":"function","function":{"name":"list_files","description":"List fi
 {"type":"function","function":{"name":"read_file","description":"Read a UTF-8 source file","parameters":{"type":"object","properties":{"path":{"type":"string"}},"required":["path"]}}},
 {"type":"function","function":{"name":"write_file","description":"Write a UTF-8 workspace file (user-authorized project only)","parameters":{"type":"object","properties":{"path":{"type":"string"},"content":{"type":"string"}},"required":["path","content"]}}},
 {"type":"function","function":{"name":"run_check","description":"Execute a predefined non-destructive check","parameters":{"type":"object","properties":{"check":{"type":"string","enum":["git_status","git_diff","python_tests","python_syntax"]}},"required":["check"]}}},
+{"type":"function","function":{"name":"knowledge_search","description":"Search local imported conversation knowledge","parameters":{"type":"object","properties":{"query":{"type":"string"}},"required":["query"]}}},
+{"type":"function","function":{"name":"knowledge_import","description":"Import ChatGPT conversations.json or Codex JSONL from authorized workspace into private local database","parameters":{"type":"object","properties":{"path":{"type":"string"}},"required":["path"]}}},
 {"type":"function","function":{"name":"workspace_info","description":"Describe workspace and allowed tools","parameters":{"type":"object","properties":{}}}}]
 
 def ollama_chat(messages,model):
@@ -65,7 +78,7 @@ def ollama_chat(messages,model):
 
 def agent(messages,model):
     log=[]
-    work=[{"role":"system","content":"You are OmniForge with REAL workspace tools. Use tools to inspect, modify and test only the authorized workspace. Never invent outcomes. Do not claim success if checks fail. Do not execute arbitrary commands or access paths outside workspace. Limit changes to the user's request."}]
+    work=[{"role":"system","content":"You are OmniForge with REAL workspace tools and a persistent private knowledge vault. Search the knowledge vault when prior project context helps. Be careful not to claim unseen conversations were imported. Use tools to inspect, modify and test only the authorized workspace. Never invent outcomes. Do not claim success if checks fail. Do not execute arbitrary commands or access paths outside workspace. Limit changes to the user's request."}]
     work.extend({"role":m.get("role","user"),"content":str(m.get("content",""))[:16000]} for m in messages[-16:] if m.get("role") in ("user","assistant","system"))
     for i in range(MAX_STEPS):
         result=ollama_chat(work,model)
