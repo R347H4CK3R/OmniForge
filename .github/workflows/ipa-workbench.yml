@@ -58,12 +58,27 @@ jobs:
             echo "===== ${f#work/extracted/} =====" >> results/macho.txt
             otool -hv "$f" >> results/macho.txt 2>&1 || true
             otool -L "$f" >> results/macho.txt 2>&1 || true
+            echo "=== Disassembly excerpt: $f ===" >> results/disassembly.txt
+            xcrun llvm-objdump --disassemble --no-show-raw-insn "$f" 2>&1 | head -n 2500 >> results/disassembly.txt || true
+            xcrun dwarfdump --uuid "$f" >> results/macho.txt 2>&1 || true
             codesign -dvv --entitlements :- "$f" >> results/signatures.txt 2>&1 || true
           done
           find work/extracted/Payload -type d -name '*.app' -maxdepth 3 -print0 | while IFS= read -r -d '' app; do
             echo "===== ${app#work/extracted/} =====" >> results/signatures.txt
             codesign --verify --deep --strict --verbose=2 "$app" >> results/signatures.txt 2>&1 || true
           done
+      - name: Generate clean-room project scaffold
+        shell: bash
+        run: |
+          python3 scripts/generate_scaffold.py "work/$IPA_ASSET" results/CleanRoomProject
+          (cd results && zip -qry CleanRoomProject.zip CleanRoomProject)
+      - name: Compile clean-room scaffold
+        shell: bash
+        run: |
+          brew install xcodegen
+          cd results/CleanRoomProject
+          xcodegen generate
+          xcodebuild -project Reconstruction.xcodeproj -scheme Reconstruction -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build > ../scaffold-build.log 2>&1
       - name: Optional resource replacement (unsigned IPA)
         if: ${{ inputs.resource_asset != '' && inputs.resource_path != '' }}
         shell: bash
