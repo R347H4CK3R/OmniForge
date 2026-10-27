@@ -10,6 +10,7 @@ private struct ChatAttachment: Identifiable {
 
 struct MainView: View {
     @EnvironmentObject var store: AssistantStore
+    @StateObject private var updates = OmniForgeUpdates()
     @State private var input = ""
     @FocusState private var inputFocused: Bool
     @State private var attachmentPicker = false
@@ -99,6 +100,20 @@ struct MainView: View {
                     Text("Inference runs locally. A compatible quantized model is required.")
                 }.navigationTitle("Models")
             }.tabItem { Label("Models", systemImage: "cpu") }
+            NavigationStack {
+                List {
+                    LabeledContent("Installed build", value: "#\(updates.installedBuild)")
+                    Text(updates.status).font(.subheadline)
+                    Button("Check for update") { Task { await updates.check() } }
+                        .disabled(updates.checking)
+                    if updates.updateAvailable, let url = updates.buildURL {
+                        Link("Get latest unsigned IPA on GitHub", destination: url)
+                    }
+                    Text("Updates require internet. GitHub builds produce unsigned IPAs; signing and installation must be completed with your existing sideloading method. OmniForge cannot silently replace itself.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }.navigationTitle("Updates")
+                    .task { await updates.check() }
+            }.tabItem { Label("Updates", systemImage: "arrow.down.circle") }
         }
         .fileImporter(isPresented: $attachmentPicker, allowedContentTypes: [.item], allowsMultipleSelection: true) { r in
             do {
