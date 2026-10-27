@@ -33,6 +33,8 @@ jobs:
           with open("BundledModel.gguf", "rb") as f:
               assert f.read(4) == b"GGUF", "Downloaded model is not GGUF"
           PY
+      - name: Generate app icon
+        run: swift scripts/generate_icon.swift App/Assets.xcassets/AppIcon.appiconset/AppIcon.png
       - name: Generate Xcode project
         run: xcodegen generate
       - name: Build unsigned iOS app
