@@ -81,6 +81,11 @@ jobs:
         shell: bash
         run: |
           python3 scripts/auto_rebuild_path.py "work/$IPA_ASSET" results/BuildDecision
+      - name: Discover possible public source repositories
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 scripts/find_source_candidates.py results/BuildDecision/decision.json results/SourceDiscovery
       - name: Generate clean-room project scaffold
         shell: bash
         run: |
