@@ -1,0 +1,37 @@
+name: Build OmniForge Windows Host
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'server/**'
+      - 'windows/**'
+      - '.github/workflows/windows-host.yml'
+jobs:
+  windows:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify Python modules
+        run: python -m unittest discover -s server -p "test_*.py" -v
+      - name: Install PyInstaller
+        run: python -m pip install pyinstaller==6.16.0
+      - name: Package host and worker
+        shell: pwsh
+        run: |
+          python -m PyInstaller --clean --onefile --name OmniForgeHost --paths server --hidden-import knowledge_vault server/agent_server.py
+          python -m PyInstaller --clean --onefile --name OmniForgeWorker --paths server --hidden-import knowledge_vault --hidden-import agent_server --hidden-import job_queue server/job_worker.py
+          New-Item -ItemType Directory -Force WindowsRelease | Out-Null
+          Copy-Item dist/OmniForgeHost.exe, dist/OmniForgeWorker.exe WindowsRelease/
+          Copy-Item windows/Start-OmniForge.ps1 WindowsRelease/
+          Copy-Item windows/README.md WindowsRelease/
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OmniForge-Windows
+          path: WindowsRelease/
+          retention-days: 30
