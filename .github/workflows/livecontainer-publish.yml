@@ -1,6 +1,12 @@
 name: Publish OmniForge LiveContainer Update
 on:
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "App/**"
+      - "project.yml"
+      - ".github/workflows/livecontainer-publish.yml"
 permissions:
   contents: write
 concurrency:
