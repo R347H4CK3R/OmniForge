@@ -40,10 +40,10 @@ final class OmniForgeUpdates: ObservableObject {
             buildURL = url
             updateAvailable = run.run_number > installedBuild
             status = updateAvailable
-                ? "Build #\\(run.run_number) available — signed installation required"
+                ? "Build #\(run.run_number) available — signed installation required"
                 : "Current or newer build installed"
         } catch {
-            status = "Unable to check updates: \\(error.localizedDescription)"
+            status = "Unable to check updates: \(error.localizedDescription)"
         }
     }
 }
