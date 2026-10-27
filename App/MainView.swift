@@ -154,7 +154,8 @@ struct MainView: View {
                                 }
                             }
                         }.padding()
-                    }.scrollDismissesKeyboard(.interactively)
+                    }.scrollDismissesKeyboard(.immediately)
+                    .simultaneousGesture(TapGesture().onEnded { inputFocused = false })
                     if !attachments.isEmpty {
                         ScrollView(.horizontal) {
                             HStack {
@@ -188,12 +189,19 @@ struct MainView: View {
                         TextField("Ask OmniForge", text: $input, axis: .vertical).lineLimit(1...5)
                             .focused($inputFocused)
                             .submitLabel(.send)
+                            .onSubmit { sendMessage() }
                         if store.busy { Button("Stop") { store.stop() } }
                         else { Button("Send") { sendMessage() }.disabled(input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && attachments.isEmpty) }
                         Button { inputFocused = false } label: { Image(systemName: "keyboard.chevron.compact.down") }
                     }.padding()
                     Text(store.status).font(.caption).foregroundStyle(.secondary)
                 }.navigationTitle("OmniForge")
+                .toolbar {
+                    ToolbarItemGroup(placement: .keyboard) {
+                        Spacer()
+                        Button("Done") { inputFocused = false }
+                    }
+                }
                 .toolbar { Button("Clear") { store.clear() } }
             }.tabItem { Label("Chat", systemImage: "bubble.left") }
     }
