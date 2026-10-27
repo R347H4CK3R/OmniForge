@@ -29,149 +29,11 @@ struct MainView: View {
     private let tools = ["Read text", "SHA-256", "File header", "JSON format", "Build errors", "Plist inspect"]
     var body: some View {
         TabView {
-            NavigationStack {
-                VStack {
-                    ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 12) {
-                            ForEach(store.messages) { message in
-                                HStack {
-                                    if message.role == "user" { Spacer(minLength: 40) }
-                                    Text(message.text.isEmpty ? "Thinking…" : message.text)
-                                        .textSelection(.enabled).padding(12)
-                                        .background(.secondary.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
-                                    if message.role != "user" { Spacer(minLength: 40) }
-                                }
-                            }
-                        }.padding()
-                    }.scrollDismissesKeyboard(.interactively)
-                    if !attachments.isEmpty {
-                        ScrollView(.horizontal) {
-                            HStack {
-                                ForEach(attachments) { attachment in
-                                    HStack {
-                                        Text(attachment.name).lineLimit(1)
-                                        Button { attachments.removeAll { $0.id == attachment.id } } label: { Image(systemName: "xmark.circle.fill") }
-                                    }
-                                    .font(.caption).padding(7)
-                                    .background(.secondary.opacity(0.14), in: Capsule())
-                                }
-                            }.padding(.horizontal)
-                        }
-                    }
-                    HStack {
-                        Menu {
-                            Button("Attach file", systemImage: "doc") { ipaReportMode = "Metadata"; attachmentPicker = true }
-                            Menu("Inspect IPA") {
-                                Button("Metadata") { ipaReportMode = "Metadata"; attachmentPicker = true }
-                                Button("File inventory") { ipaReportMode = "Inventory"; attachmentPicker = true }
-                                Button("Mach-O report") { ipaReportMode = "MachO"; attachmentPicker = true }
-                                Button("Reverse engineer IPA") { ipaReportMode = "ReverseEngineer"; attachmentPicker = true }
-                                Button("Signing structure") { ipaReportMode = "Signing"; attachmentPicker = true }
-                                Button("Export supported resources") { ipaReportMode = "Export"; attachmentPicker = true }
-                                Button("Create reconstruction report") { ipaReportMode = "Reconstruct"; attachmentPicker = true }
-                                Button("Replace resource in IPA") { ipaReportMode = "Repack"; attachmentPicker = true }
-                            }
-                            Button("Dismiss keyboard", systemImage: "keyboard.chevron.compact.down") { inputFocused = false }
-                        } label: { Image(systemName: "plus.circle.fill").font(.title2) }
-                        TextField("Ask OmniForge", text: $input, axis: .vertical).lineLimit(1...5)
-                            .focused($inputFocused)
-                            .submitLabel(.send)
-                        if store.busy { Button("Stop") { store.stop() } }
-                        else { Button("Send") { sendMessage() }.disabled(input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && attachments.isEmpty) }
-                        Button { inputFocused = false } label: { Image(systemName: "keyboard.chevron.compact.down") }
-                    }.padding()
-                    Text(store.status).font(.caption).foregroundStyle(.secondary)
-                }.navigationTitle("OmniForge")
-                .toolbar { Button("Clear") { store.clear() } }
-            }.tabItem { Label("Chat", systemImage: "bubble.left") }
-            NavigationStack {
-                List {
-                    Picker("Local tool", selection: $tool) {
-                        ForEach(tools, id: \.self) { Text($0) }
-                    }
-                    Button("Select file") { filePicker = true }
-                    Text(result).font(.system(.caption, design: .monospaced)).textSelection(.enabled)
-                    ShareLink(item: result) { Text("Export tool result") }
-                }.navigationTitle("Offline tools")
-            }.tabItem { Label("Tools", systemImage: "wrench") }
-            NavigationStack {
-                List {
-                    Section("On-device reconstruction") {
-                        Button("Select IPA and export reconstruction inventory") {
-                            ipaReportMode = "Reconstruct"
-                            attachmentPicker = true
-                        }
-                        Button("Reverse engineer an IPA locally") {
-                            ipaReportMode = "ReverseEngineer"
-                            attachmentPicker = true
-                        }
-                        Text("The local report identifies files and metadata. It cannot reconstruct an original application's Swift source or full UI.")
-                            .font(.footnote)
-                    }
-                    Section("GitHub reconstruction tools") {
-                        Link("Generate editable SwiftUI project", destination: URL(string: "https://github.com/R347H4CK3R/OmniForge/actions/workflows/ipa-workbench.yml")!)
-                        Link("Run Ghidra pseudocode analysis", destination: URL(string: "https://github.com/R347H4CK3R/OmniForge/actions/workflows/ghidra-analysis.yml")!)
-                        Link("View workflow results", destination: URL(string: "https://github.com/R347H4CK3R/OmniForge/actions")!)
-                        Text("Upload an authorized IPA as a GitHub Release asset, then run the matching workflow with the release tag and filename. The macOS workbench generates an editable clean-room project; Ghidra produces pseudocode reports. Importing the result directly into this app is not yet supported.")
-                            .font(.footnote)
-                    }
-                }
-                .navigationTitle("Reconstruction")
-            }.tabItem { Label("Rebuild", systemImage: "hammer") }
-            NavigationStack {
-                List {
-                    Section("AI engine") {
-                        Toggle("Use my own online server", isOn: $store.onlineEnabled)
-                        if store.onlineEnabled {
-                            TextField("HTTPS endpoint", text: $store.onlineEndpoint)
-                                .textInputAutocapitalization(.never)
-                                .autocorrectionDisabled()
-                                .keyboardType(.URL)
-                            TextField("Model ID (example qwen3:8b)", text: $store.onlineModel)
-                                .textInputAutocapitalization(.never)
-                                .autocorrectionDisabled()
-                            Text("Use https://YOUR-TAILSCALE-DEVICE/v1/chat/completions. Your laptop runs Ollama; no paid AI API is required. When offline mode is selected, your imported GGUF runs on this iPhone.")
-                                .font(.footnote)
-                        }
-                    }
-                    Text(store.modelName.isEmpty ? "No model selected" : store.modelName)
-                    Button("Import GGUF from Files") { modelPicker = true }
-                    Button("Scan local model files") { store.scanModels() }
-                    if !store.localModels.isEmpty {
-                        Section("Available local GGUF models") {
-                            ForEach(store.localModels, id: \.path) { url in
-                                Button {
-                                    store.selectModel(url)
-                                } label: {
-                                    HStack {
-                                        Image(systemName: store.modelName == url.lastPathComponent ? "checkmark.circle.fill" : "circle")
-                                        Text(url.lastPathComponent).lineLimit(2)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    Section("LiveContainer fallback") {
-                        Text("If the Files picker cannot select a GGUF, use LiveContainer's app data/file manager to place the .gguf file in OmniForge/Documents/Models or OmniForge/Documents. Return here and tap Scan local model files, then select it.")
-                            .font(.footnote)
-                    }
-                    Text("Inference runs locally. A compatible quantized model is required.")
-                }.navigationTitle("Models")
-            }.tabItem { Label("Models", systemImage: "cpu") }
-            NavigationStack {
-                List {
-                    LabeledContent("Installed build", value: "#\(updates.installedBuild)")
-                    Text(updates.status).font(.subheadline)
-                    Button("Check for update") { Task { await updates.check() } }
-                        .disabled(updates.checking)
-                    if updates.updateAvailable, let url = updates.buildURL {
-                        Link("Get latest unsigned IPA on GitHub", destination: url)
-                    }
-                    Text("Updates require internet. GitHub builds produce unsigned IPAs; signing and installation must be completed with your existing sideloading method. OmniForge cannot silently replace itself.")
-                        .font(.footnote).foregroundStyle(.secondary)
-                }.navigationTitle("Updates")
-                    .task { await updates.check() }
-            }.tabItem { Label("Updates", systemImage: "arrow.down.circle") }
+            chatTab
+            toolsTab
+            rebuildTab
+            modelsTab
+            updatesTab
         }
         .sheet(isPresented: $attachmentPicker) { OmniDocumentPicker(multiple: true, onPick: { urls in
             attachmentPicker = false
@@ -251,6 +113,163 @@ struct MainView: View {
             do { try execute(urls.first ?? URL(fileURLWithPath: "/dev/null")) } catch { alert(error) }
         }, onCancel: {}) }
         .alert("OmniForge error", isPresented: $showError) { Button("OK", role: .cancel) {} } message: { Text(errorText) }
+    }
+    private var chatTab: some View {
+        NavigationStack {
+                VStack {
+                    ScrollView {
+                        LazyVStack(alignment: .leading, spacing: 12) {
+                            ForEach(store.messages) { message in
+                                HStack {
+                                    if message.role == "user" { Spacer(minLength: 40) }
+                                    Text(message.text.isEmpty ? "Thinking…" : message.text)
+                                        .textSelection(.enabled).padding(12)
+                                        .background(.secondary.opacity(0.15), in: RoundedRectangle(cornerRadius: 12))
+                                    if message.role != "user" { Spacer(minLength: 40) }
+                                }
+                            }
+                        }.padding()
+                    }.scrollDismissesKeyboard(.interactively)
+                    if !attachments.isEmpty {
+                        ScrollView(.horizontal) {
+                            HStack {
+                                ForEach(attachments) { attachment in
+                                    HStack {
+                                        Text(attachment.name).lineLimit(1)
+                                        Button { attachments.removeAll { $0.id == attachment.id } } label: { Image(systemName: "xmark.circle.fill") }
+                                    }
+                                    .font(.caption).padding(7)
+                                    .background(.secondary.opacity(0.14), in: Capsule())
+                                }
+                            }.padding(.horizontal)
+                        }
+                    }
+                    HStack {
+                        Menu {
+                            Button("Attach file", systemImage: "doc") { ipaReportMode = "Metadata"; attachmentPicker = true }
+                            Menu("Inspect IPA") {
+                                Button("Metadata") { ipaReportMode = "Metadata"; attachmentPicker = true }
+                                Button("File inventory") { ipaReportMode = "Inventory"; attachmentPicker = true }
+                                Button("Mach-O report") { ipaReportMode = "MachO"; attachmentPicker = true }
+                                Button("Reverse engineer IPA") { ipaReportMode = "ReverseEngineer"; attachmentPicker = true }
+                                Button("Signing structure") { ipaReportMode = "Signing"; attachmentPicker = true }
+                                Button("Export supported resources") { ipaReportMode = "Export"; attachmentPicker = true }
+                                Button("Create reconstruction report") { ipaReportMode = "Reconstruct"; attachmentPicker = true }
+                                Button("Replace resource in IPA") { ipaReportMode = "Repack"; attachmentPicker = true }
+                            }
+                            Button("Dismiss keyboard", systemImage: "keyboard.chevron.compact.down") { inputFocused = false }
+                        } label: { Image(systemName: "plus.circle.fill").font(.title2) }
+                        TextField("Ask OmniForge", text: $input, axis: .vertical).lineLimit(1...5)
+                            .focused($inputFocused)
+                            .submitLabel(.send)
+                        if store.busy { Button("Stop") { store.stop() } }
+                        else { Button("Send") { sendMessage() }.disabled(input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && attachments.isEmpty) }
+                        Button { inputFocused = false } label: { Image(systemName: "keyboard.chevron.compact.down") }
+                    }.padding()
+                    Text(store.status).font(.caption).foregroundStyle(.secondary)
+                }.navigationTitle("OmniForge")
+                .toolbar { Button("Clear") { store.clear() } }
+            }.tabItem { Label("Chat", systemImage: "bubble.left") }
+    }
+
+    private var toolsTab: some View {
+        NavigationStack {
+                List {
+                    Picker("Local tool", selection: $tool) {
+                        ForEach(tools, id: \.self) { Text($0) }
+                    }
+                    Button("Select file") { filePicker = true }
+                    Text(result).font(.system(.caption, design: .monospaced)).textSelection(.enabled)
+                    ShareLink(item: result) { Text("Export tool result") }
+                }.navigationTitle("Offline tools")
+            }.tabItem { Label("Tools", systemImage: "wrench") }
+    }
+
+    private var rebuildTab: some View {
+        NavigationStack {
+                List {
+                    Section("On-device reconstruction") {
+                        Button("Select IPA and export reconstruction inventory") {
+                            ipaReportMode = "Reconstruct"
+                            attachmentPicker = true
+                        }
+                        Button("Reverse engineer an IPA locally") {
+                            ipaReportMode = "ReverseEngineer"
+                            attachmentPicker = true
+                        }
+                        Text("The local report identifies files and metadata. It cannot reconstruct an original application's Swift source or full UI.")
+                            .font(.footnote)
+                    }
+                    Section("GitHub reconstruction tools") {
+                        Link("Generate editable SwiftUI project", destination: URL(string: "https://github.com/R347H4CK3R/OmniForge/actions/workflows/ipa-workbench.yml")!)
+                        Link("Run Ghidra pseudocode analysis", destination: URL(string: "https://github.com/R347H4CK3R/OmniForge/actions/workflows/ghidra-analysis.yml")!)
+                        Link("View workflow results", destination: URL(string: "https://github.com/R347H4CK3R/OmniForge/actions")!)
+                        Text("Upload an authorized IPA as a GitHub Release asset, then run the matching workflow with the release tag and filename. The macOS workbench generates an editable clean-room project; Ghidra produces pseudocode reports. Importing the result directly into this app is not yet supported.")
+                            .font(.footnote)
+                    }
+                }
+                .navigationTitle("Reconstruction")
+            }.tabItem { Label("Rebuild", systemImage: "hammer") }
+    }
+
+    private var modelsTab: some View {
+        NavigationStack {
+                List {
+                    Section("AI engine") {
+                        Toggle("Use my own online server", isOn: $store.onlineEnabled)
+                        if store.onlineEnabled {
+                            TextField("HTTPS endpoint", text: $store.onlineEndpoint)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                                .keyboardType(.URL)
+                            TextField("Model ID (example qwen3:8b)", text: $store.onlineModel)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+                            Text("Use https://YOUR-TAILSCALE-DEVICE/v1/chat/completions. Your laptop runs Ollama; no paid AI API is required. When offline mode is selected, your imported GGUF runs on this iPhone.")
+                                .font(.footnote)
+                        }
+                    }
+                    Text(store.modelName.isEmpty ? "No model selected" : store.modelName)
+                    Button("Import GGUF from Files") { modelPicker = true }
+                    Button("Scan local model files") { store.scanModels() }
+                    if !store.localModels.isEmpty {
+                        Section("Available local GGUF models") {
+                            ForEach(store.localModels, id: \.path) { url in
+                                Button {
+                                    store.selectModel(url)
+                                } label: {
+                                    HStack {
+                                        Image(systemName: store.modelName == url.lastPathComponent ? "checkmark.circle.fill" : "circle")
+                                        Text(url.lastPathComponent).lineLimit(2)
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    Section("LiveContainer fallback") {
+                        Text("If the Files picker cannot select a GGUF, use LiveContainer's app data/file manager to place the .gguf file in OmniForge/Documents/Models or OmniForge/Documents. Return here and tap Scan local model files, then select it.")
+                            .font(.footnote)
+                    }
+                    Text("Inference runs locally. A compatible quantized model is required.")
+                }.navigationTitle("Models")
+            }.tabItem { Label("Models", systemImage: "cpu") }
+    }
+
+    private var updatesTab: some View {
+        NavigationStack {
+                List {
+                    LabeledContent("Installed build", value: "#\(updates.installedBuild)")
+                    Text(updates.status).font(.subheadline)
+                    Button("Check for update") { Task { await updates.check() } }
+                        .disabled(updates.checking)
+                    if updates.updateAvailable, let url = updates.buildURL {
+                        Link("Get latest unsigned IPA on GitHub", destination: url)
+                    }
+                    Text("Updates require internet. GitHub builds produce unsigned IPAs; signing and installation must be completed with your existing sideloading method. OmniForge cannot silently replace itself.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }.navigationTitle("Updates")
+                    .task { await updates.check() }
+            }.tabItem { Label("Updates", systemImage: "arrow.down.circle") }
     }
     func sendMessage() {
         let joined = ([input] + attachments.map { "Attached file: \($0.name)\n\($0.contents)" }).joined(separator: "\n\n")
