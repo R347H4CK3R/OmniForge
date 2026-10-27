@@ -99,6 +99,18 @@ A successful GitHub Actions run uploads an unsigned IPA. Tap the GitHub link in 
 
 Large bundled-model artifacts may need to be downloaded from GitHub directly, since transfer services can reject multi-gigabyte attachments.
 
+## LiveContainer update source
+
+OmniForge provides an optional **LiveContainer guest-app edition** designed for easy updates without reinstalling LiveContainer itself. On GitHub, run **Actions → Publish OmniForge LiveContainer Update → Run workflow**. Only a successful build creates a tagged GitHub Release with `OmniForge-LiveContainer.ipa`; after the asset is uploaded, the workflow updates `livecontainer-source.json` with the latest version URL.
+
+**Catalog URL:** `https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/livecontainer-source.json`
+
+In LiveContainer, open **Sources**, press **+**, paste the URL, refresh, and install OmniForge when it appears. Later, refresh the source and choose the new version. LiveContainer controls its own app installation behavior; data-container reuse and overwrite semantics must be tested before relying on in-place preservation. Backup your chat history and imported files before upgrading.
+
+**Size strategy:** This edition omits the approximately 2.5 GB Qwen3 model to keep the IPA below GitHub Releases' 2 GiB per-file limit. Import a compatible GGUF model under **Models** after first launch. The selected model is stored in app Documents rather than inside the IPA. Keeping the existing LiveContainer data container may avoid reimport on future updates, but verify this on-device. Local AI and tools work offline after model import; checking updates and downloading IPAs require internet.
+
+The LiveContainer publishing workflow is **manual** to avoid publishing untested intermediate builds. The source currently lists no installable version until its first successful publish. This implementation has not yet been end-to-end tested in LiveContainer.
+
 ## Contributing
 
 Issues and pull requests are welcome. Keep default functionality offline, avoid paid API dependencies, disclose third-party licenses, and include reproduction steps or tests with bug reports.
