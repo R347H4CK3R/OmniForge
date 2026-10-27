@@ -11,6 +11,8 @@ private struct ChatAttachment: Identifiable {
 struct MainView: View {
     @EnvironmentObject var store: AssistantStore
     @StateObject private var updates = OmniForgeUpdates()
+    @StateObject private var ipaUploader = IPAJobUploader()
+    @State private var directIPAPicker = false
     @State private var input = ""
     @FocusState private var inputFocused: Bool
     @State private var attachmentPicker = false
@@ -34,6 +36,20 @@ struct MainView: View {
             rebuildTab
             modelsTab
             updatesTab
+        }
+        .sheet(isPresented: $directIPAPicker) {
+            OmniDocumentPicker(multiple: false, onPick: { urls in
+                directIPAPicker = false
+                guard let file = urls.first else { return }
+                let destination = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString + ".ipa")
+                do {
+                    try FileManager.default.copyItem(at: file, to: destination)
+                    Task {
+                        await ipaUploader.submit(destination)
+                        try? FileManager.default.removeItem(at: destination)
+                    }
+                } catch { ipaUploader.message = error.localizedDescription }
+            }, onCancel: { directIPAPicker = false })
         }
         .sheet(isPresented: $attachmentPicker) { OmniDocumentPicker(multiple: true, onPick: { urls in
             attachmentPicker = false
@@ -198,6 +214,16 @@ struct MainView: View {
                             attachmentPicker = true
                         }
                         Text("The local report identifies files and metadata. It cannot reconstruct an original application's Swift source or full UI.")
+                            .font(.footnote)
+                    }
+                    Section("Submit IPA directly") {
+                        TextField("Private repo: owner/repo", text: $ipaUploader.repo)
+                            .textInputAutocapitalization(.never).autocorrectionDisabled()
+                        SecureField("Fine-grained GitHub token", text: $ipaUploader.token)
+                        Button("Choose IPA and start analysis") { directIPAPicker = true }
+                            .disabled(ipaUploader.working)
+                        Text(ipaUploader.message).font(.footnote)
+                        Text("Use a private repository with OmniForge's IPA Workbench workflow installed. Uploads contain the selected IPA and require your explicit authorization. Never use a public repository for proprietary apps.")
                             .font(.footnote)
                     }
                     Section("GitHub reconstruction tools") {
