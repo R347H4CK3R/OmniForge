@@ -6,7 +6,7 @@ from pathlib import Path
 import json,sys
 root=Path(sys.argv[1])
 checks={
- "ipa_metadata":(root/"ipa_info.json").exists() or any(root.glob("*inspect*")),
+ "ipa_metadata":(root/"metadata.json").is_file() && (root/"file_inventory.txt").is_file(),
  "rebuild_decision":(root/"BuildDecision/decision.json").is_file(),
  "source_candidates_report":(root/"SourceDiscovery/source_candidates.json").is_file(),
  "clean_room_project":(root/"CleanRoomProject/project.yml").is_file(),
