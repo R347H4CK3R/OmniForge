@@ -42,10 +42,28 @@ import SwiftLlama
             try Data(content.utf8).write(to:url,options:.atomic)
             return "WROTE \(url.lastPathComponent) (\(content.utf8.count) bytes)"
         case "validate_json":
-            let url=try located(args["path"] ?? "")
-            let data=try Data(contentsOf:url)
-            _=try JSONSerialization.jsonObject(with:data,options:[.fragmentsAllowed])
-            return "PASS: JSON parses"
+            // Smaller models sometimes omit the path or pass the workspace directory.
+            // Prefer an explicit file, otherwise use the sole JSON file in the workspace.
+            let requested = args["path"] ?? ""
+            let candidate = requested.isEmpty || requested == "." || requested == "/" || requested == "AgentWorkspace"
+            let url: URL
+            if candidate {
+                let matches = try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: [.isRegularFileKey])
+                    .filter { $0.pathExtension.lowercased() == "json" }
+                guard matches.count == 1, let only = matches.first else {
+                    return "BLOCKED: Specify a JSON filename; found \(matches.count) JSON files in AgentWorkspace."
+                }
+                url = only
+            } else {
+                url = try located(requested)
+            }
+            var isDirectory: ObjCBool = false
+            guard FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory), !isDirectory.boolValue else {
+                return "ERROR: JSON file not found: \(url.lastPathComponent)"
+            }
+            let data = try Data(contentsOf: url)
+            _ = try JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed])
+            return "PASS: Valid JSON in \(url.lastPathComponent) (\(data.count) bytes)"
         case "inspect_ipa":
             let supplied = args["path"] ?? ""
             let file: URL
@@ -121,7 +139,7 @@ import SwiftLlama
         You are OmniForge's ON-DEVICE coding agent. Output JSON tool actions, preferably one per response, with
         either {"tool":"workspace_info|list_files|read_file|write_file|validate_json|inspect_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
         or {"final":"your grounded answer"}.
-        All local paths are relative to AgentWorkspace. Use dot (.) for the workspace root. First inspect files before edits. Test every change using available validation.
+        All local paths are relative to AgentWorkspace. Use dot (.) for the workspace root. For validate_json ALWAYS specify the exact JSON filename. First inspect files before edits. Test every change using available validation.
         You have no shell, Xcode, GitHub runtime, or unrestricted filesystem access. Never claim to have used a tool until its result is observed.
         Avoid claiming full source code recovery from compiled IPAs. Stop when the task is complete or a real blocker is encountered. There is no fixed tool-call count.
         """
