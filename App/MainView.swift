@@ -11,7 +11,7 @@ private struct ChatAttachment: Identifiable {
 struct MainView: View {
     @EnvironmentObject var store: AssistantStore
     @StateObject private var updates = OmniForgeUpdates()
-    @StateObject private var ipaUploader = IPAJobUploader()
+    @StateObject private var ipaUploader = IPAJobUploader.shared
     @State private var directIPAPicker = false
     @State private var agentSecret = ""
     @State private var searxngURL = UserDefaults.standard.string(forKey: "searxngURL") ?? ""
