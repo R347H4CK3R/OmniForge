@@ -1,6 +1,11 @@
 name: Build OmniForge Windows Host
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'server/**'
+      - 'windows/**'
+      - '.github/workflows/windows-host.yml'
   push:
     branches: [main]
     paths:
@@ -25,7 +30,7 @@ jobs:
         shell: pwsh
         run: |
           python -m PyInstaller --clean --onefile --name OmniForgeHost --paths server --hidden-import knowledge_vault server/agent_server.py
-          python -m PyInstaller --clean --onefile --name OmniForgeWorker --paths server --hidden-import knowledge_vault --hidden-import agent_server --hidden-import job_queue server/job_worker.py
+          python -m PyInstaller --clean --onefile --name OmniForgeWorker --paths server --hidden-import knowledge_vault --hidden-import agent_server --hidden-import job_queue --hidden-import build_repair server/job_worker.py
           New-Item -ItemType Directory -Force WindowsRelease | Out-Null
           Copy-Item dist/OmniForgeHost.exe, dist/OmniForgeWorker.exe WindowsRelease/
           Copy-Item windows/Start-OmniForge.ps1 WindowsRelease/
