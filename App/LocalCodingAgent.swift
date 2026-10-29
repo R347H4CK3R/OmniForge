@@ -161,6 +161,16 @@ import SwiftLlama
         if prompt == "/analyze-ipa" || prompt == "analyze ipa" {
             return verifiedEvidence
         }
+        if prompt == "/deep-analyze-ipa" {
+            guard let file = ipas.first else { return "BLOCKED: Import an IPA through Chat + first." }
+            guard !IPAJobUploader.shared.repo.isEmpty && !IPAJobUploader.shared.token.isEmpty else {
+                return verifiedEvidence + "\n\nBLOCKED: Configure a private GitHub repository and token in Rebuild before deep analysis. No upload attempted."
+            }
+            await IPAJobUploader.shared.submit(file)
+            return verifiedEvidence + "\n\nRemote workbench: " + IPAJobUploader.shared.message
+                + "\nSubmission is not proof that remote decompilation or compilation succeeded."
+        }
+
         let instruction = """
         You are OmniForge's ON-DEVICE coding agent. Output JSON tool actions, preferably one per response, with
         either {"tool":"workspace_info|list_files|read_file|write_file|validate_json|inspect_ipa|analyze_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
