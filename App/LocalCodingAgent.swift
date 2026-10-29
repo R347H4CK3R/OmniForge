@@ -138,8 +138,7 @@ import SwiftLlama
             let candidate=raw.trimmingCharacters(in:.whitespacesAndNewlines)
             let actions = parseActions(candidate)
             guard !actions.isEmpty else {
-                // Small local models sometimes output plain text instead of tool JSON.
-                // Do not present hallucinated app names or assets as verified inspection.
+                // Small local models sometimes emit prose rather than structured actions.
                 if !verifiedEvidence.isEmpty {
                     return "Local AI could not produce valid tool actions. Verified IPA inspection only:\n" +
                         verifiedEvidence + "\nAutonomous analysis: NOT VERIFIED."
