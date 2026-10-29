@@ -120,6 +120,17 @@ jobs:
           cd reconstructed
           xcodegen generate
           xcodebuild -project Reconstruction.xcodeproj -scheme Reconstruction -configuration Debug -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' -derivedDataPath ../DerivedData CODE_SIGNING_ALLOWED=NO build 2>&1 | tee ../reconstruction-build.log
+      - name: Build unsigned physical-device scaffold
+        run: |
+          set -o pipefail
+          cd reconstructed
+          xcodebuild -project Reconstruction.xcodeproj -scheme Reconstruction -configuration Release -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath ../DeviceDerivedData CODE_SIGNING_ALLOWED=NO build 2>&1 | tee ../reconstruction-device-build.log
+          cd ..
+          test -d DeviceDerivedData/Build/Products/Release-iphoneos/Reconstruction.app
+          mkdir -p Payload
+          cp -R DeviceDerivedData/Build/Products/Release-iphoneos/Reconstruction.app Payload/
+          zip -qry Reconstruction-unsigned.ipa Payload
+          unzip -t Reconstruction-unsigned.ipa
       - name: Record exact evidence and limitations
         if: always()
         run: |
@@ -130,7 +141,8 @@ jobs:
                   "recovered_original_source":False,
                   "functional_equivalence_verified":False,
                   "physical_iphone_launch_verified":False,
-                  "artifact_type":"iOS Simulator app scaffold, not installable iPhone IPA",
+                  "unsigned_device_ipa_built":pathlib.Path("Reconstruction-unsigned.ipa").is_file(),
+                  "artifact_type":"clean-room scaffold outputs; unsigned IPA requires signing",
                   "source":"Authorized IPA metadata and optional evidence"}
           pathlib.Path("reconstruction-verification.json").write_text(json.dumps(report,indent=2))
           PY
@@ -149,4 +161,6 @@ jobs:
             reconstruction-build.log
             reconstruction-verification.json
             Reconstruction-simulator.zip
+            Reconstruction-unsigned.ipa
+            reconstruction-device-build.log
           retention-days: 7
