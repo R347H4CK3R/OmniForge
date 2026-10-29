@@ -138,7 +138,13 @@ import SwiftLlama
             let candidate=raw.trimmingCharacters(in:.whitespacesAndNewlines)
             let actions = parseActions(candidate)
             guard !actions.isEmpty else {
-                return "Agent could not produce valid JSON tool actions. Unverified model text:\\n" + String(candidate.prefix(1500))
+                // Small local models sometimes output plain text instead of tool JSON.
+                // Do not present hallucinated app names or assets as verified inspection.
+                if !verifiedEvidence.isEmpty {
+                    return "Local AI could not produce valid tool actions. Verified IPA inspection only:\n" +
+                        verifiedEvidence + "\nAutonomous analysis: NOT VERIFIED."
+                }
+                return "Local AI could not produce valid tool actions. No verified analysis was available. Import an IPA through Chat +."
             }
             var feedbackBatch: [String] = []
             for action in actions {
