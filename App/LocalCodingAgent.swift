@@ -156,7 +156,7 @@ import SwiftLlama
             for action in actions {
                 try Task.checkCancellation()
                 if let final = action["final"] as? String {
-                    return (toolFailures > 0 ? "PARTIAL FAILURE (\\(toolFailures) tool error(s)). Model summary, not verified completion:\\n" : "") + final + "\n\nExecuted steps:\n" +
+                    return (toolFailures > 0 ? "PARTIAL FAILURE (\(toolFailures) tool error(s)). Model summary, not verified completion:\n" : "") + final + "\n\nExecuted steps:\n" +
                         (observations.isEmpty ? "No tool calls" : observations.joined(separator:"\n"))
                 }
                 guard let name = action["tool"] as? String else { continue }
@@ -165,7 +165,7 @@ import SwiftLlama
                 repeatedActions = signature == lastAction ? repeatedActions + 1 : 0
                 lastAction = signature
                 if repeatedActions >= 3 {
-                    return "Agent stopped: repeated identical action without progress.\\n" +
+                    return "Agent stopped: repeated identical action without progress.\n" +
                         observations.suffix(30).joined(separator:"\n")
                 }
                 let feedback: String
