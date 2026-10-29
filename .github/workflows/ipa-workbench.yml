@@ -99,6 +99,9 @@ jobs:
           cd results/CleanRoomProject
           xcodegen generate
           xcodebuild -project Reconstruction.xcodeproj -scheme Reconstruction -sdk iphoneos -destination 'generic/platform=iOS' CODE_SIGNING_ALLOWED=NO build > ../scaffold-build.log 2>&1
+      - name: Verify outputs and compile evidence
+        shell: bash
+        run: python3 scripts/verify_ipa_workbench.py results
       - name: Optional resource replacement (unsigned IPA)
         if: ${{ inputs.resource_asset != '' && inputs.resource_path != '' }}
         shell: bash
