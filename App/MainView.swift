@@ -64,7 +64,7 @@ struct MainView: View {
                         let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                             .appendingPathComponent("AgentWorkspace", isDirectory: true)
                         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-                        let saved = folder.appendingPathComponent(UUID().uuidString + ".ipa")
+                        let saved = folder.appendingPathComponent(UUID().uuidString + "--" + url.lastPathComponent)
                         try FileManager.default.copyItem(at: url, to: saved)
                         let report: String
                         switch ipaReportMode {
@@ -91,7 +91,7 @@ struct MainView: View {
 
                         default: report = try IPAInspector.inspect(url)
                         }
-                        attachments.append(ChatAttachment(name: url.lastPathComponent, contents: report))
+                        attachments.append(ChatAttachment(name: url.lastPathComponent, contents: "Saved IPA workspace path: " + saved.lastPathComponent + "\n" + report))
                         continue
                     }
                     let values = try url.resourceValues(forKeys: [.fileSizeKey])
