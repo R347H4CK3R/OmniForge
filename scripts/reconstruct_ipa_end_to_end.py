@@ -17,6 +17,7 @@ ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT))
 from server.autonomous_reconstruction import reconstruct
 from server.behavior_gate import assess
+from server.behavior_runner import run_probes
 
 def command(argv, timeout=180):
     result=subprocess.run([sys.executable,*argv],cwd=ROOT,text=True,
