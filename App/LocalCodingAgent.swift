@@ -64,6 +64,26 @@ import SwiftLlama
             let data = try Data(contentsOf: url)
             _ = try JSONSerialization.jsonObject(with: data, options: [.fragmentsAllowed])
             return "PASS: Valid JSON in \(url.lastPathComponent) (\(data.count) bytes)"
+        case "analyze_ipa":
+            let specified = args["path"] ?? ""
+            let ipa: URL
+            if !specified.isEmpty {
+                ipa = try located(specified)
+            } else {
+                let files = try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: [.contentModificationDateKey])
+                    .filter { $0.pathExtension.lowercased() == "ipa" }
+                    .sorted {
+                        let a = (try? $0.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+                        let b = (try? $1.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+                        return a > b
+                    }
+                guard let latest = files.first else { return "BLOCKED: Import an IPA through Chat + before analysis." }
+                ipa = latest
+            }
+            guard ipa.pathExtension.lowercased() == "ipa" else { return "ERROR: Analysis requires an IPA file." }
+            let output = try AnalysisOrchestrator.run(ipa)
+            return try String(contentsOf: output.appendingPathComponent("SUMMARY.md"), encoding: .utf8)
+                + "\nReports saved at: " + output.path
         case "inspect_ipa":
             let supplied = args["path"] ?? ""
             let file: URL
@@ -120,24 +140,25 @@ import SwiftLlama
                 return a > b
             }
         var verifiedEvidence = ""
-        if prompt.localizedCaseInsensitiveContains("ipa") || prompt.localizedCaseInsensitiveContains("reverse engineer") {
-            for file in ipas.prefix(1) {
+        if prompt.localizedCaseInsensitiveContains("ipa") || prompt.localizedCaseInsensitiveContains("reverse engineer") || prompt.localizedCaseInsensitiveContains("reconstruct") {
+            if let file = ipas.first {
                 do {
-                    let metadata = try IPAInspector.inspect(file)
-                    let inventory = try IPAWorkbench.inventory(file)
-                    verifiedEvidence = "ACTUAL TOOL RESULTS for \(file.lastPathComponent):\n" +
-                        String(metadata.prefix(4500)) + "\n" + String(inventory.prefix(4500))
+                    let folder = try AnalysisOrchestrator.run(file)
+                    verifiedEvidence = try String(contentsOf: folder.appendingPathComponent("SUMMARY.md"), encoding: .utf8)
+                        + "\nEvidence files: " + folder.path
                 } catch {
-                    verifiedEvidence = "IPA inspection failed: " + error.localizedDescription
+                    verifiedEvidence = "IPA analysis failed: " + error.localizedDescription
                 }
+            } else {
+                verifiedEvidence = "No imported IPA found in AgentWorkspace. Import one with Chat +."
             }
-            if ipas.isEmpty {
-                verifiedEvidence = "No IPA has been imported into AgentWorkspace. This is not a filesystem failure; use + to import an IPA before IPA tests."
-            }
+        }
+        if prompt == "/analyze-ipa" || prompt == "analyze ipa" {
+            return verifiedEvidence
         }
         let instruction = """
         You are OmniForge's ON-DEVICE coding agent. Output JSON tool actions, preferably one per response, with
-        either {"tool":"workspace_info|list_files|read_file|write_file|validate_json|inspect_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
+        either {"tool":"workspace_info|list_files|read_file|write_file|validate_json|inspect_ipa|analyze_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
         or {"final":"your grounded answer"}.
         All local paths are relative to AgentWorkspace. Use dot (.) for the workspace root. For validate_json ALWAYS specify the exact JSON filename. First inspect files before edits. Test every change using available validation.
         You have no shell, Xcode, GitHub runtime, or unrestricted filesystem access. Never claim to have used a tool until its result is observed.
@@ -145,7 +166,7 @@ import SwiftLlama
         """
         var transcript=[LlamaChatMessage(role:.system,content:instruction),
                         LlamaChatMessage(role:.user,content:prompt + (verifiedEvidence.isEmpty ? "" : "\n\n" + verifiedEvidence + "\nAnalyze these measured results, not guesses."))]
-        var observations:[String]=ipas.isEmpty ? [] : ["PASS: inspected IPA metadata and file inventory"]
+        var observations:[String]=ipas.isEmpty ? [] : [verifiedEvidence.hasPrefix("# OmniForge") ? "PASS: generated IPA investigation reports" : "BLOCKED: IPA investigation unavailable"]
         var toolFailures = 0
         var step = 0
         var lastAction = ""
