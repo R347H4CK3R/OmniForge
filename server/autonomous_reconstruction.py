@@ -53,9 +53,12 @@ def reconstruct(project,evidence,agent,verify=verify_xcode_project,max_repairs=3
     findings=evidence_summary(evidence)
     history=[]
     baseline=verify(root)
-    if baseline.get("passed"):
-        return {"compiled":True,"functional_equivalence":assess(root,evidence)["passed"],"behavior":assess(root,evidence),"attempts":[],"baseline":baseline,
-                "note":"Existing project compiled; functionality is not demonstrated"}
+    if baseline.get("passed") and assess(root,evidence)["passed"]:
+        return {"compiled":True,"functional_equivalence":True,"behavior":assess(root,evidence),"attempts":[],"baseline":baseline,
+                "note":"Existing build and supplied behavioral acceptance evidence pass"}
+    # A scaffold compiling is not evidence that the requested program was reconstructed.
+    # Always offer the agent an implementation iteration if behavioral evidence is missing.
+
     current=baseline
     for attempt in range(max_repairs+1):
         request=("Implement or repair AUTHORIZED application functionality in the provided "
