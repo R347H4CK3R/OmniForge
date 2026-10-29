@@ -35,7 +35,11 @@ def execute(ipa, destination, evidence=None, agent=None, compiler=None):
     dest.mkdir(parents=True,exist_ok=True)
     project=dest/"project"
     analysis=dest/"evidence"
-    report={"schema":1,"source_ipa_sha256":hashlib.sha256(ipa.read_bytes()).hexdigest(),
+    digest=hashlib.sha256()
+    with ipa.open("rb") as stream:
+        for chunk in iter(lambda:stream.read(1024*1024),b""):
+            digest.update(chunk)
+    report={"schema":1,"source_ipa_sha256":digest.hexdigest(),
             "started":datetime.now(timezone.utc).isoformat(),"stages":{},
             "complete":False,"functional_equivalence_verified":False}
     def save():
