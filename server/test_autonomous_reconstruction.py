@@ -28,7 +28,7 @@ class ReconstructionTests(unittest.TestCase):
             report=reconstruct(p,p,agent,verify=lambda _:{"passed":True})
             self.assertTrue(report["compiled"])
             self.assertFalse(report["functional_equivalence"])
-            agent.assert_not_called()
+            agent.assert_called_once()
     def test_bounded_failures(self):
         with tempfile.TemporaryDirectory() as tmp:
             p=Path(tmp); (p/"App").mkdir(); (p/"project.yml").write_text("name: Reconstruction")

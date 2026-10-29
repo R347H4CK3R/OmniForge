@@ -1,6 +1,11 @@
 name: Build OmniForge iPhone IPA
 on:
   workflow_dispatch:
+  pull_request:
+    paths:
+      - 'App/**'
+      - 'project.yml'
+      - '.github/workflows/ios-unsigned.yml'
   push:
     branches: [main]
     paths:

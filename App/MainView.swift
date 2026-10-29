@@ -36,6 +36,7 @@ struct MainView: View {
             chatTab
             toolsTab
             rebuildTab
+            OmniRemoteDesktopView().tabItem { Label("Desktop", systemImage: "desktopcomputer") }
             modelsTab
             updatesTab
         }
