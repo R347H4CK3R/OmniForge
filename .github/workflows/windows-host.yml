@@ -29,7 +29,7 @@ jobs:
       - name: Package host and worker
         shell: pwsh
         run: |
-          python -m PyInstaller --clean --onefile --name OmniForgeHost --paths server --hidden-import knowledge_vault server/agent_server.py
+          python -m PyInstaller --clean --onefile --name OmniForgeHost --paths server --hidden-import knowledge_vault --hidden-import windows_command_agent server/agent_server.py
           python -m PyInstaller --clean --onefile --name OmniForgeWorker --paths server --hidden-import knowledge_vault --hidden-import agent_server --hidden-import job_queue --hidden-import build_repair server/job_worker.py
           New-Item -ItemType Directory -Force WindowsRelease | Out-Null
           Copy-Item dist/OmniForgeHost.exe, dist/OmniForgeWorker.exe WindowsRelease/

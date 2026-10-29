@@ -9,6 +9,10 @@ except ImportError:
     from server.knowledge_vault import KnowledgeVault
 from http.server import ThreadingHTTPServer, BaseHTTPRequestHandler
 try:
+    from windows_command_agent import run as run_windows_command, COMMANDS
+except ImportError:
+    from server.windows_command_agent import run as run_windows_command, COMMANDS
+try:
     from self_test import run_self_test
 except ImportError:
     from server.self_test import run_self_test
@@ -56,6 +60,8 @@ def tool_run(name,args):
         if key not in presets: raise ValueError("Unknown allowlisted check")
         proc=subprocess.run(presets[key],cwd=ROOT,text=True,capture_output=True,timeout=90,shell=False)
         return json.dumps({"returncode":proc.returncode,"stdout":proc.stdout[-12000:],"stderr":proc.stderr[-6000:]})
+    if name=="windows_command":
+        return json.dumps(run_windows_command(args.get("command",""),ROOT))
     if name=="knowledge_search":
         return json.dumps(VAULT.search(args.get("query","")))
     if name=="knowledge_import":
@@ -70,6 +76,7 @@ SPECS=[{"type":"function","function":{"name":"list_files","description":"List fi
 {"type":"function","function":{"name":"read_file","description":"Read a UTF-8 source file","parameters":{"type":"object","properties":{"path":{"type":"string"}},"required":["path"]}}},
 {"type":"function","function":{"name":"write_file","description":"Write a UTF-8 workspace file (user-authorized project only)","parameters":{"type":"object","properties":{"path":{"type":"string"},"content":{"type":"string"}},"required":["path","content"]}}},
 {"type":"function","function":{"name":"run_check","description":"Execute a predefined non-destructive check","parameters":{"type":"object","properties":{"check":{"type":"string","enum":["git_status","git_diff","python_tests","python_syntax"]}},"required":["check"]}}},
+{"type":"function","function":{"name":"windows_command","description":"Run an explicitly allowlisted workspace command, never arbitrary shell text","parameters":{"type":"object","properties":{"command":{"type":"string","enum":["git_status","git_diff","python_tests","python_compile","node_version","git_version"]}},"required":["command"]}}},
 {"type":"function","function":{"name":"knowledge_search","description":"Search local imported conversation knowledge","parameters":{"type":"object","properties":{"query":{"type":"string"}},"required":["query"]}}},
 {"type":"function","function":{"name":"knowledge_import","description":"Import ChatGPT conversations.json or Codex JSONL from authorized workspace into private local database","parameters":{"type":"object","properties":{"path":{"type":"string"}},"required":["path"]}}},
 {"type":"function","function":{"name":"workspace_info","description":"Describe workspace and allowed tools","parameters":{"type":"object","properties":{}}}}]
