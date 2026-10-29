@@ -132,8 +132,13 @@ import SwiftLlama
     static func run(prompt: String, model: LlamaService, allowEdits: Bool) async throws -> String {
         // Collect real IPA evidence before asking a language model to reason about it.
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
-        let ipas = (try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil))
+        let ipas = (try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: [.contentModificationDateKey]))
             .filter { $0.pathExtension.lowercased() == "ipa" }
+            .sorted {
+                let a = (try? $0.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+                let b = (try? $1.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+                return a > b
+            }
             .sorted { left, right in
                 let a = (try? left.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
                 let b = (try? right.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
