@@ -70,6 +70,8 @@ def execute(ipa, destination, evidence=None, agent=None, compiler=None):
                 __import__("server.autonomous_reconstruction",fromlist=["verify_xcode_project"]).verify_xcode_project)
             report["stages"]["autonomous_source_implementation"]=result
             report["stages"]["compilation"]={"passed":result["compiled"]}
+        if (analysis/"acceptance.json").is_file():
+            run_probes(project,analysis)
         behavior=assess(project,analysis)
         report["stages"]["behavioral_acceptance"]=behavior
         built=bool(report["stages"]["compilation"].get("passed"))
