@@ -95,6 +95,11 @@ import SwiftLlama
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         let ipas = (try FileManager.default.contentsOfDirectory(at: root, includingPropertiesForKeys: nil))
             .filter { $0.pathExtension.lowercased() == "ipa" }
+            .sorted { left, right in
+                let a = (try? left.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+                let b = (try? right.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate) ?? .distantPast
+                return a > b
+            }
         var verifiedEvidence = ""
         if prompt.localizedCaseInsensitiveContains("ipa") || prompt.localizedCaseInsensitiveContains("reverse engineer") {
             for file in ipas.prefix(1) {
