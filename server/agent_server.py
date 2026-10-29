@@ -116,10 +116,6 @@ def remote_capabilities():
                     "private_https_verified": False},
         "desktop": {"rustdesk_on_path": shutil.which("rustdesk") is not None,
                     "iphone_can_control_windows_verified": False},
-        "iphone": {"replaykit_broadcast_implemented": False,
-                   "windows_can_view_iphone_verified": False,
-                   "windows_can_control_arbitrary_iphone_apps": False,
-                   "omniforge_in_app_remote_commands_implemented": False},
         "note": "Availability is not session authorization or successful real-device verification."
     }
 
