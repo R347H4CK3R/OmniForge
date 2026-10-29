@@ -35,6 +35,38 @@ enum OmniSelfTest {
                 return report + "\n[Windows] FAIL: Invalid remote diagnostic response"
             }
             report += "\n[Windows] " + result
+            if url.path.hasSuffix("/v1/chat/completions") {
+                var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
+                components?.path = "/v1/remote/capabilities"
+                components?.query = nil
+                components?.fragment = nil
+                if let capabilityURL = components?.url {
+                    do {
+                        var request = URLRequest(url: capabilityURL)
+                        request.timeoutInterval = 15
+                        if let key = OnlineModelClient.readKey(), !key.isEmpty {
+                            request.setValue("Bearer " + key, forHTTPHeaderField: "Authorization")
+                        }
+                        let (data, response) = try await URLSession.shared.data(for: request)
+                        guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {
+                            report += "\n[Remote access] FAIL: Capability endpoint unavailable"
+                            return report
+                        }
+                        let object = try JSONSerialization.jsonObject(with: data) as? [String: Any]
+                        let desktop = object?["desktop"] as? [String: Any] ?? [:]
+                        let iphone = object?["iphone"] as? [String: Any] ?? [:]
+                        let network = object?["network"] as? [String: Any] ?? [:]
+                        func yesNo(_ value: Any?) -> String { (value as? Bool) == true ? "YES" : "NO" }
+                        report += "\n[Remote access] Tailscale detected: " + yesNo(network["tailscale_installed"])
+                        report += "\n[Remote access] RustDesk on PATH: " + yesNo(desktop["rustdesk_on_path"])
+                        report += "\n[Remote access] iPhone controls Windows verified: " + yesNo(desktop["iphone_can_control_windows_verified"])
+                        report += "\n[Remote access] Windows views iPhone verified: " + yesNo(iphone["windows_can_view_iphone_verified"])
+                        report += "\n[Remote access] Arbitrary iPhone app touch injection: unsupported"
+                    } catch {
+                        report += "\n[Remote access] FAIL: " + error.localizedDescription
+                    }
+                }
+            }
         } catch {
             report += "\n[Windows] FAIL: " + error.localizedDescription
         }
