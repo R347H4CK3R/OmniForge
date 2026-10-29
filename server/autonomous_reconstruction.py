@@ -7,6 +7,10 @@ import json
 import pathlib
 import subprocess
 import time
+try:
+    from behavior_gate import assess
+except ImportError:
+    from server.behavior_gate import assess
 
 def evidence_summary(folder, limit=30000):
     root=pathlib.Path(folder).resolve()
@@ -50,7 +54,7 @@ def reconstruct(project,evidence,agent,verify=verify_xcode_project,max_repairs=3
     history=[]
     baseline=verify(root)
     if baseline.get("passed"):
-        return {"compiled":True,"functional_equivalence":False,"attempts":[],"baseline":baseline,
+        return {"compiled":True,"functional_equivalence":assess(root,evidence)["passed"],"behavior":assess(root,evidence),"attempts":[],"baseline":baseline,
                 "note":"Existing project compiled; functionality is not demonstrated"}
     current=baseline
     for attempt in range(max_repairs+1):
@@ -68,7 +72,7 @@ def reconstruct(project,evidence,agent,verify=verify_xcode_project,max_repairs=3
         current=verify(root)
         history.append({"iteration":attempt,"response":str(reply)[-1200:],"build":current})
         if current.get("passed"):
-            return {"compiled":True,"functional_equivalence":False,"attempts":history,
+            return {"compiled":True,"functional_equivalence":assess(root,evidence)["passed"],"behavior":assess(root,evidence),"attempts":history,
                     "baseline":baseline,"note":"Compile verified; behavior requires separate tests"}
     return {"compiled":False,"functional_equivalence":False,"attempts":history,
             "baseline":baseline,"last_build":current}
