@@ -2,7 +2,7 @@
 Invoke: python server/agent_server.py
 Set OMNIFORGE_WORKSPACE, OMNIFORGE_AGENT_KEY, OLLAMA_URL, OLLAMA_MODEL.
 """
-import json, os, pathlib, subprocess, urllib.request, urllib.error, hmac
+import json, os, pathlib, subprocess, urllib.request, urllib.error, hmac, shutil
 try:
     from knowledge_vault import KnowledgeVault
 except ImportError:
@@ -104,12 +104,31 @@ def agent(messages,model):
             work.append({"role":"tool","content":str(output)[:14000]})
     return "Step limit reached; review before continuing.\n" + "\n".join(log)
 
+def remote_capabilities():
+    """Honest, non-mutating report; installed executables do not establish an active session."""
+    return {
+        "schema": 1,
+        "windows_host": {"agent_endpoint": "/v1/chat/completions",
+                         "self_test_endpoint": "/v1/self-test",
+                         "authenticated": bool(KEY),
+                         "loopback_only": True},
+        "network": {"tailscale_installed": shutil.which("tailscale") is not None,
+                    "private_https_verified": False},
+        "desktop": {"rustdesk_on_path": shutil.which("rustdesk") is not None,
+                    "iphone_can_control_windows_verified": False},
+        "iphone": {"replaykit_broadcast_implemented": False,
+                   "windows_can_view_iphone_verified": False,
+                   "windows_can_control_arbitrary_iphone_apps": False,
+                   "omniforge_in_app_remote_commands_implemented": False},
+        "note": "Availability is not session authorization or successful real-device verification."
+    }
+
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
-        if self.path=="/v1/self-test":
+        if self.path in ("/v1/self-test", "/v1/remote/capabilities"):
             if not KEY or not hmac.compare_digest(self.headers.get("Authorization",""),"Bearer "+KEY):
                 self.reply(401,{"error":"Unauthorized"});return
-            self.reply(200,run_self_test(ROOT,OLLAMA,MODEL));return
+            self.reply(200,remote_capabilities() if self.path=="/v1/remote/capabilities" else run_self_test(ROOT,OLLAMA,MODEL));return
         if self.path!="/health": self.send_error(404);return
         self.reply(200,{"ok":True,"model":MODEL,"workspace_configured":True,"tool_count":len(SPECS)})
     def do_POST(self):
