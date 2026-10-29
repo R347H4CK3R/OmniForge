@@ -7,6 +7,13 @@ except ImportError:
     from server.build_repair import repair_build
 
 class BuildRepairTests(unittest.TestCase):
+    def test_passing_baseline_makes_no_edits(self):
+        agent=Mock()
+        result=repair_build("fix", ".", agent,
+                            verify=lambda root, check: {"exit_code":0,"stderr":""})
+        self.assertTrue(result["success"])
+        self.assertEqual(result["attempts"],[])
+        agent.assert_not_called()
     def test_repairs_then_reports_actual_pass(self):
         checks=iter([{"exit_code":1,"stderr":"broken"},{"exit_code":0,"stderr":""}])
         agent=Mock(return_value="changed file")
