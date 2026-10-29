@@ -124,7 +124,21 @@ import SwiftLlama
             }
         var verifiedEvidence = ""
         if prompt.localizedCaseInsensitiveContains("ipa") || prompt.localizedCaseInsensitiveContains("reverse engineer") {
-            for file in ipas.prefix(1) {
+            let selectedIPA: URL? = {
+                for file in ipas {
+                    let stored = file.lastPathComponent
+                    // Prefer the precise saved workspace path supplied by the import UI.
+                    if prompt.contains("Saved IPA workspace path: " + stored) { return file }
+                }
+                for file in ipas {
+                    if let separator = file.lastPathComponent.range(of: "--"),
+                       prompt.contains(String(file.lastPathComponent[separator.upperBound...])) {
+                        return file
+                    }
+                }
+                return ipas.first
+            }()
+            for file in selectedIPA.map({ [$0] }) ?? [] {
                 do {
                     let metadata = try IPAInspector.inspect(file)
                     let inventory = try IPAWorkbench.inventory(file)
