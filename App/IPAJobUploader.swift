@@ -2,7 +2,8 @@ import SwiftUI
 import Security
 
 @MainActor final class IPAJobUploader: ObservableObject {
-    @Published var repo = ""
+    static let shared = IPAJobUploader()
+    @Published var repo = UserDefaults.standard.string(forKey: "ipaJobRepository") ?? "" { didSet { UserDefaults.standard.set(repo, forKey: "ipaJobRepository") } }
     @Published var token = ""
     @Published var message = "Select a private GitHub repository"
     @Published var working = false
@@ -60,7 +61,7 @@ import Security
             message = "Starting analysis"
             let payload = try JSONSerialization.data(withJSONObject: ["ref": branch,"inputs":["release_tag":tag,"ipa_asset":"input.ipa"]])
             _ = try await fetch(makeRequest(base + "/actions/workflows/ipa-workbench.yml/dispatches", method: "POST", json: payload))
-            message = "Submitted successfully. Check GitHub Actions in your private repository."
+            message = "Submitted to private GitHub Actions (not yet verified): https://github.com/" + name + "/actions/workflows/ipa-workbench.yml"
         } catch { message = error.localizedDescription }
     }
     private func error(_ text: String) -> NSError {
