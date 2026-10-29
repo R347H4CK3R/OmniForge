@@ -30,15 +30,64 @@ struct MainView: View {
     @State private var result = ""
     @State private var errorText = ""
     @State private var showError = false
+    @State private var selectedTab = 0
+    @State private var settingsPresented = false
+    @State private var settingsSection = "Models"
+    @AppStorage("omniHasSeenWelcome") private var hasSeenWelcome = false
+    @State private var welcomePresented = false
     private let tools = ["Read text", "SHA-256", "File header", "JSON format", "Build errors", "Plist inspect"]
     var body: some View {
-        TabView {
-            chatTab
-            toolsTab
-            rebuildTab
-            OmniRemoteDesktopView().tabItem { Label("Desktop", systemImage: "desktopcomputer") }
-            modelsTab
-            updatesTab
+        TabView(selection: $selectedTab) {
+            homeTab.tag(0)
+            chatTab.tag(1)
+            rebuildTab.tag(2)
+            OmniRemoteDesktopView().tabItem { Label("Desktop", systemImage: "desktopcomputer") }.tag(3)
+        }
+        .sheet(isPresented: $settingsPresented) {
+            NavigationStack {
+                VStack {
+                    Picker("Settings", selection: $settingsSection) {
+                        Text("Models").tag("Models")
+                        Text("Tools").tag("Tools")
+                        Text("Updates").tag("Updates")
+                    }.pickerStyle(.segmented).padding(.horizontal)
+                    Group {
+                        switch settingsSection {
+                        case "Tools": toolsTab
+                        case "Updates": updatesTab
+                        default: modelsTab
+                        }
+                    }
+                }
+                .navigationTitle("Settings & Diagnostics")
+                .toolbar { ToolbarItem(placement: .topBarTrailing) {
+                    Button("Done") { settingsPresented = false }
+                }}
+            }
+        }
+        .sheet(isPresented: $welcomePresented) {
+            NavigationStack {
+                VStack(alignment: .leading, spacing: 18) {
+                    Label("Welcome to OmniForge", systemImage: "sparkles").font(.title2.bold())
+                    Text("Use AI to work with code, import an authorized IPA under Projects, or control your Windows desktop.")
+                    Text("Local AI needs a GGUF model. Remote AI and Desktop need the laptop online and an authenticated private connection.")
+                        .foregroundStyle(.secondary)
+                    Button("Configure AI & Connection") {
+                        welcomePresented = false
+                        settingsSection = "Models"
+                        settingsPresented = true
+                        hasSeenWelcome = true
+                    }.buttonStyle(.borderedProminent)
+                    Button("Get Started") {
+                        hasSeenWelcome = true
+                        welcomePresented = false
+                    }
+                    Spacer()
+                }.padding().navigationTitle("Getting Started")
+            }
+        }
+        .onAppear {
+            if !hasSeenWelcome { welcomePresented = true }
         }
         .sheet(isPresented: $directIPAPicker) {
             OmniDocumentPicker(multiple: false, onPick: { urls in
@@ -140,6 +189,54 @@ struct MainView: View {
         }, onCancel: {}) }
         .alert("OmniForge error", isPresented: $showError) { Button("OK", role: .cancel) {} } message: { Text(errorText) }
     }
+    private var homeTab: some View {
+        NavigationStack {
+            List {
+                Section("Quick Actions") {
+                    Button {
+                        selectedTab = 2
+                        ipaReportMode = "Reconstruct"
+                        attachmentPicker = true
+                    } label: {
+                        Label("Import IPA and inspect", systemImage: "square.and.arrow.down")
+                    }
+                    Button { selectedTab = 1 } label: {
+                        Label("Ask AI or repair code", systemImage: "bubble.left.and.bubble.right")
+                    }
+                    Button { selectedTab = 3 } label: {
+                        Label("Control Windows Desktop", systemImage: "desktopcomputer")
+                    }
+                }
+                Section("Workspace") {
+                    LabeledContent("AI", value: store.busy ? "Working" : "Ready for request")
+                    LabeledContent("Windows connection", value: store.onlineEnabled ? "Configured" : "Local mode")
+                    Text("A configured connection is not proof the Windows host is online.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                    Button("View models and connection") {
+                        settingsSection = "Models"; settingsPresented = true
+                    }
+                    Button("Tools and diagnostics") {
+                        settingsSection = "Tools"; settingsPresented = true
+                    }
+                    Button("Updates") {
+                        settingsSection = "Updates"; settingsPresented = true
+                    }
+                }
+                Section("Understanding results") {
+                    Text("Imported → Analyzed → Reconstructed → Built → Tested")
+                    Text("A compiled IPA does not establish that reconstructed app features work. Verify real device behavior before calling a project complete.")
+                        .font(.footnote).foregroundStyle(.secondary)
+                }
+            }
+            .navigationTitle("OmniForge")
+            .toolbar {
+                Button { settingsSection = "Models"; settingsPresented = true } label: {
+                    Image(systemName: "gearshape")
+                }.accessibilityLabel("Open settings")
+            }
+        }.tabItem { Label("Home", systemImage: "house") }
+    }
+
     private var chatTab: some View {
         NavigationStack {
                 VStack {
@@ -260,7 +357,7 @@ struct MainView: View {
                     }
                 }
                 .navigationTitle("Reconstruction")
-            }.tabItem { Label("Rebuild", systemImage: "hammer") }
+            }.tabItem { Label("Projects", systemImage: "hammer") }
     }
 
     private var modelsTab: some View {
