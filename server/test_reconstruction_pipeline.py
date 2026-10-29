@@ -16,6 +16,7 @@ class PipelineTests(unittest.TestCase):
     def fixture(self,folder):
         ipa=Path(folder)/"sample.ipa"
         with zipfile.ZipFile(ipa,"w") as archive:
+            archive.writestr("Payload/Sample.app/Sample",bytes.fromhex("cffaedfe") + bytes(60))
             archive.writestr("Payload/Sample.app/Info.plist",plistlib.dumps({
                 "CFBundleExecutable":"Sample","CFBundleIdentifier":"com.example.sample",
                 "CFBundleName":"Sample"}))
