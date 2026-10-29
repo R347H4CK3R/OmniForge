@@ -54,14 +54,11 @@ enum OmniSelfTest {
                         }
                         let object = try JSONSerialization.jsonObject(with: data) as? [String: Any]
                         let desktop = object?["desktop"] as? [String: Any] ?? [:]
-                        let iphone = object?["iphone"] as? [String: Any] ?? [:]
                         let network = object?["network"] as? [String: Any] ?? [:]
                         func yesNo(_ value: Any?) -> String { (value as? Bool) == true ? "YES" : "NO" }
                         report += "\n[Remote access] Tailscale detected: " + yesNo(network["tailscale_installed"])
                         report += "\n[Remote access] RustDesk on PATH: " + yesNo(desktop["rustdesk_on_path"])
                         report += "\n[Remote access] iPhone controls Windows verified: " + yesNo(desktop["iphone_can_control_windows_verified"])
-                        report += "\n[Remote access] Windows views iPhone verified: " + yesNo(iphone["windows_can_view_iphone_verified"])
-                        report += "\n[Remote access] Arbitrary iPhone app touch injection: unsupported"
                     } catch {
                         report += "\n[Remote access] FAIL: " + error.localizedDescription
                     }
