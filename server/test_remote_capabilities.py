@@ -12,10 +12,9 @@ except ImportError:
 
 
 class RemoteCapabilitiesTests(unittest.TestCase):
-    def test_capabilities_never_claim_full_iphone_control(self):
+    def test_capabilities_report_only_iphone_to_windows(self):
         capabilities=agent_server.remote_capabilities()
-        self.assertFalse(capabilities["iphone"]["windows_can_control_arbitrary_iphone_apps"])
-        self.assertFalse(capabilities["iphone"]["windows_can_view_iphone_verified"])
+        self.assertNotIn("iphone", capabilities)
         self.assertFalse(capabilities["desktop"]["iphone_can_control_windows_verified"])
         self.assertFalse(capabilities["network"]["private_https_verified"])
 
