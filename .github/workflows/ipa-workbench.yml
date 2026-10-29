@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/ipa-workbench.yml'
+      - 'scripts/verify_ipa_workbench.py'
   workflow_dispatch:
     inputs:
       release_tag:
