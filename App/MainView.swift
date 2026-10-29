@@ -114,7 +114,10 @@ struct MainView: View {
                         let folder = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                             .appendingPathComponent("AgentWorkspace", isDirectory: true)
                         try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
-                        let saved = folder.appendingPathComponent(UUID().uuidString + ".ipa")
+                        let requested = folder.appendingPathComponent(url.lastPathComponent)
+                        let saved = FileManager.default.fileExists(atPath: requested.path)
+                            ? folder.appendingPathComponent(UUID().uuidString + "-" + url.lastPathComponent)
+                            : requested
                         try FileManager.default.copyItem(at: url, to: saved)
                         let report: String
                         switch ipaReportMode {
