@@ -47,6 +47,9 @@ def execute(ipa, destination, evidence=None, agent=None, compiler=None):
     try:
         command(["scripts/generate_scaffold.py",str(ipa),str(project)])
         report["stages"]["project_generation"]="PASS"
+        # Prepare architecture and resource inventory from the same IPA automatically.
+        command(["scripts/prepare_ghidra_ipa.py",str(ipa),str(analysis)])
+        report["stages"]["binary_inventory"]="PASS"
         if evidence:
             source=Path(evidence).resolve()
             if not source.is_dir(): raise ValueError("Evidence directory missing")
@@ -54,7 +57,8 @@ def execute(ipa, destination, evidence=None, agent=None, compiler=None):
             analysis=source
             report["stages"]["evidence_import"]="PASS"
         else:
-            report["stages"]["evidence_import"]="NOT_PROVIDED"
+            report["stages"]["evidence_import"]="BINARY_INVENTORY_ONLY"
+            command(["scripts/enhance_reconstruction.py",str(project),str(analysis)])
         if agent is None:
             report["stages"]["autonomous_source_implementation"]="NOT_CONFIGURED"
             # Compilation alone never proves functional behavior.
