@@ -33,6 +33,9 @@ def repair_build(prompt, root, ask_agent, check="python_tests", max_attempts=3, 
     # Establish baseline before editing, so an existing failure is never misreported.
     baseline=verify(root, check)
     outcome=baseline
+    if baseline["exit_code"] == 0:
+        return {"success": True, "baseline": baseline, "attempts": [],
+                "verified": check, "note": "Baseline passed; no changes necessary"}
     for attempt in range(1, max_attempts+1):
         diagnostic=json.dumps(outcome, ensure_ascii=False)
         instruction=(prompt + "\n\nVerification command: " + check +
