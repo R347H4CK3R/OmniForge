@@ -116,6 +116,11 @@ import SwiftLlama
                 verifiedEvidence = "No IPA has been imported into AgentWorkspace. This is not a filesystem failure; use + to import an IPA before IPA tests."
             }
         }
+        if ipas.isEmpty && (prompt.localizedCaseInsensitiveContains("inspect ipa") ||
+            prompt.localizedCaseInsensitiveContains("reconstruct") ||
+            prompt.localizedCaseInsensitiveContains("decompile ipa")) {
+            return "BLOCKED: No IPA is available to inspect. In Chat, tap +, select the IPA from Files, then retry. No inspection or reconstruction has been performed."
+        }
         let instruction = """
         You are OmniForge's ON-DEVICE coding agent. Output JSON tool actions, preferably one per response, with
         either {"tool":"workspace_info|list_files|read_file|write_file|validate_json|inspect_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
