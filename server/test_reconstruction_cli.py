@@ -12,6 +12,7 @@ class OneCommandTests(unittest.TestCase):
     def make_ipa(self, root):
         ipa=Path(root)/"sample.ipa"
         with zipfile.ZipFile(ipa,"w") as archive:
+            archive.writestr("Payload/Sample.app/Sample", bytes.fromhex("cffaedfe0c000001") + bytes(64))
             archive.writestr("Payload/Sample.app/Info.plist",plistlib.dumps({
                 "CFBundleIdentifier":"org.example.sample",
                 "CFBundleExecutable":"Sample",
@@ -24,7 +25,7 @@ class OneCommandTests(unittest.TestCase):
             result=execute(ipa,Path(folder)/"output",compiler=lambda _:{"passed":True})
             self.assertFalse(result["complete"])
             self.assertEqual(result["stages"]["project_generation"],"PASS")
-            self.assertEqual(result["stages"]["evidence_import"],"NOT_PROVIDED")
+            self.assertEqual(result["stages"]["evidence_import"],"BINARY_INVENTORY_ONLY")
             self.assertFalse(result["functional_equivalence_verified"])
             self.assertTrue((Path(folder)/"output"/"reconstruction-status.json").is_file())
 
