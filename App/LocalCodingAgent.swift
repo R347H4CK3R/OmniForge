@@ -170,6 +170,14 @@ import SwiftLlama
             await IPAJobUploader.shared.checkLatestRun()
             return IPAJobUploader.shared.lastResult
         }
+        if prompt == "/full-ipa-verification" {
+            guard let file = ipas.first else { return "BLOCKED: Import an IPA through Chat + first." }
+            guard !IPAJobUploader.shared.repo.isEmpty && !IPAJobUploader.shared.token.isEmpty else {
+                return "BLOCKED: Configure an authorized private GitHub repository and token under Rebuild."
+            }
+            await IPAJobUploader.shared.runFullVerification(file)
+            return IPAJobUploader.shared.lastResult + "\n" + IPAJobUploader.shared.savedReports
+        }
         if prompt == "/deep-analyze-ipa" {
             guard let file = ipas.first else { return "BLOCKED: Import an IPA through Chat + first." }
             guard !IPAJobUploader.shared.repo.isEmpty && !IPAJobUploader.shared.token.isEmpty else {
