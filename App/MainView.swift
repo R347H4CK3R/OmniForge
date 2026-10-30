@@ -97,7 +97,7 @@ struct MainView: View {
                 do {
                     try FileManager.default.copyItem(at: file, to: destination)
                     Task {
-                        await ipaUploader.submit(destination)
+                        await ipaUploader.runFullVerification(destination)
                         try? FileManager.default.removeItem(at: destination)
                     }
                 } catch { ipaUploader.message = error.localizedDescription }
@@ -338,21 +338,22 @@ struct MainView: View {
                         Text("The local report identifies files and metadata. It cannot reconstruct an original application's Swift source or full UI.")
                             .font(.footnote)
                     }
-                    Section("Submit IPA directly") {
+                    Section("IPA Workbench — automatic analysis") {
                         TextField("Private repo: owner/repo", text: $ipaUploader.repo)
                             .textInputAutocapitalization(.never).autocorrectionDisabled()
                         SecureField("Fine-grained GitHub token", text: $ipaUploader.token)
-                        Button("Choose IPA and start analysis") { directIPAPicker = true }
+                        Button("Import IPA → Analyze → Verify → Download reports") { directIPAPicker = true }
                             .disabled(ipaUploader.working)
+                        if ipaUploader.working { ProgressView("Analyzing IPA and checking GitHub…") }
                         Text(ipaUploader.message).font(.footnote)
                         Button("Check remote analysis result") {
                             Task { await ipaUploader.checkLatestRun() }
                         }
-                        Text(ipaUploader.lastResult).font(.footnote)
+                        Text(ipaUploader.lastResult).font(.footnote).textSelection(.enabled)
                         Button("Download completed Workbench reports") {
                             Task { await ipaUploader.downloadResults() }
                         }
-                        Text(ipaUploader.savedReports).font(.footnote)
+                        Text(ipaUploader.savedReports).font(.footnote).textSelection(.enabled)
 
 
                         Text("Use a private repository with OmniForge's IPA Workbench workflow installed. Uploads contain the selected IPA and require your explicit authorization. Never use a public repository for proprietary apps.")
