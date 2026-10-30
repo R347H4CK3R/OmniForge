@@ -112,8 +112,7 @@ import ZIPFoundation
                   let runs = object["workflow_runs"] as? [[String:Any]],
                   let latest = runs.first(where: { run in
                       guard !analysisTag.isEmpty else { return false }
-                      return (run["name"] as? String) == "IPA Workbench (macOS)" &&
-                          (run["status"] as? String) != "completed"
+                      return (run["display_title"] as? String) == "IPA Workbench — " + analysisTag
                   }), let id = latest["id"] as? Int else {
                 lastResult = "Cannot establish that a workflow run belongs to this IPA submission. No result attributed."; return
             }
