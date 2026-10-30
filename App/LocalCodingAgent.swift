@@ -161,6 +161,11 @@ import SwiftLlama
         if prompt == "/analyze-ipa" || prompt == "analyze ipa" {
             return verifiedEvidence
         }
+        if prompt == "/download-ipa-workbench" {
+            await IPAJobUploader.shared.checkLatestRun()
+            await IPAJobUploader.shared.downloadResults()
+            return IPAJobUploader.shared.lastResult + "\n" + IPAJobUploader.shared.savedReports
+        }
         if prompt == "/check-ipa-workbench" {
             await IPAJobUploader.shared.checkLatestRun()
             return IPAJobUploader.shared.lastResult
