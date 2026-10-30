@@ -345,6 +345,11 @@ struct MainView: View {
                         Button("Choose IPA and start analysis") { directIPAPicker = true }
                             .disabled(ipaUploader.working)
                         Text(ipaUploader.message).font(.footnote)
+                        Button("Check remote analysis result") {
+                            Task { await ipaUploader.checkLatestRun() }
+                        }
+                        Text(ipaUploader.lastResult).font(.footnote)
+
                         Text("Use a private repository with OmniForge's IPA Workbench workflow installed. Uploads contain the selected IPA and require your explicit authorization. Never use a public repository for proprietary apps.")
                             .font(.footnote)
                     }
