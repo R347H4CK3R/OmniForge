@@ -5,7 +5,32 @@ import ZIPFoundation
 @MainActor final class IPAJobUploader: ObservableObject {
     static let shared = IPAJobUploader()
     @Published var repo = UserDefaults.standard.string(forKey: "ipaJobRepository") ?? "" { didSet { UserDefaults.standard.set(repo, forKey: "ipaJobRepository") } }
-    @Published var token = ""
+    @Published var token = IPAJobUploader.readSavedToken() { didSet { IPAJobUploader.saveToken(token) } }
+    private static let keychainService = "com.r347h4ck3r.omniforge.github-workbench"
+    private static func saveToken(_ value: String) {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                     kSecAttrService as String: keychainService,
+                                     kSecAttrAccount as String: "private-workbench"]
+        SecItemDelete(query as CFDictionary)
+        if !value.isEmpty {
+            var add = query
+            add[kSecValueData as String] = Data(value.utf8)
+            add[kSecAttrAccessible as String] = kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly
+            SecItemAdd(add as CFDictionary, nil)
+        }
+    }
+    private static func readSavedToken() -> String {
+        let query: [String: Any] = [kSecClass as String: kSecClassGenericPassword,
+                                     kSecAttrService as String: keychainService,
+                                     kSecAttrAccount as String: "private-workbench",
+                                     kSecReturnData as String: true,
+                                     kSecMatchLimit as String: kSecMatchLimitOne]
+        var result: CFTypeRef?
+        guard SecItemCopyMatching(query as CFDictionary, &result) == errSecSuccess,
+              let data = result as? Data else { return "" }
+        return String(data: data, encoding: .utf8) ?? ""
+    }
+
     @Published var message = "Select a private GitHub repository"
     @Published var working = false
     @Published var lastRunURL = ""
