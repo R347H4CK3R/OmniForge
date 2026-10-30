@@ -34,6 +34,7 @@ import ZIPFoundation
     @Published var message = "Select a private GitHub repository"
     @Published var working = false
     @Published var lastRunURL = ""
+    @Published var analysisTag = ""
     @Published var lastResult = "No tracked analysis yet"
     @Published var savedReports = ""
     private var latestArtifactID: Int?
@@ -72,6 +73,7 @@ import ZIPFoundation
             guard details?["private"] as? Bool == true else { throw error("Use a private repository to avoid publishing proprietary IPA contents") }
             let branch = details?["default_branch"] as? String ?? "main"
             let tag = "analysis-" + UUID().uuidString.lowercased()
+            analysisTag = tag
             let releaseBody = try JSONSerialization.data(withJSONObject: ["tag_name":tag,"target_commitish":branch,"name":tag,"draft":true])
             message = "Creating private release"
             let created = try await fetch(makeRequest(base + "/releases", method: "POST", json: releaseBody))
@@ -108,8 +110,12 @@ import ZIPFoundation
             guard (response as? HTTPURLResponse)?.statusCode == 200,
                   let object = try JSONSerialization.jsonObject(with: data) as? [String:Any],
                   let runs = object["workflow_runs"] as? [[String:Any]],
-                  let latest = runs.first, let id = latest["id"] as? Int else {
-                lastResult = "No workflow run found, or GitHub returned an error."; return
+                  let latest = runs.first(where: { run in
+                      guard !analysisTag.isEmpty else { return false }
+                      return (run["name"] as? String) == "IPA Workbench (macOS)" &&
+                          (run["status"] as? String) != "completed"
+                  }), let id = latest["id"] as? Int else {
+                lastResult = "Cannot establish that a workflow run belongs to this IPA submission. No result attributed."; return
             }
             lastRunURL = "https://github.com/" + repo + "/actions/runs/" + String(id)
             let status = latest["status"] as? String ?? "unknown"
