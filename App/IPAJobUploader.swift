@@ -87,6 +87,23 @@ import Security
             let status = latest["status"] as? String ?? "unknown"
             let conclusion = latest["conclusion"] as? String ?? "in progress"
             lastResult = "Latest private Workbench: " + status + " / " + conclusion + ". " + lastRunURL
+            if status == "completed" && conclusion == "success" {
+                var artifactsReq = URLRequest(url: URL(string: "https://api.github.com/repos/" + repo + "/actions/runs/" + String(id) + "/artifacts")!)
+                artifactsReq.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+                artifactsReq.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+                let (artifactData, artifactResponse) = try await URLSession.shared.data(for: artifactsReq)
+                if (artifactResponse as? HTTPURLResponse)?.statusCode == 200,
+                   let listing = try JSONSerialization.jsonObject(with: artifactData) as? [String: Any],
+                   let artifacts = listing["artifacts"] as? [[String: Any]],
+                   let report = artifacts.first(where: { ($0["name"] as? String) == "IPA-workbench-results" }),
+                   let artifactID = report["id"] as? Int {
+                    lastResult += "\\nReports artifact: https://github.com/" + repo +
+                        "/actions/runs/" + String(id) + "/artifacts/" + String(artifactID) +
+                        "\\nCompilation checks passed; no installed-app runtime verification."
+                } else {
+                    lastResult += "\\nNo verified downloadable results artifact found."
+                }
+            }
         } catch { lastResult = "Run status lookup failed: " + error.localizedDescription }
     }
 
