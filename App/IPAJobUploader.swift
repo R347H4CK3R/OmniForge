@@ -217,8 +217,21 @@ import ZIPFoundation
                     _ = try archive.extract(entry, to: destination)
                 }
             }
-            savedReports = "Saved \(count) report entries to " + output.path +
-                ". Inspect verification.json and scaffold-build.log for actual results."
+            let verificationFile = output.appendingPathComponent("verification.json")
+            if FileManager.default.fileExists(atPath: verificationFile.path),
+               let data = try? Data(contentsOf: verificationFile),
+               let report = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+               let checks = report["checks"] as? [String: String] {
+                let failures = checks.filter { $0.value != "PASS" }.map { $0.key }.sorted()
+                let passed = checks.filter { $0.value == "PASS" }.count
+                savedReports = "Saved \\(count) entries to " + output.path +
+                    ". Verified checks: \\(passed)/\\(checks.count)." +
+                    (failures.isEmpty ? " All declared checks passed." : " Failed: " + failures.joined(separator: ", ")) +
+                    " App functional equivalence and installation remain unverified."
+            } else {
+                savedReports = "Saved \\(count) entries to " + output.path +
+                    ". BLOCKED: verification.json missing or invalid; do not treat this analysis as verified."
+            }
         } catch { savedReports = "ERROR: " + error.localizedDescription }
     }
 
