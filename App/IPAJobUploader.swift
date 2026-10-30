@@ -33,6 +33,7 @@ import ZIPFoundation
 
     @Published var message = "Select a private GitHub repository"
     @Published var working = false
+    @Published var verifying = false
     @Published var lastRunURL = ""
     @Published var analysisTag = UserDefaults.standard.string(forKey: "ipaAnalysisTag") ?? "" {
         didSet { UserDefaults.standard.set(analysisTag, forKey: "ipaAnalysisTag") }
