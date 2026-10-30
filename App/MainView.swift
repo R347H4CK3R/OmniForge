@@ -343,8 +343,8 @@ struct MainView: View {
                             .textInputAutocapitalization(.never).autocorrectionDisabled()
                         SecureField("Fine-grained GitHub token", text: $ipaUploader.token)
                         Button("Import IPA → Analyze → Verify → Download reports") { directIPAPicker = true }
-                            .disabled(ipaUploader.working)
-                        if ipaUploader.working { ProgressView("Analyzing IPA and checking GitHub…") }
+                            .disabled(ipaUploader.working || ipaUploader.verifying)
+                        if ipaUploader.working || ipaUploader.verifying { ProgressView("Analyzing IPA and checking GitHub…") }
                         Text(ipaUploader.message).font(.footnote)
                         Button("Check remote analysis result") {
                             Task { await ipaUploader.checkLatestRun() }
