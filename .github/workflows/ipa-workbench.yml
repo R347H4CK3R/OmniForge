@@ -1,4 +1,5 @@
 name: IPA Workbench (macOS)
+run-name: IPA Workbench — ${{ inputs.release_tag || 'default-test' }}
 on:
   push:
     branches: [main]
