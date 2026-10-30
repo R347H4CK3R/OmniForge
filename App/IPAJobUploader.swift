@@ -4,7 +4,7 @@ import ZIPFoundation
 
 @MainActor final class IPAJobUploader: ObservableObject {
     static let shared = IPAJobUploader()
-    @Published var repo = UserDefaults.standard.string(forKey: "ipaJobRepository") ?? "" { didSet { UserDefaults.standard.set(repo, forKey: "ipaJobRepository") } }
+    @Published var repo = UserDefaults.standard.string(forKey: "ipaJobRepository") ?? "R347H4CK3R/OmniForge-Private-Workbench" { didSet { UserDefaults.standard.set(repo, forKey: "ipaJobRepository") } }
     @Published var token = IPAJobUploader.readSavedToken() { didSet { IPAJobUploader.saveToken(token) } }
     private static let keychainService = "com.r347h4ck3r.omniforge.github-workbench"
     private static func saveToken(_ value: String) {
