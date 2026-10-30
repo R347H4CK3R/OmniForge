@@ -7,6 +7,8 @@ import Security
     @Published var token = ""
     @Published var message = "Select a private GitHub repository"
     @Published var working = false
+    @Published var lastRunURL = ""
+    @Published var lastResult = "No tracked analysis yet"
 
     func submit(_ file: URL) async {
         guard !working else { return }
@@ -61,9 +63,33 @@ import Security
             message = "Starting analysis"
             let payload = try JSONSerialization.data(withJSONObject: ["ref": branch,"inputs":["release_tag":tag,"ipa_asset":"input.ipa"]])
             _ = try await fetch(makeRequest(base + "/actions/workflows/ipa-workbench.yml/dispatches", method: "POST", json: payload))
-            message = "Submitted to private GitHub Actions (not yet verified): https://github.com/" + name + "/actions/workflows/ipa-workbench.yml"
+            message = "Submitted; locate run in GitHub Actions"
+            lastRunURL = "https://github.com/" + name + "/actions/workflows/ipa-workbench.yml"
         } catch { message = error.localizedDescription }
     }
+    func checkLatestRun() async {
+        guard !repo.isEmpty, !token.isEmpty,
+              let url = URL(string: "https://api.github.com/repos/" + repo + "/actions/workflows/ipa-workbench.yml/runs?event=workflow_dispatch&per_page=10") else {
+            lastResult = "BLOCKED: Configure your private repository and GitHub token."; return
+        }
+        var req = URLRequest(url: url)
+        req.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+        req.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        do {
+            let (data, response) = try await URLSession.shared.data(for: req)
+            guard (response as? HTTPURLResponse)?.statusCode == 200,
+                  let object = try JSONSerialization.jsonObject(with: data) as? [String:Any],
+                  let runs = object["workflow_runs"] as? [[String:Any]],
+                  let latest = runs.first, let id = latest["id"] as? Int else {
+                lastResult = "No workflow run found, or GitHub returned an error."; return
+            }
+            lastRunURL = "https://github.com/" + repo + "/actions/runs/" + String(id)
+            let status = latest["status"] as? String ?? "unknown"
+            let conclusion = latest["conclusion"] as? String ?? "in progress"
+            lastResult = "Latest private Workbench: " + status + " / " + conclusion + ". " + lastRunURL
+        } catch { lastResult = "Run status lookup failed: " + error.localizedDescription }
+    }
+
     private func error(_ text: String) -> NSError {
         NSError(domain:"OmniForge.Upload",code:1,userInfo:[NSLocalizedDescriptionKey:text])
     }
