@@ -146,6 +146,9 @@ import ZIPFoundation
     /// A foreground-only end-to-end submission and verification session.
     /// Never claims success until the correlated workflow and its artifact exist.
     func runFullVerification(_ ipa: URL) async {
+        guard !verifying else { return }
+        verifying = true
+        defer { verifying = false }
         await submit(ipa)
         guard message.hasPrefix("Submitted;") || message.hasPrefix("Submitted to") else {
             lastResult = "Submission failed: " + message
