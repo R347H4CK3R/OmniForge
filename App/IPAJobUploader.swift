@@ -102,7 +102,7 @@ import ZIPFoundation
     }
     func checkLatestRun() async {
         guard !repo.isEmpty, !token.isEmpty,
-              let url = URL(string: "https://api.github.com/repos/" + repo + "/actions/workflows/ipa-workbench.yml/runs?event=workflow_dispatch&per_page=10") else {
+              let url = URL(string: "https://api.github.com/repos/" + repo + "/actions/runs?event=workflow_dispatch&per_page=100") else {
             lastResult = "BLOCKED: Configure your private repository and GitHub token."; return
         }
         var req = URLRequest(url: url)
@@ -115,12 +115,12 @@ import ZIPFoundation
                   let runs = object["workflow_runs"] as? [[String:Any]],
                   let latest = runs.first(where: { run in
                       guard !analysisTag.isEmpty else { return false }
-                      return (run["display_title"] as? String) == "IPA Workbench — " + analysisTag
+                      return (run["name"] as? String)?.contains(analysisTag) == true || (run["display_title"] as? String)?.contains(analysisTag) == true
                   }), let id = latest["id"] as? Int else {
                 lastResult = "Cannot establish that a workflow run belongs to this IPA submission. No result attributed."; return
             }
             lastRunURL = "https://github.com/" + repo + "/actions/runs/" + String(id)
-            guard (latest["display_title"] as? String) == "IPA Workbench — " + analysisTag else {
+            guard (latest["name"] as? String)?.contains(analysisTag) == true || (latest["display_title"] as? String)?.contains(analysisTag) == true else {
                 lastResult = "BLOCKED: Run identity mismatch; results not attributed."
                 return
             }
