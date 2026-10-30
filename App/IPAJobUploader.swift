@@ -1,5 +1,6 @@
 import SwiftUI
 import Security
+import ZIPFoundation
 
 @MainActor final class IPAJobUploader: ObservableObject {
     static let shared = IPAJobUploader()
@@ -9,6 +10,8 @@ import Security
     @Published var working = false
     @Published var lastRunURL = ""
     @Published var lastResult = "No tracked analysis yet"
+    @Published var savedReports = ""
+    private var latestArtifactID: Int?
 
     func submit(_ file: URL) async {
         guard !working else { return }
@@ -97,6 +100,7 @@ import Security
                    let artifacts = listing["artifacts"] as? [[String: Any]],
                    let report = artifacts.first(where: { ($0["name"] as? String) == "IPA-workbench-results" }),
                    let artifactID = report["id"] as? Int {
+                    latestArtifactID = artifactID
                     lastResult += "\\nReports artifact: https://github.com/" + repo +
                         "/actions/runs/" + String(id) + "/artifacts/" + String(artifactID) +
                         "\\nCompilation checks passed; no installed-app runtime verification."
@@ -105,6 +109,53 @@ import Security
                 }
             }
         } catch { lastResult = "Run status lookup failed: " + error.localizedDescription }
+    }
+
+    func downloadResults() async {
+        guard let artifactID = latestArtifactID, !repo.isEmpty, !token.isEmpty else {
+            savedReports = "BLOCKED: Check a successful workflow with reports before downloading."; return
+        }
+        let url = URL(string: "https://api.github.com/repos/" + repo + "/actions/artifacts/" + String(artifactID) + "/zip")!
+        var request = URLRequest(url: url)
+        request.setValue("Bearer " + token, forHTTPHeaderField: "Authorization")
+        request.setValue("application/vnd.github+json", forHTTPHeaderField: "Accept")
+        do {
+            let (temp, response) = try await URLSession.shared.download(for: request)
+            guard (response as? HTTPURLResponse)?.statusCode == 200 else {
+                savedReports = "ERROR: Artifact download failed."; return
+            }
+            let documents = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+            let output = documents.appendingPathComponent("RemoteInvestigations", isDirectory: true)
+                .appendingPathComponent(String(artifactID), isDirectory: true)
+            try FileManager.default.createDirectory(at: output, withIntermediateDirectories: true)
+            guard let archive = Archive(url: temp, accessMode: .read) else {
+                savedReports = "ERROR: Downloaded artifact is not a ZIP."; return
+            }
+            var count = 0
+            var total: Int64 = 0
+            for entry in archive {
+                count += 1
+                total += Int64(entry.uncompressedSize)
+                guard count <= 5000, total <= 500_000_000 else {
+                    throw NSError(domain:"OmniForge.Reports",code:1,userInfo:[NSLocalizedDescriptionKey:"Report archive exceeds extraction limits"])
+                }
+                let path = entry.path
+                guard !path.hasPrefix("/"), !path.contains("\\"), !path.split(separator:"/").contains("..") else {
+                    throw NSError(domain:"OmniForge.Reports",code:2,userInfo:[NSLocalizedDescriptionKey:"Unsafe report path"])
+                }
+                guard entry.type == .file || entry.type == .directory else { continue }
+                let destination = output.appendingPathComponent(path).standardizedFileURL
+                guard destination.path.hasPrefix(output.path + "/") else { continue }
+                if entry.type == .directory {
+                    try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
+                } else {
+                    try FileManager.default.createDirectory(at: destination.deletingLastPathComponent(), withIntermediateDirectories: true)
+                    _ = try archive.extract(entry, to: destination)
+                }
+            }
+            savedReports = "Saved \(count) report entries to " + output.path +
+                ". Inspect verification.json and scaffold-build.log for actual results."
+        } catch { savedReports = "ERROR: " + error.localizedDescription }
     }
 
     private func error(_ text: String) -> NSError {
