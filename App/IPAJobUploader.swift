@@ -34,7 +34,9 @@ import ZIPFoundation
     @Published var message = "Select a private GitHub repository"
     @Published var working = false
     @Published var lastRunURL = ""
-    @Published var analysisTag = ""
+    @Published var analysisTag = UserDefaults.standard.string(forKey: "ipaAnalysisTag") ?? "" {
+        didSet { UserDefaults.standard.set(analysisTag, forKey: "ipaAnalysisTag") }
+    }
     @Published var lastResult = "No tracked analysis yet"
     @Published var savedReports = ""
     private var latestArtifactID: Int?
@@ -139,6 +141,38 @@ import ZIPFoundation
                 }
             }
         } catch { lastResult = "Run status lookup failed: " + error.localizedDescription }
+    }
+
+    /// A foreground-only end-to-end submission and verification session.
+    /// Never claims success until the correlated workflow and its artifact exist.
+    func runFullVerification(_ ipa: URL) async {
+        await submit(ipa)
+        guard message.hasPrefix("Submitted;") || message.hasPrefix("Submitted to") else {
+            lastResult = "Submission failed: " + message
+            return
+        }
+        for attempt in 0..<45 {
+            if Task.isCancelled {
+                lastResult = "Verification cancelled."
+                return
+            }
+            await checkLatestRun()
+            if lastResult.contains("completed / success") {
+                await downloadResults()
+                if savedReports.hasPrefix("Saved ") {
+                    lastResult += "\nReports retrieved; examine verification.json. Executable behavior and installation remain unverified."
+                }
+                return
+            }
+            if lastResult.contains("completed / failure") || lastResult.contains("completed / cancelled") {
+                lastResult += "\nWorkbench failed; review its job logs before changing source."
+                return
+            }
+            if attempt < 44 {
+                try? await Task.sleep(for: .seconds(15))
+            }
+        }
+        lastResult = "Run not verified within foreground session. Resume with /check-ipa-workbench."
     }
 
     func downloadResults() async {
