@@ -119,6 +119,10 @@ import ZIPFoundation
                 lastResult = "Cannot establish that a workflow run belongs to this IPA submission. No result attributed."; return
             }
             lastRunURL = "https://github.com/" + repo + "/actions/runs/" + String(id)
+            guard (latest["display_title"] as? String) == "IPA Workbench — " + analysisTag else {
+                lastResult = "BLOCKED: Run identity mismatch; results not attributed."
+                return
+            }
             let status = latest["status"] as? String ?? "unknown"
             let conclusion = latest["conclusion"] as? String ?? "in progress"
             lastResult = "Latest private Workbench: " + status + " / " + conclusion + ". " + lastRunURL
