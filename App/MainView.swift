@@ -349,6 +349,11 @@ struct MainView: View {
                             Task { await ipaUploader.checkLatestRun() }
                         }
                         Text(ipaUploader.lastResult).font(.footnote)
+                        Button("Download completed Workbench reports") {
+                            Task { await ipaUploader.downloadResults() }
+                        }
+                        Text(ipaUploader.savedReports).font(.footnote)
+
 
                         Text("Use a private repository with OmniForge's IPA Workbench workflow installed. Uploads contain the selected IPA and require your explicit authorization. Never use a public repository for proprietary apps.")
                             .font(.footnote)
