@@ -193,7 +193,21 @@ import SwiftLlama
         let lowerPrompt = prompt.lowercased()
         if (lowerPrompt.contains("github") || lowerPrompt.contains("workflow")) &&
            (lowerPrompt.contains("trigger") || lowerPrompt.contains("run ") || lowerPrompt.contains("dispatch") || lowerPrompt.contains("authenticate") || lowerPrompt.contains("connect")) {
-            return "BLOCKED: OmniForge's on-device agent has no authenticated GitHub workflow or shell execution tool. No workflow was started. Use the Desktop/Terminal tab with an independently configured authenticated HTTPS terminal, or a separately connected GitHub integration. No credentials should be pasted into chat."
+            // Resolve the missing dependency instead of terminating with an opaque tool error.
+            // Do not execute remote code without an authenticated, user-approved bridge.
+            try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+            let hasTerminal = !(UserDefaults.standard.string(forKey: "remoteTerminalURL") ?? "").isEmpty
+            let setup = """
+            ACTION REQUIRED: GitHub workflow execution needs an authenticated GitHub integration or a remote terminal.
+            Dependency: GitHub CLI (gh) on the authorized computer, or a GitHub Actions API connector with workflow permissions.
+            OmniForge can prepare its local workspace automatically, but iOS cannot install Windows/macOS executables onto another machine without a connected execution agent.
+            Remote terminal configuration: \(hasTerminal ? "configured; verify connection and authentication in Desktop > Terminal" : "missing; open Desktop > Terminal and enter your authenticated private HTTPS terminal URL").
+            On Windows, the remote terminal can run: winget install --id GitHub.cli --exact --silent
+            Next, authenticate with GitHub in the remote terminal using: gh auth login --web
+            After authentication, run: gh workflow run strata-unsigned-ipa.yml --repo R347H4CK3R/madeira --ref main
+            No workflow was started from this prompt. Do not paste a GitHub access token in chat.
+            """
+            return setup
         }
 
         let instruction = """
