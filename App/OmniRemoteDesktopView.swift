@@ -6,6 +6,8 @@ import WebKit
 /// noVNC supplies touch, pointer and keyboard handling in the web client.
 struct OmniRemoteDesktopView: View {
     @AppStorage("remoteDesktopURL") private var address = ""
+    @AppStorage("remoteTerminalURL") private var terminalAddress = ""
+    @State private var mode = 0
     @State private var activeURL: URL?
     @State private var error = ""
     @State private var zoom: CGFloat = 1.0
@@ -13,7 +15,13 @@ struct OmniRemoteDesktopView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
-                TextField("https://your-private-host/vnc.html", text: $address)
+                Picker("Remote mode", selection: $mode) {
+                    Text("Desktop").tag(0)
+                    Text("Terminal").tag(1)
+                }
+                .pickerStyle(.segmented)
+                .onChange(of: mode) { _ in activeURL = nil; error = "" }
+                TextField(mode == 0 ? "https://your-private-host/vnc.html" : "https://your-private-host/terminal/", text: mode == 0 ? $address : $terminalAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
                     .keyboardType(.URL)
@@ -21,10 +29,11 @@ struct OmniRemoteDesktopView: View {
                     .accessibilityIdentifier("remoteDesktopAddress")
                 HStack {
                     Button("Connect") {
-                        guard let url = URL(string: address),
+                        let target = mode == 0 ? address : terminalAddress
+                        guard let url = URL(string: target),
                               url.scheme == "https", url.host != nil,
                               url.user == nil, url.password == nil else {
-                            error = "A private HTTPS noVNC URL is required."
+                            error = "Enter your private HTTPS " + (mode == 0 ? "noVNC desktop" : "authenticated web terminal") + " URL."
                             return
                         }
                         error = ""
@@ -34,7 +43,7 @@ struct OmniRemoteDesktopView: View {
                     Button("Disconnect", role: .destructive) { activeURL = nil }
                         .disabled(activeURL == nil)
                 }
-                if activeURL != nil {
+                if activeURL != nil && mode == 0 {
                     HStack(spacing: 12) {
                         Button { zoom = max(1.0, zoom - 0.25) } label: {
                             Image(systemName: "minus.magnifyingglass")
@@ -55,15 +64,15 @@ struct OmniRemoteDesktopView: View {
                 }
                 if !error.isEmpty { Text(error).foregroundStyle(.red).font(.caption) }
                 if let url = activeURL {
-                    OmniRemoteWebView(url: url, zoom: zoom, panMode: panMode)
+                    OmniRemoteWebView(url: url, zoom: mode == 0 ? zoom : 1.0, panMode: mode == 0 ? panMode : true)
                         .accessibilityIdentifier("remoteDesktopViewer")
                 } else {
-                    ContentUnavailableView("Desktop disconnected", systemImage: "desktopcomputer",
-                      description: Text("Configure an authenticated noVNC web client behind private HTTPS. Use Disconnect to end viewing."))
+                    ContentUnavailableView(mode == 0 ? "Desktop disconnected" : "Terminal disconnected", systemImage: mode == 0 ? "desktopcomputer" : "terminal",
+                      description: Text(mode == 0 ? "Configure an authenticated noVNC web client behind private HTTPS." : "Provide a private HTTPS web terminal such as an authenticated ttyd/Wetty deployment. OmniForge does not install a terminal service or expose a shell automatically."))
                 }
             }
             .padding()
-            .navigationTitle("Windows Desktop")
+            .navigationTitle("Remote Access")
             .onDisappear { activeURL = nil }
         }
     }
