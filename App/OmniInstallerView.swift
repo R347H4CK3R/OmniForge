@@ -6,6 +6,7 @@ import Foundation
 struct OmniInstallerView: View {
     @AppStorage("installerBridgeURL") private var endpoint = ""
     @State private var token = ""
+    @ObservedObject private var coordinator = OmniInstallCoordinator.shared
     @State private var selected = "github-cli"
     @State private var status = "Not connected"
     @State private var busy = false
@@ -27,6 +28,13 @@ struct OmniInstallerView: View {
                     Text("Configure your own HTTPS bridge to the Windows installer service. Do not expose its local HTTP port to the internet.")
                         .font(.caption).foregroundStyle(.secondary)
                 }
+                if let requested = coordinator.pendingPackage {
+                    Section("AI installation request") {
+                        Text("OmniForge AI requests installation of: " + requested)
+                        Button("Approve and resume AI") { coordinator.decide(true) }
+                        Button("Deny", role: .destructive) { coordinator.decide(false) }
+                    }
+                }
                 Section("Dependencies") {
                     Picker("Package", selection: $selected) {
                         ForEach(packages, id: \.1) { item in Text(item.0).tag(item.1) }
@@ -39,6 +47,7 @@ struct OmniInstallerView: View {
                 }
             }
             .navigationTitle("Tool installer")
+            .onChange(of: token) { newValue in coordinator.setSessionToken(newValue) }
             .alert("Install on Windows laptop?", isPresented: $approve) {
                 Button("Install", role: .destructive) { Task { await request(method: "POST", operation: "install") } }
                 Button("Cancel", role: .cancel) {}
@@ -55,6 +64,7 @@ struct OmniInstallerView: View {
             status = "Configure an HTTPS URL and an authorization token."
             return
         }
+        coordinator.setSessionToken(token)
         busy = true
         defer { busy = false }
         do {
