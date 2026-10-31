@@ -22,6 +22,10 @@ import SwiftLlama
     private static func execute(name: String, args: [String: String], allowEdits: Bool) async throws -> String {
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
         switch name {
+        case "dependency_status":
+            return await OmniInstallCoordinator.shared.operation("status", package: args["package"] ?? "")
+        case "install_dependency":
+            return await OmniInstallCoordinator.shared.installWithApproval(args["package"] ?? "")
         case "workspace_info":
             return "Workspace ready: \(root.path)\nWritable: \(FileManager.default.isWritableFile(atPath: root.path))\nAvailable items: \((try? FileManager.default.contentsOfDirectory(atPath: root.path).count) ?? 0)"
         case "list_files":
@@ -212,10 +216,10 @@ import SwiftLlama
 
         let instruction = """
         You are OmniForge's ON-DEVICE coding agent. Output JSON tool actions, preferably one per response, with
-        either {"tool":"workspace_info","args":{}} or {"tool":"list_files","args":{"path":"."}} or {"tool":"read_file","args":{"path":"file.txt"}} or {"tool":"write_file","args":{"path":"file.txt","content":"text"}} or {"tool":"validate_json","args":{"path":"file.json"}} or {"tool":"inspect_ipa","args":{}} or {"tool":"analyze_ipa","args":{}} or {"tool":"read_web","args":{"url":"https://example.org"}}
+        either {"tool":"dependency_status","args":{"package":"github-cli"}} or {"tool":"install_dependency","args":{"package":"github-cli"}} or either {"tool":"workspace_info","args":{}} or {"tool":"list_files","args":{"path":"."}} or {"tool":"read_file","args":{"path":"file.txt"}} or {"tool":"write_file","args":{"path":"file.txt","content":"text"}} or {"tool":"validate_json","args":{"path":"file.json"}} or {"tool":"inspect_ipa","args":{}} or {"tool":"analyze_ipa","args":{}} or {"tool":"read_web","args":{"url":"https://example.org"}}
         or {"final":"your grounded answer"}.
         All local paths are relative to AgentWorkspace. Use dot (.) for the workspace root. For validate_json ALWAYS specify the exact JSON filename. First inspect files before edits. Test every change using available validation.
-        Choose exactly ONE tool name per JSON action. The vertical bar (|) is NOT a separator for actions. Do not combine names.\n        You have no shell, Xcode, GitHub runtime, GitHub authentication, workflow dispatch, or unrestricted filesystem access. For GitHub execution requests, report BLOCKED immediately and explain that a connected remote terminal or authenticated GitHub integration is required. Never claim to have used a tool until its result is observed.
+        For a missing supported dependency, use dependency_status, then install_dependency if absent. Allowed packages: github-cli, git, python, 7zip. Installation requires user approval in the Install tab and a trusted bridge. Never claim success before verification. Installation does not imply GitHub authentication.\n        Choose exactly ONE tool name per JSON action. The vertical bar (|) is NOT a separator for actions. Do not combine names.\n        You have no shell, Xcode, GitHub runtime, GitHub authentication, workflow dispatch, or unrestricted filesystem access. For GitHub execution requests, report BLOCKED immediately and explain that a connected remote terminal or authenticated GitHub integration is required. Never claim to have used a tool until its result is observed.
         Avoid claiming full source code recovery from compiled IPAs. Stop when the task is complete or a real blocker is encountered. There is no fixed tool-call count.
         """
         var transcript=[LlamaChatMessage(role:.system,content:instruction),
@@ -258,7 +262,7 @@ import SwiftLlama
                 // Reject it explicitly instead of silently picking an arbitrary action.
                 if name.contains("|") {
                     toolFailures += 1
-                    let message = "ERROR: Multiple tool choices were combined into one name. Choose exactly one of workspace_info, list_files, read_file, write_file, validate_json, inspect_ipa, analyze_ipa, read_web."
+                    let message = "ERROR: Multiple tool choices were combined into one name. Choose exactly one of dependency_status, install_dependency, workspace_info, list_files, read_file, write_file, validate_json, inspect_ipa, analyze_ipa, read_web."
                     observations.append("\(step). invalid tool: " + message)
                     feedbackBatch.append("invalid tool: " + message)
                     continue
