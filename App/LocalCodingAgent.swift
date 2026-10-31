@@ -192,26 +192,12 @@ import SwiftLlama
                 + "\nSubmission is not proof that remote decompilation or compilation succeeded."
         }
 
-        // Do not ask the local model to invent GitHub capabilities it cannot invoke.
-        // The remote desktop viewer is not an agent shell and has no command bridge.
-        let lowerPrompt = prompt.lowercased()
-        if (lowerPrompt.contains("github") || lowerPrompt.contains("workflow")) &&
-           (lowerPrompt.contains("trigger") || lowerPrompt.contains("run ") || lowerPrompt.contains("dispatch") || lowerPrompt.contains("authenticate") || lowerPrompt.contains("connect")) {
-            // Resolve the missing dependency instead of terminating with an opaque tool error.
-            // Do not execute remote code without an authenticated, user-approved bridge.
-            try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
-            let hasTerminal = !(UserDefaults.standard.string(forKey: "remoteTerminalURL") ?? "").isEmpty
-            let setup = """
-            ACTION REQUIRED: GitHub workflow execution needs an authenticated GitHub integration or a remote terminal.
-            Dependency: GitHub CLI (gh) on the authorized computer, or a GitHub Actions API connector with workflow permissions.
-            OmniForge can prepare its local workspace automatically, but iOS cannot install Windows/macOS executables onto another machine without a connected execution agent.
-            Remote terminal configuration: \(hasTerminal ? "configured; verify connection and authentication in Desktop > Terminal" : "missing; open Desktop > Terminal and enter your authenticated private HTTPS terminal URL").
-            On Windows, the remote terminal can run: winget install --id GitHub.cli --exact --silent
-            Next, authenticate with GitHub in the remote terminal using: gh auth login --web
-            After authentication, run: gh workflow run strata-unsigned-ipa.yml --repo R347H4CK3R/madeira --ref main
-            No workflow was started from this prompt. Do not paste a GitHub access token in chat.
-            """
-            return setup
+        // Dependency installation is now a real, approval-gated tool action.
+        // The model may check/install curated packages but still cannot dispatch
+        // GitHub workflows or run shell commands through the installer.
+        if prompt.hasPrefix("/install ") {
+            let package = String(prompt.dropFirst(9)).trimmingCharacters(in: .whitespacesAndNewlines)
+            return await OmniInstallCoordinator.shared.installWithApproval(package)
         }
 
         let instruction = """
@@ -219,7 +205,7 @@ import SwiftLlama
         either {"tool":"dependency_status","args":{"package":"github-cli"}} or {"tool":"install_dependency","args":{"package":"github-cli"}} or either {"tool":"workspace_info","args":{}} or {"tool":"list_files","args":{"path":"."}} or {"tool":"read_file","args":{"path":"file.txt"}} or {"tool":"write_file","args":{"path":"file.txt","content":"text"}} or {"tool":"validate_json","args":{"path":"file.json"}} or {"tool":"inspect_ipa","args":{}} or {"tool":"analyze_ipa","args":{}} or {"tool":"read_web","args":{"url":"https://example.org"}}
         or {"final":"your grounded answer"}.
         All local paths are relative to AgentWorkspace. Use dot (.) for the workspace root. For validate_json ALWAYS specify the exact JSON filename. First inspect files before edits. Test every change using available validation.
-        For a missing supported dependency, use dependency_status, then install_dependency if absent. Allowed packages: github-cli, git, python, 7zip. Installation requires user approval in the Install tab and a trusted bridge. Never claim success before verification. Installation does not imply GitHub authentication.\n        Choose exactly ONE tool name per JSON action. The vertical bar (|) is NOT a separator for actions. Do not combine names.\n        You have no shell, Xcode, GitHub runtime, GitHub authentication, workflow dispatch, or unrestricted filesystem access. For GitHub execution requests, report BLOCKED immediately and explain that a connected remote terminal or authenticated GitHub integration is required. Never claim to have used a tool until its result is observed.
+        For a missing supported dependency, use dependency_status, then install_dependency if absent. Allowed packages: github-cli, git, python, 7zip. Installation requires user approval in the Install tab and a trusted bridge. Never claim success before verification. Installation does not imply GitHub authentication.\n        Choose exactly ONE tool name per JSON action. The vertical bar (|) is NOT a separator for actions. Do not combine names.\n        You may check and install curated remote dependencies through the approved installer tools, but you have no shell, Xcode, GitHub authentication or workflow dispatch. Installing GitHub CLI does not enable executing its commands. After prerequisite installation, report any remaining authentication or execution requirements accurately. Never claim to have executed a workflow unless a real execution tool returns proof.
         Avoid claiming full source code recovery from compiled IPAs. Stop when the task is complete or a real blocker is encountered. There is no fixed tool-call count.
         """
         var transcript=[LlamaChatMessage(role:.system,content:instruction),
