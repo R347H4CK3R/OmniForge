@@ -19,9 +19,9 @@ if len(TOKEN) < 32:
     raise SystemExit("Set OMNIFORGE_INSTALL_TOKEN to at least 32 random characters.")
 
 def which(tool):
-    # Some installations require a new PATH; search known install directories too.
+    # WindowsApps aliases may be placeholders rather than installed interpreters.
     resolved = shutil.which(tool)
-    if resolved:
+    if resolved and "windowsapps" not in resolved.lower():
         return resolved
     if os.name == "nt":
         guesses = {
