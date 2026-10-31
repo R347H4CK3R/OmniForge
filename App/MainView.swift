@@ -42,6 +42,7 @@ struct MainView: View {
             chatTab.tag(1)
             rebuildTab.tag(2)
             OmniRemoteDesktopView().tabItem { Label("Desktop", systemImage: "desktopcomputer") }.tag(3)
+            OmniInstallerView().tabItem { Label("Install", systemImage: "square.and.arrow.down") }.tag(4)
         }
         .sheet(isPresented: $settingsPresented) {
             NavigationStack {
