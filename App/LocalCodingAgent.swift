@@ -188,12 +188,20 @@ import SwiftLlama
                 + "\nSubmission is not proof that remote decompilation or compilation succeeded."
         }
 
+        // Do not ask the local model to invent GitHub capabilities it cannot invoke.
+        // The remote desktop viewer is not an agent shell and has no command bridge.
+        let lowerPrompt = prompt.lowercased()
+        if (lowerPrompt.contains("github") || lowerPrompt.contains("workflow")) &&
+           (lowerPrompt.contains("trigger") || lowerPrompt.contains("run ") || lowerPrompt.contains("dispatch") || lowerPrompt.contains("authenticate") || lowerPrompt.contains("connect")) {
+            return "BLOCKED: OmniForge's on-device agent has no authenticated GitHub workflow or shell execution tool. No workflow was started. Use the Desktop/Terminal tab with an independently configured authenticated HTTPS terminal, or a separately connected GitHub integration. No credentials should be pasted into chat."
+        }
+
         let instruction = """
         You are OmniForge's ON-DEVICE coding agent. Output JSON tool actions, preferably one per response, with
-        either {"tool":"workspace_info|list_files|read_file|write_file|validate_json|inspect_ipa|analyze_ipa|read_web","args":{"path":"...","content":"...","url":"..."}}
+        either {"tool":"workspace_info","args":{}} or {"tool":"list_files","args":{"path":"."}} or {"tool":"read_file","args":{"path":"file.txt"}} or {"tool":"write_file","args":{"path":"file.txt","content":"text"}} or {"tool":"validate_json","args":{"path":"file.json"}} or {"tool":"inspect_ipa","args":{}} or {"tool":"analyze_ipa","args":{}} or {"tool":"read_web","args":{"url":"https://example.org"}}
         or {"final":"your grounded answer"}.
         All local paths are relative to AgentWorkspace. Use dot (.) for the workspace root. For validate_json ALWAYS specify the exact JSON filename. First inspect files before edits. Test every change using available validation.
-        You have no shell, Xcode, GitHub runtime, or unrestricted filesystem access. Never claim to have used a tool until its result is observed.
+        Choose exactly ONE tool name per JSON action. The vertical bar (|) is NOT a separator for actions. Do not combine names.\n        You have no shell, Xcode, GitHub runtime, GitHub authentication, workflow dispatch, or unrestricted filesystem access. For GitHub execution requests, report BLOCKED immediately and explain that a connected remote terminal or authenticated GitHub integration is required. Never claim to have used a tool until its result is observed.
         Avoid claiming full source code recovery from compiled IPAs. Stop when the task is complete or a real blocker is encountered. There is no fixed tool-call count.
         """
         var transcript=[LlamaChatMessage(role:.system,content:instruction),
@@ -232,6 +240,15 @@ import SwiftLlama
                 }
                 guard let name = action["tool"] as? String else { continue }
                 let args = action["args"] as? [String: String] ?? [:]
+                // A small model may copy a schema's choice list as a literal tool.
+                // Reject it explicitly instead of silently picking an arbitrary action.
+                if name.contains("|") {
+                    toolFailures += 1
+                    let message = "ERROR: Multiple tool choices were combined into one name. Choose exactly one of workspace_info, list_files, read_file, write_file, validate_json, inspect_ipa, analyze_ipa, read_web."
+                    observations.append("\(step). invalid tool: " + message)
+                    feedbackBatch.append("invalid tool: " + message)
+                    continue
+                }
                 let signature = name + ":" + args.keys.sorted().map { $0 + "=" + (args[$0] ?? "") }.joined(separator:";")
                 repeatedActions = signature == lastAction ? repeatedActions + 1 : 0
                 lastAction = signature
