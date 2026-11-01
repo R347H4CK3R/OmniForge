@@ -21,12 +21,19 @@ app = {"name": "OmniForge", "bundleIdentifier": "com.r347h4ck3r.omniforge",
 existing = next((item for item in source.get("apps", []) if item.get("bundleIdentifier") == app["bundleIdentifier"]), None)
 if existing:
     app.update(existing)
-version = {"version": f"1.0.{build}", "buildVersion": build,
+def display_version(number):
+    return f"1.{number // 100}.{number % 100}"
+
+version = {"version": display_version(int(build)), "buildVersion": build,
            "date": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"),
            "localizedDescription": f"LiveContainer update {build}",
            "downloadURL": url, "size": size, "minOSVersion": "17.0"}
+prior_versions = [v for v in app.get("versions", []) if v.get("buildVersion") != build]
+for entry in prior_versions:
+    if str(entry.get("buildVersion", "")).isdigit():
+        entry["version"] = display_version(int(entry["buildVersion"]))
 app["versions"] = sorted(
-    [version] + [v for v in app.get("versions", []) if v.get("buildVersion") != build],
+    [version] + prior_versions,
     key=lambda v: int(v.get("buildVersion", 0)), reverse=True
 )[:10]
 version = app["versions"][0]
