@@ -4,7 +4,7 @@ import Foundation
 /// Curated dependency installation through an explicitly trusted HTTPS bridge.
 /// No arbitrary model-generated shell commands are accepted.
 struct OmniInstallerView: View {
-    @AppStorage("installerBridgeURL") private var endpoint = ""
+    @AppStorage("installerBridgeURL") private var endpoint = "https://gaminglaptop-1.tail54e01b.ts.net/installer"
     @State private var token = ""
     @ObservedObject private var coordinator = OmniInstallCoordinator.shared
     @State private var selected = "github-cli"
@@ -46,6 +46,11 @@ struct OmniInstallerView: View {
                     Text(status).font(.footnote).textSelection(.enabled)
                 }
             }
+.onAppear {
+                if endpoint.isEmpty { endpoint = OmniBridgeAddress.restore() ?? "https://gaminglaptop-1.tail54e01b.ts.net/installer" }
+                OmniBridgeAddress.save(endpoint)
+            }
+            .onChange(of: endpoint) { newValue in OmniBridgeAddress.save(newValue) }
             .navigationTitle("Tool installer")
             .onChange(of: token) { newValue in coordinator.setSessionToken(newValue) }
             .alert("Install on Windows laptop?", isPresented: $approve) {
