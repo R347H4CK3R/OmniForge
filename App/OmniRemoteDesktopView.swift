@@ -54,6 +54,7 @@ struct OmniRemoteDesktopView: View {
                         webStatus = "Opening remote page…"
                         reconnectID = UUID()
                         activeURL = url
+                        if mode == 1 { terminalExpanded = true }
                     }
                     .buttonStyle(.borderedProminent)
                     Button("Disconnect", role: .destructive) { activeURL = nil }
