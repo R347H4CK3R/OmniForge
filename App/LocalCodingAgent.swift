@@ -200,12 +200,26 @@ import SwiftLlama
             return await OmniInstallCoordinator.shared.installWithApproval(package)
         }
 
+        // Installing GitHub CLI cannot trigger workflows without an authenticated
+        // execution bridge. Avoid incorrectly treating that as a missing package.
+        let normalized = prompt.lowercased()
+        if (normalized.contains("github") || normalized.contains("workflow") || normalized.contains("repository")) &&
+           (normalized.contains("trigger") || normalized.contains("dispatch") || normalized.contains("workflow run") || normalized.contains("start the") || normalized.contains("authenticate")) {
+            return """
+            ACTION REQUIRED: GitHub workflow execution is not connected to OmniForge.
+            The Windows dependency installer only checks and installs allowlisted packages; it cannot authenticate GitHub or run workflow commands.
+            Open Desktop > Terminal and connect an authenticated private HTTPS terminal, or add an authorized GitHub Actions connector.
+            Once connected, run: gh workflow run strata-unsigned-ipa.yml --repo R347H4CK3R/madeira --ref main
+            No workflow was triggered and no installation was attempted.
+            """
+        }
         let instruction = """
         You are OmniForge's ON-DEVICE coding agent. Output JSON tool actions, preferably one per response, with
-        either {"tool":"dependency_status","args":{"package":"github-cli"}} or {"tool":"install_dependency","args":{"package":"github-cli"}} or either {"tool":"workspace_info","args":{}} or {"tool":"list_files","args":{"path":"."}} or {"tool":"read_file","args":{"path":"file.txt"}} or {"tool":"write_file","args":{"path":"file.txt","content":"text"}} or {"tool":"validate_json","args":{"path":"file.json"}} or {"tool":"inspect_ipa","args":{}} or {"tool":"analyze_ipa","args":{}} or {"tool":"read_web","args":{"url":"https://example.org"}}
+        either {"tool":"dependency_status","args":{"package":"github-cli"}} or {"tool":"install_dependency","args":{"package":"github-cli"}} or {"tool":"workspace_info","args":{}} or {"tool":"list_files","args":{"path":"."}} or {"tool":"read_file","args":{"path":"file.txt"}} or {"tool":"write_file","args":{"path":"file.txt","content":"text"}} or {"tool":"validate_json","args":{"path":"file.json"}} or {"tool":"inspect_ipa","args":{}} or {"tool":"analyze_ipa","args":{}} or {"tool":"read_web","args":{"url":"https://example.org"}}
         or {"final":"your grounded answer"}.
         All local paths are relative to AgentWorkspace. Use dot (.) for the workspace root. For validate_json ALWAYS specify the exact JSON filename. First inspect files before edits. Test every change using available validation.
-        For a missing supported dependency, use dependency_status, then install_dependency if absent. Allowed packages: github-cli, git, python, 7zip. Installation requires user approval in the Install tab and a trusted bridge. Never claim success before verification. Installation does not imply GitHub authentication.\n        Choose exactly ONE tool name per JSON action. The vertical bar (|) is NOT a separator for actions. Do not combine names.\n        You may check and install curated remote dependencies through the approved installer tools, but you have no shell, Xcode, GitHub authentication or workflow dispatch. Installing GitHub CLI does not enable executing its commands. After prerequisite installation, report any remaining authentication or execution requirements accurately. Never claim to have executed a workflow unless a real execution tool returns proof.
+        For a missing supported dependency, use dependency_status, then install_dependency if absent. Allowed packages: github-cli, git, python, 7zip. Installation requires user approval in the Install tab and a trusted bridge. Never claim success before verification. Installation does not imply GitHub authentication.
+        Choose exactly ONE tool name per JSON action. The vertical bar (|) is NOT a separator for actions. Do not combine names.\n        You may check and install curated remote dependencies through the approved installer tools, but you have no shell, Xcode, GitHub authentication or workflow dispatch. Installing GitHub CLI does not enable executing its commands. After prerequisite installation, report any remaining authentication or execution requirements accurately. Never claim to have executed a workflow unless a real execution tool returns proof.
         Avoid claiming full source code recovery from compiled IPAs. Stop when the task is complete or a real blocker is encountered. There is no fixed tool-call count.
         """
         var transcript=[LlamaChatMessage(role:.system,content:instruction),
