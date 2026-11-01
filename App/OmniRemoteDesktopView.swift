@@ -14,6 +14,7 @@ struct OmniRemoteDesktopView: View {
     @State private var panMode = false
     @State private var reconnectID = UUID()
     @State private var webStatus = ""
+    @State private var terminalExpanded = false
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
@@ -23,7 +24,7 @@ struct OmniRemoteDesktopView: View {
                 }
                 .pickerStyle(.segmented)
                 .onChange(of: mode) { _ in activeURL = nil; error = "" }
-                if mode == 1 {
+                if mode == 1 && !terminalExpanded {
                     VStack(alignment: .leading, spacing: 6) {
                         Label("Connect a Windows terminal", systemImage: "terminal").font(.headline)
                         Text("Your private Windows terminal is configured. Connect Tailscale on your iPhone, tap Connect, then sign in using the dedicated terminal password stored on your laptop.")
@@ -33,6 +34,7 @@ struct OmniRemoteDesktopView: View {
                     .foregroundStyle(.secondary)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
+                if !terminalExpanded {
                 TextField(mode == 0 ? "https://your-private-host/vnc.html" : "https://your-private-host/terminal/", text: mode == 0 ? $address : $terminalAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
@@ -57,6 +59,14 @@ struct OmniRemoteDesktopView: View {
                     Button("Disconnect", role: .destructive) { activeURL = nil }
                         .disabled(activeURL == nil)
                 }
+                }
+                if activeURL != nil && mode == 1 {
+                    HStack {
+                        Button(terminalExpanded ? "Show controls" : "Expand terminal") { terminalExpanded.toggle() }
+                        Spacer()
+                        Text("Swipe down at top of terminal to disconnect").font(.caption2).foregroundStyle(.secondary)
+                    }.font(.caption)
+                }
                 if activeURL != nil && mode == 0 {
                     HStack(spacing: 12) {
                         Button { zoom = max(1.0, zoom - 0.25) } label: {
@@ -77,18 +87,32 @@ struct OmniRemoteDesktopView: View {
                     .buttonStyle(.bordered)
                 }
                 if !error.isEmpty { Text(error).foregroundStyle(.red).font(.caption) }
-                if !webStatus.isEmpty { Text(webStatus).font(.caption).foregroundStyle(.secondary).textSelection(.enabled) }
+                if !terminalExpanded && !webStatus.isEmpty { Text(webStatus).font(.caption).foregroundStyle(.secondary).textSelection(.enabled) }
                 if let url = activeURL {
-                    OmniRemoteWebView(url: url, zoom: mode == 0 ? zoom : 1.0, panMode: mode == 0 ? panMode : true, status: $webStatus)
+                    OmniRemoteWebView(url: url, zoom: mode == 0 ? zoom : 1.0, panMode: mode == 0 ? panMode : true, terminalMode: mode == 1, status: $webStatus)
                         .id(reconnectID)
                         .accessibilityIdentifier("remoteDesktopViewer")
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .overlay(alignment: .top) {
+                            if mode == 1 {
+                                Color.clear.contentShape(Rectangle()).frame(height: 22)
+                                    .gesture(DragGesture(minimumDistance: 35).onEnded { value in
+                                        if value.translation.height > 90 && abs(value.translation.height) > abs(value.translation.width) {
+                                            activeURL = nil
+                                            terminalExpanded = false
+                                            webStatus = "Terminal disconnected by swipe."
+                                        }
+                                    })
+                            }
+                        }
                 } else {
                     ContentUnavailableView(mode == 0 ? "Desktop disconnected" : "Terminal disconnected", systemImage: mode == 0 ? "desktopcomputer" : "terminal",
                       description: Text(mode == 0 ? "Configure an authenticated noVNC web client behind private HTTPS." : "Provide a private HTTPS web terminal such as an authenticated ttyd/Wetty deployment. OmniForge does not install a terminal service or expose a shell automatically."))
                 }
             }
-            .padding()
-            .navigationTitle("Remote Access")
+            .padding(.horizontal, mode == 1 ? 4 : 16)
+            .padding(.vertical, mode == 1 ? 4 : 16)
+            .navigationTitle(terminalExpanded ? "Terminal" : "Remote Access")
             .onDisappear { activeURL = nil }
         }
     }
@@ -98,6 +122,7 @@ private struct OmniRemoteWebView: UIViewRepresentable {
     let url: URL
     let zoom: CGFloat
     let panMode: Bool
+    let terminalMode: Bool
     @Binding var status: String
     final class Coordinator: NSObject, WKNavigationDelegate {
         var loadedURL: URL?
@@ -121,8 +146,8 @@ private struct OmniRemoteWebView: UIViewRepresentable {
         context.coordinator.status = $status
         view.navigationDelegate = context.coordinator
         view.allowsBackForwardNavigationGestures = false
-        view.scrollView.isScrollEnabled = panMode
-        view.pageZoom = zoom
+        view.scrollView.isScrollEnabled = !terminalMode && panMode
+        view.pageZoom = terminalMode ? 1.0 : zoom
         context.coordinator.loadedURL = url
         view.load(URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData))
         return view
@@ -135,7 +160,7 @@ private struct OmniRemoteWebView: UIViewRepresentable {
             context.coordinator.loadedURL = url
             view.load(URLRequest(url: url))
         }
-        if abs(view.pageZoom - zoom) > 0.001 { view.pageZoom = zoom }
+        if !terminalMode && abs(view.pageZoom - zoom) > 0.001 { view.pageZoom = zoom }
         view.scrollView.isScrollEnabled = panMode
     }
     static func dismantleUIView(_ view: WKWebView, coordinator: Coordinator) {
