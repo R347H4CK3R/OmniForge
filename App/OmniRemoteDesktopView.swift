@@ -23,7 +23,7 @@ struct OmniRemoteDesktopView: View {
                     Text("Terminal").tag(1)
                 }
                 .pickerStyle(.segmented)
-                .onChange(of: mode) { _ in activeURL = nil; error = "" }
+                .onChange(of: mode) { _ in activeURL = nil; terminalExpanded = false; error = "" }
                 if mode == 1 && !terminalExpanded {
                     VStack(alignment: .leading, spacing: 6) {
                         Label("Connect a Windows terminal", systemImage: "terminal").font(.headline)
@@ -142,6 +142,20 @@ private struct OmniRemoteWebView: UIViewRepresentable {
         let configuration = WKWebViewConfiguration()
         configuration.websiteDataStore = .nonPersistent()
         configuration.allowsInlineMediaPlayback = true
+        if terminalMode {
+            let fitScript = """
+            (function() {
+              var m = document.querySelector('meta[name="viewport"]');
+              if (!m) { m = document.createElement('meta'); m.name = 'viewport'; document.head.appendChild(m); }
+              m.content = 'width=device-width,initial-scale=1,maximum-scale=1';
+              var style = document.createElement('style');
+              style.textContent = 'html,body,#root{max-width:100vw!important;overflow-x:hidden!important;} .xterm{max-width:100%!important;}';
+              document.head.appendChild(style);
+              window.addEventListener('load', function(){window.dispatchEvent(new Event('resize'));});
+            })();
+            """
+            configuration.userContentController.addUserScript(WKUserScript(source: fitScript, injectionTime: .atDocumentEnd, forMainFrameOnly: true))
+        }
         let view = WKWebView(frame: .zero, configuration: configuration)
         context.coordinator.status = $status
         view.navigationDelegate = context.coordinator
