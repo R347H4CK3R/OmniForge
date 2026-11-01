@@ -12,6 +12,15 @@
       "localizedDescription": "Imports local GGUF models; analyzes IPA and development files.",
       "versions": [
         {
+          "version": "1.0.90",
+          "buildVersion": "90",
+          "date": "2026-11-01T00:33:25+00:00",
+          "localizedDescription": "LiveContainer update 90",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-90/OmniForge-LiveContainer.ipa",
+          "size": 4341439,
+          "minOSVersion": "17.0"
+        },
+        {
           "version": "1.0.88",
           "buildVersion": "88",
           "date": "2026-11-01T00:30:02+00:00",
@@ -91,30 +100,21 @@
           "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-80/OmniForge-LiveContainer.ipa",
           "size": 3425875,
           "minOSVersion": "17.0"
-        },
-        {
-          "version": "1.0.75",
-          "buildVersion": "75",
-          "date": "2026-10-30T02:03:39+00:00",
-          "localizedDescription": "LiveContainer update 75",
-          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-75/OmniForge-LiveContainer.ipa",
-          "size": 3423767,
-          "minOSVersion": "17.0"
         }
       ],
       "tintColor": "4065B5",
-      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-88/OmniForgeIcon.png",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-90/OmniForgeIcon.png",
       "category": "developer",
       "appPermissions": {
         "entitlements": [],
         "privacy": {}
       },
-      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-88/OmniForge-LiveContainer.ipa",
-      "version": "1.0.88",
-      "versionDate": "2026-11-01T00:30:02+00:00",
-      "size": 4339610
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-90/OmniForge-LiveContainer.ipa",
+      "version": "1.0.90",
+      "versionDate": "2026-11-01T00:33:25+00:00",
+      "size": 4341439
     }
   ],
   "news": [],
-  "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-88/OmniForgeIcon.png"
+  "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-90/OmniForgeIcon.png"
 }
