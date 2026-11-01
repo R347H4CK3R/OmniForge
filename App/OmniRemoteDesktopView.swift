@@ -92,6 +92,10 @@ private struct OmniRemoteWebView: UIViewRepresentable {
     let url: URL
     let zoom: CGFloat
     let panMode: Bool
+    final class Coordinator {
+        var loadedURL: URL?
+    }
+    func makeCoordinator() -> Coordinator { Coordinator() }
     func makeUIView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
         configuration.websiteDataStore = .nonPersistent()
@@ -100,15 +104,21 @@ private struct OmniRemoteWebView: UIViewRepresentable {
         view.allowsBackForwardNavigationGestures = false
         view.scrollView.isScrollEnabled = panMode
         view.pageZoom = zoom
+        context.coordinator.loadedURL = url
         view.load(URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData))
         return view
     }
     func updateUIView(_ view: WKWebView, context: Context) {
-        if view.url != url { view.load(URLRequest(url: url)) }
+        // Follow server login redirects without reloading the original URL.
+        // Only navigate when the user changes the configured endpoint.
+        if context.coordinator.loadedURL != url {
+            context.coordinator.loadedURL = url
+            view.load(URLRequest(url: url))
+        }
         if abs(view.pageZoom - zoom) > 0.001 { view.pageZoom = zoom }
         view.scrollView.isScrollEnabled = panMode
     }
-    static func dismantleUIView(_ view: WKWebView, coordinator: ()) {
+    static func dismantleUIView(_ view: WKWebView, coordinator: Coordinator) {
         view.stopLoading()
         view.loadHTMLString("", baseURL: nil)
     }
