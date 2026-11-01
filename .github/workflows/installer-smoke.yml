@@ -1,0 +1,42 @@
+name: OmniForge installer compile and bridge tests
+on:
+  pull_request:
+    paths:
+      - 'App/**'
+      - 'bridge/**'
+      - 'tests/test_installer_bridge.py'
+      - '.github/workflows/installer-smoke.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bridge-smoke:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Check installer Python and API
+        run: |
+          python -m py_compile bridge/omniforge_installer.py tests/test_installer_bridge.py
+          python tests/test_installer_bridge.py
+  ios-compile:
+    runs-on: macos-15
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate Xcode project
+        run: xcodegen generate
+      - name: Compile unsigned app without bundling GGUF
+        run: |
+          set -o pipefail
+          xcodebuild -project OmniForge.xcodeproj -scheme OmniForge -configuration Debug -sdk iphoneos -destination 'generic/platform=iOS' -derivedDataPath ./DerivedData CODE_SIGNING_ALLOWED=NO build 2>&1 | tee installer-compile.log
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: installer-compile-errors
+          path: installer-compile.log
+          if-no-files-found: ignore
