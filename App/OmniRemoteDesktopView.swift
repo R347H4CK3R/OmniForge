@@ -6,7 +6,7 @@ import WebKit
 /// noVNC supplies touch, pointer and keyboard handling in the web client.
 struct OmniRemoteDesktopView: View {
     @AppStorage("remoteDesktopURL") private var address = ""
-    @AppStorage("remoteTerminalURL") private var terminalAddress = ""
+    @AppStorage("remoteTerminalURL") private var terminalAddress = "https://gaminglaptop-1.tail54e01b.ts.net/terminal/"
     @State private var mode = 0
     @State private var activeURL: URL?
     @State private var error = ""
@@ -24,8 +24,8 @@ struct OmniRemoteDesktopView: View {
                 if mode == 1 {
                     VStack(alignment: .leading, spacing: 6) {
                         Label("Connect a Windows terminal", systemImage: "terminal").font(.headline)
-                        Text("Install an authenticated HTTPS web-terminal service on the laptop and make it reachable through private Tailscale access.")
-                        Text("The existing /installer service supports approved package installation only. It cannot run shell commands. Do not enter the /installer URL as a terminal address.")
+                        Text("Your private Windows terminal is configured. Connect Tailscale on your iPhone, tap Connect, then sign in using the dedicated terminal password stored on your laptop.")
+                        Text("This is separate from the /installer service. Terminal commands execute as your Windows user; use only with trusted access.")
                     }
                     .font(.footnote)
                     .foregroundStyle(.secondary)
