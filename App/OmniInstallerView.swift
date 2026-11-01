@@ -75,7 +75,7 @@ struct OmniInstallerView: View {
             }
             .onChange(of: endpoint) { newValue in OmniBridgeAddress.save(newValue) }
             .navigationTitle("Tool installer")
-            .fileImporter(isPresented: $importingToken, allowedContentTypes: [.plainText, .data]) { result in
+            .fileImporter(isPresented: $importingToken, allowedContentTypes: [.item]) { result in
                 do {
                     try OmniBridgeTokenStore.importFile(try result.get())
                     token = ""
