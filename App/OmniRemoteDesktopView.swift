@@ -12,6 +12,8 @@ struct OmniRemoteDesktopView: View {
     @State private var error = ""
     @State private var zoom: CGFloat = 1.0
     @State private var panMode = false
+    @State private var reconnectID = UUID()
+    @State private var webStatus = ""
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
@@ -47,6 +49,8 @@ struct OmniRemoteDesktopView: View {
                             return
                         }
                         error = ""
+                        webStatus = "Opening remote page…"
+                        reconnectID = UUID()
                         activeURL = url
                     }
                     .buttonStyle(.borderedProminent)
@@ -73,8 +77,10 @@ struct OmniRemoteDesktopView: View {
                     .buttonStyle(.bordered)
                 }
                 if !error.isEmpty { Text(error).foregroundStyle(.red).font(.caption) }
+                if !webStatus.isEmpty { Text(webStatus).font(.caption).foregroundStyle(.secondary).textSelection(.enabled) }
                 if let url = activeURL {
-                    OmniRemoteWebView(url: url, zoom: mode == 0 ? zoom : 1.0, panMode: mode == 0 ? panMode : true)
+                    OmniRemoteWebView(url: url, zoom: mode == 0 ? zoom : 1.0, panMode: mode == 0 ? panMode : true, status: $webStatus)
+                        .id(reconnectID)
                         .accessibilityIdentifier("remoteDesktopViewer")
                 } else {
                     ContentUnavailableView(mode == 0 ? "Desktop disconnected" : "Terminal disconnected", systemImage: mode == 0 ? "desktopcomputer" : "terminal",
@@ -92,8 +98,19 @@ private struct OmniRemoteWebView: UIViewRepresentable {
     let url: URL
     let zoom: CGFloat
     let panMode: Bool
-    final class Coordinator {
+    @Binding var status: String
+    final class Coordinator: NSObject, WKNavigationDelegate {
         var loadedURL: URL?
+        var status: Binding<String>?
+        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            status?.wrappedValue = "Page loaded: " + (webView.url?.path ?? "/")
+        }
+        func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+            status?.wrappedValue = "Navigation failed: " + error.localizedDescription
+        }
+        func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+            status?.wrappedValue = "Connection failed: " + error.localizedDescription
+        }
     }
     func makeCoordinator() -> Coordinator { Coordinator() }
     func makeUIView(context: Context) -> WKWebView {
@@ -101,6 +118,8 @@ private struct OmniRemoteWebView: UIViewRepresentable {
         configuration.websiteDataStore = .nonPersistent()
         configuration.allowsInlineMediaPlayback = true
         let view = WKWebView(frame: .zero, configuration: configuration)
+        context.coordinator.status = $status
+        view.navigationDelegate = context.coordinator
         view.allowsBackForwardNavigationGestures = false
         view.scrollView.isScrollEnabled = panMode
         view.pageZoom = zoom
@@ -111,6 +130,7 @@ private struct OmniRemoteWebView: UIViewRepresentable {
     func updateUIView(_ view: WKWebView, context: Context) {
         // Follow server login redirects without reloading the original URL.
         // Only navigate when the user changes the configured endpoint.
+        context.coordinator.status = $status
         if context.coordinator.loadedURL != url {
             context.coordinator.loadedURL = url
             view.load(URLRequest(url: url))
