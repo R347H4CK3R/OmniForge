@@ -41,7 +41,7 @@ struct MainView: View {
             homeTab.tag(0)
             chatTab.tag(1)
             rebuildTab.tag(2)
-            OmniRemoteDesktopView().tabItem { Label("Desktop", systemImage: "desktopcomputer") }.tag(3)
+            OmniRemoteDesktopView().tabItem { Label("Remote", systemImage: "desktopcomputer") }.tag(3)
             OmniInstallerView().tabItem { Label("Install", systemImage: "square.and.arrow.down") }.tag(4)
         }
         .sheet(isPresented: $settingsPresented) {
@@ -253,7 +253,15 @@ struct MainView: View {
                                 }
                             }
                         }.padding()
-                    }.scrollDismissesKeyboard(.immediately)
+                    }.scrollDismissesKeyboard(.interactively)
+                    .simultaneousGesture(
+                        DragGesture(minimumDistance: 12).onChanged { gesture in
+                            if gesture.translation.height > 24 &&
+                               abs(gesture.translation.height) > abs(gesture.translation.width) {
+                                inputFocused = false
+                            }
+                        }
+                    )
                     .simultaneousGesture(TapGesture().onEnded { inputFocused = false })
                     if !attachments.isEmpty {
                         ScrollView(.horizontal) {
@@ -292,6 +300,7 @@ struct MainView: View {
                         if store.busy { Button("Stop") { store.stop() } }
                         else { Button("Send") { sendMessage() }.disabled(input.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty && attachments.isEmpty) }
                         Button { inputFocused = false } label: { Image(systemName: "keyboard.chevron.compact.down") }
+                            .accessibilityLabel("Hide keyboard")
                     }.padding()
                     Text(store.status).font(.caption).foregroundStyle(.secondary)
                 }.navigationTitle("OmniForge")
