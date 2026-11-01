@@ -21,6 +21,16 @@ struct OmniRemoteDesktopView: View {
                 }
                 .pickerStyle(.segmented)
                 .onChange(of: mode) { _ in activeURL = nil; error = "" }
+                if mode == 1 {
+                    VStack(alignment: .leading, spacing: 6) {
+                        Label("Connect a Windows terminal", systemImage: "terminal").font(.headline)
+                        Text("Install an authenticated HTTPS web-terminal service on the laptop and make it reachable through private Tailscale access.")
+                        Text("The existing /installer service supports approved package installation only. It cannot run shell commands. Do not enter the /installer URL as a terminal address.")
+                    }
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                }
                 TextField(mode == 0 ? "https://your-private-host/vnc.html" : "https://your-private-host/terminal/", text: mode == 0 ? $address : $terminalAddress)
                     .textInputAutocapitalization(.never)
                     .autocorrectionDisabled()
