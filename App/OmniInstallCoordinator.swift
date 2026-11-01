@@ -52,7 +52,9 @@ import Combine
             let verified = payload["verified"] as? Bool == true || (operation == "status" && payload["installed"] as? Bool == true)
             let message = "HTTP \(http.statusCode), package=\(package), installed=\(payload["installed"] ?? false), verified=\(verified)"
             lastResult = message
-            if (200...299).contains(http.statusCode) { return message }
+            if (200...299).contains(http.statusCode) {
+                return (verified ? "PASS: " : "MISSING: ") + message
+            }
             return "ERROR: " + message + " " + String(describing: payload["error"] ?? "")
         } catch {
             return "ERROR: Installer connection: " + error.localizedDescription
@@ -61,13 +63,13 @@ import Combine
 
     func installWithApproval(_ package: String) async -> String {
         let status = await operation("status", package: package)
-        if status.contains("installed=true") { return status }
+        if status.hasPrefix("PASS:") { return status }
         if status.hasPrefix("ERROR:") || status.hasPrefix("BLOCKED:") { return status }
         guard await requestApproval(for: package) else {
             return "BLOCKED: Installer permission declined or another request pending."
         }
         let installed = await operation("install", package: package)
-        guard installed.contains("verified=true") else { return installed }
+        guard installed.hasPrefix("PASS:") else { return installed }
         return await operation("status", package: package)
     }
 }
