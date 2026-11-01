@@ -9,7 +9,7 @@ import Combine
     @Published private(set) var pendingPackage: String?
     @Published private(set) var lastResult = "Not checked"
     private var continuation: CheckedContinuation<Bool, Never>?
-    private(set) var sessionToken = ""
+    private var sessionToken = ""
 
     func setSessionToken(_ value: String) { sessionToken = value }
 
@@ -35,7 +35,7 @@ import Combine
         guard let address = UserDefaults.standard.string(forKey: "installerBridgeURL"),
               let base = URL(string: address), base.scheme == "https",
               base.host != nil, base.user == nil, base.password == nil,
-              !sessionToken.isEmpty else {
+              OmniBridgeTokenStore.load() != nil else {
             return "BLOCKED: Configure the trusted HTTPS bridge and session token in Install."
         }
         do {
@@ -43,7 +43,7 @@ import Combine
             var request = URLRequest(url: url)
             request.httpMethod = operation == "install" ? "POST" : "GET"
             request.timeoutInterval = 120
-            request.setValue("Bearer " + sessionToken, forHTTPHeaderField: "Authorization")
+            request.setValue("Bearer " + (OmniBridgeTokenStore.load() ?? ""), forHTTPHeaderField: "Authorization")
             let (data, response) = try await URLSession.shared.data(for: request)
             guard let http = response as? HTTPURLResponse, data.count < 128_000,
                   let payload = try JSONSerialization.jsonObject(with: data) as? [String: Any] else {
