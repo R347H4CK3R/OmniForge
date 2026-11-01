@@ -28,18 +28,6 @@ jobs:
         run: python3 scripts/release_gate.py
       - name: Install XcodeGen
         run: brew install xcodegen
-      - name: Fetch redistributable bundled GGUF (build-time only)
-        run: |
-          set -euo pipefail
-          curl -fL --retry 4 --connect-timeout 30 --max-time 1800 \
-            "https://huggingface.co/Open4bits/Qwen3-4B-Instruct-2507-GGUF/resolve/main/qwen3-4b-instruct-2507-Q4_K_M.gguf" \
-            -o BundledModel.gguf
-          test "$(stat -f%z BundledModel.gguf)" -gt 2400000000
-          shasum -a 256 BundledModel.gguf
-          python3 - <<'PY'
-          with open("BundledModel.gguf", "rb") as f:
-              assert f.read(4) == b"GGUF", "Downloaded model is not GGUF"
-          PY
       - name: Generate app icon
         run: swift scripts/generate_icon.swift App/Assets.xcassets/AppIcon.appiconset/AppIcon.png
       - name: Generate Xcode project
@@ -61,15 +49,6 @@ jobs:
           unzip -t OmniForge-LiveContainer.ipa
           test "$(stat -f%z OmniForge-LiveContainer.ipa)" -lt 2000000000
           rm -rf Payload
-      - name: Package unsigned IPA
-        if: success()
-        run: |
-          mkdir -p Payload
-          cp -R DerivedData/Build/Products/Release-iphoneos/OmniForge.app Payload/
-          cp BundledModel.gguf Payload/OmniForge.app/BundledModel.gguf
-          test -s Payload/OmniForge.app/BundledModel.gguf
-          zip -qry OmniForge-unsigned.ipa Payload
-          unzip -t OmniForge-unsigned.ipa
       - name: Publish LiveContainer release from successful IPA build
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         env:
@@ -77,7 +56,7 @@ jobs:
         run: |
           set -euo pipefail
           TAG="lc-${{ github.run_number }}"
-          gh release create "$TAG" OmniForge-LiveContainer.ipa OmniForgeIcon.png --title "OmniForge LiveContainer $TAG" --notes "Unsigned LiveContainer guest IPA built in the same CI run as the bundled-model IPA." --target "${{ github.sha }}"
+          gh release create "$TAG" OmniForge-LiveContainer.ipa OmniForgeIcon.png --title "OmniForge LiveContainer $TAG" --notes "Unsigned LiveContainer/Strata IPA. Import a compatible GGUF model separately." --target "${{ github.sha }}"
           gh release view "$TAG" --json assets --jq '.assets[].name' | grep -Fx 'OmniForge-LiveContainer.ipa'
       - name: Update LiveContainer source after successful publishing
         if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
@@ -101,9 +80,8 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: OmniForge-build-and-logs
+          name: OmniForge-LiveContainer-build-and-logs
           path: |
-            OmniForge-unsigned.ipa
             OmniForge-LiveContainer.ipa
             build.log
           if-no-files-found: warn
