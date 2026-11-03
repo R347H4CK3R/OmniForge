@@ -144,3 +144,13 @@ Intended project code license: **MIT** (add a LICENSE file with the source). Dep
 ---
 
 **Repository:** https://github.com/R347H4CK3R/OmniForge
+
+
+## Android companion (native APK)
+
+The same repository now contains the Android client under `android/`, targeting Android 8+ including the onn Android 15 tablet. See [platforms and setup](docs/platforms.md). The iOS client remains under `App/` and retains its IPA workflows and LiveContainer source.
+
+Android APK source (available after first successful signed publish):
+`https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/android-source.json`
+
+Android CI runs JVM tests, lint, native builds and Android 15 emulator launch/local inference checks before signed publication. The tablet itself still requires physical-device testing. APK decompilation is analysis, not recovery of original source. Android SDK builds run on the private laptop host.

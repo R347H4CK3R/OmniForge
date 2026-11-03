@@ -30,14 +30,11 @@ if not jdk:
     f=ROOT/'jdk.zip';fetch(a['link'],f,a['checksum']);unpack(f,ROOT);jdk=next(ROOT.glob('jdk-*/bin/java.exe'))
 java_home=jdk.parent.parent
 sdk=ROOT/'sdk';sdk.mkdir(exist_ok=True)
-manager=sdk/'cmdline-tools/latest/bin/sdkmanager.bat'
+# Pin the proven SDK CLI; newer launchers can silently install into a different SDK root.
+manager=sdk/'cmdline-tools/16.0/bin/sdkmanager.bat'
 if not manager.exists():
-    xml=ET.fromstring(get('https://dl.google.com/android/repository/repository2-1.xml'))
-    package=next(e for e in xml.iter() if e.tag.endswith('remotePackage') and e.get('path')=='cmdline-tools;latest')
-    archives=[e for e in package.iter() if e.tag.endswith('archive')]
-    archive=next(e for e in archives if any(x.tag.endswith('host-os') and x.text=='windows' for x in e.iter()))
-    url=next(x.text for x in archive.iter() if x.tag.endswith('url'))
-    f=ROOT/'commandline.zip';fetch('https://dl.google.com/android/repository/'+url,f);stage=ROOT/'sdk-stage';unpack(f,stage)
+    f=ROOT/'commandline-16.zip';fetch('https://dl.google.com/android/repository/commandlinetools-win-13114758_latest.zip',f)
+    stage=ROOT/'sdk-stage-16';unpack(f,stage)
     manager.parent.parent.parent.mkdir(parents=True,exist_ok=True)
     (stage/'cmdline-tools').replace(manager.parent.parent)
 gradle=ROOT/'gradle-8.9/bin/gradle.bat'
@@ -46,6 +43,7 @@ if not gradle.exists():
 env=os.environ.copy();env['JAVA_HOME']=str(java_home);env['ANDROID_HOME']=str(sdk);env['PATH']=str(java_home/'bin')+os.pathsep+env['PATH']
 subprocess.run([str(manager),'--sdk_root='+str(sdk),'--licenses'],input='y\n'*100,text=True,env=env,stdout=subprocess.DEVNULL,check=True)
 subprocess.run([str(manager),'--sdk_root='+str(sdk),'platform-tools','platforms;android-35','build-tools;35.0.0'],env=env,check=True,stdout=subprocess.DEVNULL)
+if not (sdk/'platforms/android-35/android.jar').is_file() or not (sdk/'build-tools/35.0.0/apksigner.bat').is_file():raise RuntimeError('Android SDK installation did not produce required tools')
 print('Installing JADX and apktool',flush=True)
 jar=ROOT/'apktool.jar'
 if not jar.exists():
