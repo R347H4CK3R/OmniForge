@@ -23,6 +23,8 @@ Import a small instruct GGUF (0.5B Q4 recommended to begin) in Settings. Files a
 
 Online mode supports your own HTTPS /v1/chat/completions server, including the existing private laptop agent. Supply its API token in Settings. No public AI provider is required. For remote desktop/terminal, connect Tailscale on the tablet and enter the private endpoint. The noVNC password is entered into its own page.
 
-Laptop Android tools require JDK 17, Android SDK, Gradle and optionally JADX. Start the updated server/agent_server.py from a workspace with OMNIFORGE_AGENT_KEY and expose through existing private Tailscale HTTPS. Android Workbench operates on host-workspace paths. Gradle builds run project-supplied code, so select only trusted authorized projects. Generated APK paths and actual compiler errors are reported. The Android APK does not bundle a complete on-device SDK/compiler.
+Laptop Android tools require JDK 17, Android SDK, Gradle and optionally JADX. Start the updated server/agent_server.py from a workspace with OMNIFORGE_AGENT_KEY and expose through existing private Tailscale HTTPS. Android Workbench operates on host-workspace paths. Gradle builds run project-supplied code, so select only trusted authorized projects. Generated APK paths and actual compiler errors are reported. The standalone server/android_host.py listener on 127.0.0.1:8791 can be exposed privately under /android-api without replacing OmniForgeHost.exe. scripts/setup_android_host.py installs portable tools; scripts/run_android_host.py loads the existing private API key.
+
+The Android APK does not bundle a complete on-device SDK/compiler.
 
 No installed app, local inference, reconstructed source, signing or physical-device behavior is called verified until its corresponding check has actually run. Emulator launch is separate from onn 100135925 physical-device verification.

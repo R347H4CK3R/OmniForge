@@ -36,7 +36,7 @@ class MainActivity:Activity() {
             view.setPadding(dp(16)+insets.systemWindowInsetLeft,dp(12)+insets.systemWindowInsetTop,dp(16)+insets.systemWindowInsetRight,dp(6)+bottom)
             insets
         }
-        root.addView(label("OmniForge",28).apply{setTypeface(null,1)})
+        root.addView(label("OmniForge",28).apply{setTypeface(null,android.graphics.Typeface.BOLD)})
         root.addView(label("ANDROID · YOUR WORKSPACE",11).apply{setTextColor(Color.rgb(130,170,220))})
         val nav=LinearLayout(this)
         listOf("Chat","Projects","Remote","Settings").forEach{title->nav.addView(Button(this).apply{text=title;isAllCaps=false;setOnClickListener{if(!busy){page=title;showPage()}}},LinearLayout.LayoutParams(0,dp(52),1f))}
@@ -88,13 +88,18 @@ class MainActivity:Activity() {
             if(apks.isEmpty()){status.text="Import an APK first";return@button}
             AlertDialog.Builder(this).setTitle("Upload authorized APK privately").setItems(apks.map{it.name}.toTypedArray()){_,index->
                 background("Uploading APK to private host…",{
-                    val base=java.net.URI(Policy.https(prefs.getString("endpoint","") ?: ""))
-                    val endpoint=java.net.URI(base.scheme,null,base.host,base.port,"/v1/android/upload","name="+apks[index].name,null).toString()
+                    val base=java.net.URI(Policy.https(prefs.getString("hostBase","https://gaminglaptop-1.tail54e01b.ts.net/android-api") ?: ""))
+                    val endpoint=java.net.URI(base.scheme,null,base.host,base.port,base.path.trimEnd('/')+"/v1/android/upload","name="+apks[index].name,null).toString()
                     val result=JSONObject(Net.upload(endpoint,apks[index],prefs.getString("token","") ?: ""))
                     prefs.edit().putString("lastHostPath",result.getString("host_path")).apply()
                     "Uploaded to ${result.getString("host_path")}. Open Host Android workbench to inspect or decompile."
                 })
             }.setNegativeButton("Cancel",null).show()
+        })
+        col.addView(button("Decode / rebuild APK resources"){
+            val path=field("Host APK or decoded resource directory",prefs.getString("lastHostPath","") ?: "")
+            AlertDialog.Builder(this).setTitle("Resource and smali workbench").setMessage("Decode an uploaded APK, edit its decoded resources on the laptop, then rebuild and sign. This does not recover its original Gradle source.").setView(path)
+                .setPositiveButton("Decode"){_,_->hostTask("decode",path.text.toString())}.setNeutralButton("Rebuild"){_,_->hostTask("rebuild",path.text.toString())}.setNegativeButton("Cancel",null).show()
         })
         col.addView(button("Host Android workbench") { hostDialog() })
         col.addView(label("Workspace",20))
@@ -120,8 +125,8 @@ class MainActivity:Activity() {
         AlertDialog.Builder(this).setTitle("Android host tools").setView(col).setPositiveButton("Build source"){_,_->hostTask("build",path.text.toString())}.setNeutralButton("Inspect APK"){_,_->hostTask("inspect",path.text.toString())}.setNegativeButton("Decompile APK"){_,_->hostTask("decompile",path.text.toString())}.show()
     }
     private fun hostTask(action:String,path:String){background("Running host $action…",{
-        val base=Policy.https(prefs.getString("endpoint","") ?: "");val u=java.net.URI(base)
-        val endpoint=java.net.URI(u.scheme,null,u.host,u.port,"/v1/android/workbench",null,null).toString()
+        val base=Policy.https(prefs.getString("hostBase","https://gaminglaptop-1.tail54e01b.ts.net/android-api") ?: "");val u=java.net.URI(base)
+        val endpoint=java.net.URI(u.scheme,null,u.host,u.port,u.path.trimEnd('/')+"/v1/android/workbench",null,null).toString()
         Net.request(endpoint,JSONObject().put("action",action).put("path",path).toString(),prefs.getString("token","") ?: "")
     }){r->val text=label(r,13).apply{setTextIsSelectable(true)};val s=ScrollView(this);s.addView(text);val dialog=AlertDialog.Builder(this).setTitle("Host result").setView(s).setPositiveButton("Close",null)
         val artifacts=try{JSONObject(r).optJSONArray("artifacts")}catch(e:Exception){null}
@@ -129,8 +134,8 @@ class MainActivity:Activity() {
         dialog.show();status.text="Host task finished; read result for build status"}}
     private fun downloadBuilt(artifact:JSONObject){
         background("Downloading built APK privately…",{
-            val base=java.net.URI(Policy.https(prefs.getString("endpoint","") ?: ""))
-            val address=java.net.URI(base.scheme,null,base.host,base.port,"/v1/android/artifact","path="+artifact.getString("path"),null).toString()
+            val base=java.net.URI(Policy.https(prefs.getString("hostBase","https://gaminglaptop-1.tail54e01b.ts.net/android-api") ?: ""))
+            val address=java.net.URI(base.scheme,null,base.host,base.port,base.path.trimEnd('/')+"/v1/android/artifact","path="+artifact.getString("path"),null).toString()
             val out=File(filesDir,"exports/built.apk").apply{parentFile?.mkdirs()}
             Net.download(address,out,artifact.getString("sha256"),512L*1024*1024,prefs.getString("token","") ?: "")
             out.path
@@ -152,11 +157,12 @@ class MainActivity:Activity() {
         col.addView(button("Import GGUF model"){pick("model")})
         col.addView(label("Imported model: "+File(filesDir,"models/model.gguf").let{if(it.isFile)"${it.length()/1024/1024} MiB" else "none"},13))
         val endpoint=field("Chat endpoint (HTTPS, /v1/chat/completions)",prefs.getString("endpoint","https://gaminglaptop-1.tail54e01b.ts.net/v1/chat/completions") ?: "")
+        val hostBase=field("Android host base URL",prefs.getString("hostBase","https://gaminglaptop-1.tail54e01b.ts.net/android-api") ?: "")
         val model=field("Online model name",prefs.getString("model","qwen3:8b") ?: "")
         val token=field("Private agent API token",prefs.getString("token","") ?: "",true)
         val edits=Switch(this).apply{text="Allow agent edits inside app workspace";setTextColor(ink);isChecked=prefs.getBoolean("edits",false)}
-        listOf(endpoint,model,token,edits).forEach{col.addView(it)}
-        col.addView(button("Save settings") {try{if(!offline.isChecked)Policy.https(endpoint.text.toString());prefs.edit().putBoolean("offline",offline.isChecked).putBoolean("edits",edits.isChecked).putString("endpoint",endpoint.text.toString().trim()).putString("model",model.text.toString().trim()).putString("token",token.text.toString()).apply();status.text="Settings saved"}catch(e:Exception){failure(e)}})
+        listOf(endpoint,hostBase,model,token,edits).forEach{col.addView(it)}
+        col.addView(button("Save settings") {try{if(!offline.isChecked)Policy.https(endpoint.text.toString());prefs.edit().putBoolean("offline",offline.isChecked).putBoolean("edits",edits.isChecked).putString("endpoint",endpoint.text.toString().trim()).putString("hostBase",Policy.https(hostBase.text.toString())).putString("model",model.text.toString().trim()).putString("token",token.text.toString()).apply();status.text="Settings saved"}catch(e:Exception){failure(e)}})
         col.addView(label("Diagnostics & updates",22))
         col.addView(button("Run self-test"){background("Checking…",{agent.ask("/self-test")})})
         col.addView(button("Check APK updates"){checkUpdate()})
