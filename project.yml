@@ -14,6 +14,13 @@ targets:
   OmniForge:
     type: application
     platform: iOS
+    info:
+      path: App/Info.plist
+      properties:
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
     sources:
       - App
     dependencies:
