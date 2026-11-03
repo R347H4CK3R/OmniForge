@@ -1,0 +1,4 @@
+node_modules/
+terminal-password.txt
+session-secret.txt
+*.log
