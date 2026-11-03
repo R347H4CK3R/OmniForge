@@ -37,7 +37,7 @@ class AndroidArtifactTests(unittest.TestCase):
         from android_api import download_path
         with tempfile.TemporaryDirectory() as d:
             p=pathlib.Path(d,'sample.apk');p.write_bytes(b'apk')
-            self.assertEqual(download_path(d,'sample.apk'),p)
+            self.assertEqual(download_path(d,'sample.apk'),p.resolve())
 
 class AndroidCompletionTests(unittest.TestCase):
     def test_native_agent_owns_tool_loop(self):
