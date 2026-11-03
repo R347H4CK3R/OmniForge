@@ -47,7 +47,7 @@ if not (sdk/'platforms/android-35/android.jar').is_file() or not (sdk/'build-too
 print('Installing JADX and apktool',flush=True)
 jar=ROOT/'apktool.jar'
 if not jar.exists():
-    url,digest=release('iBotPeaches/Apktool',lambda n:n.endswith('.jar'));fetch(url,jar,digest)
+    fetch('https://github.com/iBotPeaches/Apktool/releases/download/v2.11.1/apktool_2.11.1.jar',jar)
 jadx=ROOT/'jadx'
 if not (jadx/'lib').exists():
     url,digest=release('skylot/jadx',lambda n:n.startswith('jadx-') and n.endswith('.zip') and 'gui' not in n and 'with-jre' not in n)

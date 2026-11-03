@@ -78,6 +78,34 @@ class MainActivity:Activity() {
         val col=scroll();col.addView(label("Android projects & APKs",22))
         col.addView(label("Inspect imported APKs locally. Edit source in your private workspace. Full SDK builds and decompilation use the laptop host; inspection does not recover original source.",14))
         col.addView(button("Import APK"){pick("apk")})
+        col.addView(button("New Android source project"){
+            val sources=mapOf(
+                "settings.gradle.kts" to "pluginManagement { repositories { google(); mavenCentral(); gradlePluginPortal() } }\nrootProject.name=\"MyAndroidApp\"\ninclude(\":app\")\n",
+                "app/build.gradle.kts" to "plugins { id(\"com.android.application\") version \"8.7.3\"; id(\"org.jetbrains.kotlin.android\") version \"2.0.21\" }\nrepositories { google(); mavenCentral() }\nandroid { namespace=\"dev.omniforge.generated\"; compileSdk=35; defaultConfig { applicationId=\"dev.omniforge.generated\"; minSdk=26; targetSdk=35; versionCode=1; versionName=\"1.0\" } }\n",
+                "app/src/main/AndroidManifest.xml" to "<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"><application android:label=\"My Android App\"><activity android:name=\".MainActivity\" android:exported=\"true\"><intent-filter><action android:name=\"android.intent.action.MAIN\"/><category android:name=\"android.intent.category.LAUNCHER\"/></intent-filter></activity></application></manifest>",
+                "app/src/main/java/dev/omniforge/generated/MainActivity.kt" to "package dev.omniforge.generated\nclass MainActivity : android.app.Activity() { override fun onCreate(state: android.os.Bundle?) { super.onCreate(state);setContentView(android.widget.TextView(this).apply {text=\"Hello from OmniForge\"}) } }\n"
+            )
+            if(sources.keys.any{Policy.workspace(agent.workspace,it).exists()}){status.text="A project already exists; edit its files below";return@button}
+            sources.forEach{(path,text)->Policy.workspace(agent.workspace,path).apply{parentFile?.mkdirs();writeText(text)}}
+            status.text="Android source project created. Edit files, then upload to build.";showPage()
+        })
+        col.addView(button("Upload source project to laptop"){
+            background("Uploading Android source workspace…",{
+                require(listOf("settings.gradle","settings.gradle.kts").any{File(agent.workspace,it).isFile}){"Create a source project first"}
+                val archive=File(cacheDir,"source-project.zip")
+                try {
+                    var total=0L
+                    java.util.zip.ZipOutputStream(archive.outputStream()).use{zip->agent.workspace.walkTopDown().filter{it.isFile && it.extension !in listOf("apk","gguf","zip")}.take(10000).forEach{f->
+                        total+=f.length();require(total<=256L*1024*1024){"Source project too large"};zip.putNextEntry(java.util.zip.ZipEntry(f.relativeTo(agent.workspace).invariantSeparatorsPath));f.inputStream().use{it.copyTo(zip)};zip.closeEntry()
+                    }}
+                    val base=java.net.URI(Policy.https(prefs.getString("hostBase","https://gaminglaptop-1.tail54e01b.ts.net/android-api") ?: ""))
+                    val url=java.net.URI(base.scheme,null,base.host,base.port,base.path.trimEnd('/')+"/v1/android/project-upload","name=source-project.zip",null).toString()
+                    val result=JSONObject(Net.upload(url,archive,prefs.getString("token","") ?: ""))
+                    prefs.edit().putString("lastHostPath",result.getString("host_path")).apply()
+                    "Source uploaded. Open Host Android workbench → Build source."
+                }finally{archive.delete()}
+            })
+        })
         col.addView(button("Import source file"){pick("source")})
         col.addView(button("New source file"){
             val name=field("Relative path, e.g. app/MainActivity.kt")
@@ -102,6 +130,7 @@ class MainActivity:Activity() {
                 .setPositiveButton("Decode"){_,_->hostTask("decode",path.text.toString())}.setNeutralButton("Rebuild"){_,_->hostTask("rebuild",path.text.toString())}.setNegativeButton("Cancel",null).show()
         })
         col.addView(button("Host Android workbench") { hostDialog() })
+        col.addView(button("Install last built APK") {val f=File(filesDir,"exports/built.apk");if(f.isFile)Updater.install(this,f)else status.text="Download a successful host build first"})
         col.addView(label("Workspace",20))
         val files=agent.workspace.walkTopDown().filter{it.isFile}.take(200).toList()
         if(files.isEmpty())col.addView(label("No files yet. Import an APK or create source.",14))
@@ -139,7 +168,9 @@ class MainActivity:Activity() {
             val out=File(filesDir,"exports/built.apk").apply{parentFile?.mkdirs()}
             Net.download(address,out,artifact.getString("sha256"),512L*1024*1024,prefs.getString("token","") ?: "")
             out.path
-        }){path->status.text="Built APK downloaded and hash verified";share(File(path),"application/vnd.android.package-archive")}
+        }){path->status.text="Built APK downloaded and hash verified"
+            AlertDialog.Builder(this).setTitle("Built APK ready").setMessage("Install this Android app or export its APK?")
+                .setPositiveButton("Install"){_,_->Updater.install(this,File(path))}.setNeutralButton("Share"){_,_->share(File(path),"application/vnd.android.package-archive")}.setNegativeButton("Later",null).show()}
     }
     private fun remote(){
         val col=scroll();col.addView(label("Private remote access",22));col.addView(label("Connect Tailscale on this tablet first. Both sessions open full-screen and stay in landscape.",14))

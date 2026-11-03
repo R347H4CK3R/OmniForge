@@ -157,10 +157,11 @@ class Handler(BaseHTTPRequestHandler):
                 self.reply(401,{"error":"Unauthorized"});return
             try:
                 from android_api import execute,inspect_apk
-                if self.path.startswith("/v1/android/upload?"):
+                from android_workbench import extract_project
+                if self.path.startswith("/v1/android/upload?") or self.path.startswith("/v1/android/project-upload?"):
                     import urllib.parse,uuid
                     name=urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get("name",["import.apk"])[0]
-                    if pathlib.Path(name).name!=name or "\\" in name or not name.lower().endswith(".apk"):raise ValueError("Invalid APK filename")
+                    if pathlib.Path(name).name!=name or "\\" in name or not name.lower().endswith(".zip" if self.path.startswith("/v1/android/project-upload?") else ".apk"):raise ValueError("Invalid APK filename")
                     count=int(self.headers.get("Content-Length","0"))
                     if not 0<count<=512*1024*1024:raise ValueError("APK size invalid")
                     folder=ROOT/"AndroidImports"/uuid.uuid4().hex;folder.mkdir(parents=True)
@@ -172,7 +173,11 @@ class Handler(BaseHTTPRequestHandler):
                                 block=self.rfile.read(min(65536,remaining))
                                 if not block:raise ValueError("Incomplete APK upload")
                                 output.write(block);remaining-=len(block)
-                        result=inspect_apk(target);result["host_path"]=str(target.relative_to(ROOT))
+                        if self.path.startswith("/v1/android/project-upload?"):
+                            project=extract_project(target,folder/"project")
+                            target.unlink();result={"host_path":str(project.relative_to(ROOT)),"source_imported":True}
+                        else:
+                            result=inspect_apk(target);result["host_path"]=str(target.relative_to(ROOT))
                     except Exception:
                         target.unlink(missing_ok=True);raise
                 elif self.path=="/v1/android/workbench":

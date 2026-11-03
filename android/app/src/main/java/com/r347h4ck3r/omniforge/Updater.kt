@@ -45,7 +45,7 @@ object Updater {
     fun install(activity:Activity,file:File) {
         if(!activity.packageManager.canRequestPackageInstalls()){
             activity.startActivity(Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES,Uri.parse("package:${activity.packageName}")))
-            android.widget.Toast.makeText(activity,"Allow updates from OmniForge, then tap Install downloaded update again",android.widget.Toast.LENGTH_LONG).show();return
+            android.widget.Toast.makeText(activity,"Allow updates from OmniForge, return and choose Install again",android.widget.Toast.LENGTH_LONG).show();return
         }
         val uri=FileProvider.getUriForFile(activity,"${activity.packageName}.files",file)
         activity.startActivity(Intent(Intent.ACTION_VIEW).setDataAndType(uri,"application/vnd.android.package-archive").addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION))

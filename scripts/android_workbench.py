@@ -31,7 +31,7 @@ def build_project(folder,runner=subprocess.run):
     gradle=shutil.which('gradle')
     if not gradle:return {'built':False,'error':'Install Gradle, JDK 17 and Android SDK on the host'}
     try:
-        r=runner([gradle,'--no-daemon','assembleDebug'],cwd=root,capture_output=True,text=True,timeout=900,shell=False)
+        r=runner([gradle,'--no-daemon','--max-workers=1','assembleDebug'],cwd=root,capture_output=True,text=True,timeout=900,shell=False)
         apks=[str(p.relative_to(root)) for p in root.glob('**/build/outputs/apk/**/*.apk')]
         return {'built':r.returncode==0 and bool(apks),'exit_code':r.returncode,'apks':apks,'artifacts':[artifact_info(root/p,root) for p in apks],'log':(r.stdout+'\n'+r.stderr)[-24000:]}
     except (OSError,subprocess.TimeoutExpired) as e:return {'built':False,'error':str(e)[:500]}
@@ -77,3 +77,20 @@ def rebuild_resources(folder,workspace,runner=subprocess.run):
     result['artifacts']=[artifact_info(out,workspace)] if result['built'] else []
     result['note']='Resource/smali rebuild, not recovered original source. Modified apps need signing and device testing.'
     return result
+
+def extract_project(archive,out):
+    root=pathlib.Path(out).resolve()
+    with zipfile.ZipFile(archive) as z:
+        infos=z.infolist()
+        if len(infos)>10000 or sum(i.file_size for i in infos)>256*1024*1024:raise ValueError('Project exceeds extraction budget')
+        for i in infos:
+            n=i.filename
+            if n.startswith('/') or '\\' in n or ':' in n or '..' in pathlib.PurePosixPath(n).parts or ((i.external_attr>>16)&0o170000)==0o120000:raise ValueError('Unsafe project archive entry')
+        if not any(i.filename in ('settings.gradle','settings.gradle.kts') for i in infos):raise ValueError('ZIP must contain settings.gradle(.kts) at its root')
+        root.mkdir(parents=True,exist_ok=True)
+        for i in infos:
+            target=root/i.filename
+            if i.is_dir():target.mkdir(parents=True,exist_ok=True);continue
+            target.parent.mkdir(parents=True,exist_ok=True)
+            with z.open(i) as source,target.open('wb') as dest:shutil.copyfileobj(source,dest,65536)
+    return root
