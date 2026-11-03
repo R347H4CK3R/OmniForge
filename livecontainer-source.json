@@ -84,21 +84,21 @@
           "minOSVersion": "17.0"
         },
         {
+          "version": "1.0.93",
+          "buildVersion": "93",
+          "date": "2026-11-03T14:48:39+00:00",
+          "localizedDescription": "LiveContainer update 93",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-93/OmniForge-LiveContainer.ipa",
+          "size": 4379975,
+          "minOSVersion": "17.0"
+        },
+        {
           "version": "1.0.91",
           "buildVersion": "91",
           "date": "2026-11-01T05:09:00+00:00",
           "localizedDescription": "LiveContainer update 91",
           "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-91/OmniForge-LiveContainer.ipa",
           "size": 4348581,
-          "minOSVersion": "17.0"
-        },
-        {
-          "version": "1.0.90",
-          "buildVersion": "90",
-          "date": "2026-11-01T00:33:25+00:00",
-          "localizedDescription": "LiveContainer update 90",
-          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-90/OmniForge-LiveContainer.ipa",
-          "size": 4341439,
           "minOSVersion": "17.0"
         }
       ],
