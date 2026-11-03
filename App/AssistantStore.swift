@@ -18,7 +18,7 @@ struct ChatLine: Identifiable, Codable {
     @Published var onlineEndpoint = UserDefaults.standard.string(forKey: "onlineEndpoint") ?? "" {
         didSet { UserDefaults.standard.set(onlineEndpoint, forKey: "onlineEndpoint") }
     }
-    @Published var onlineModel = UserDefaults.standard.string(forKey: "onlineModel") ?? "qwen3:8b" {
+    @Published var onlineModel = UserDefaults.standard.string(forKey: "onlineModel") ?? "qwen2.5-coder:1.5b" {
         didSet { UserDefaults.standard.set(onlineModel, forKey: "onlineModel") }
     }
     @Published var localAgentEnabled = UserDefaults.standard.bool(forKey: "localAgentEnabled") {

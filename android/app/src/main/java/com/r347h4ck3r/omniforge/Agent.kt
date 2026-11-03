@@ -27,7 +27,7 @@ class Agent(private val context:Context) {
             return NativeModel.generate(model.path,prompt, minOf(4,Runtime.getRuntime().availableProcessors()))
         }
         val endpoint=Policy.https(prefs.getString("endpoint","") ?: "")
-        val body=JSONObject().put("model",prefs.getString("model","qwen3:8b")).put("messages",messages).put("stream",false)
+        val body=JSONObject().put("model",prefs.getString("model","qwen2.5-coder:1.5b")).put("messages",messages).put("stream",false)
         return JSONObject(Net.request(endpoint,body.toString(),prefs.getString("token","") ?: "")).getJSONArray("choices").getJSONObject(0).getJSONObject("message").getString("content")
     }
     fun ask(input:String):String {

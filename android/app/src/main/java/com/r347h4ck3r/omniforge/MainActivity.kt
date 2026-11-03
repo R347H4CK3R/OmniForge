@@ -189,7 +189,7 @@ class MainActivity:Activity() {
         col.addView(label("Imported model: "+File(filesDir,"models/model.gguf").let{if(it.isFile)"${it.length()/1024/1024} MiB" else "none"},13))
         val endpoint=field("Chat endpoint (HTTPS, /v1/chat/completions)",prefs.getString("endpoint","https://gaminglaptop-1.tail54e01b.ts.net/v1/chat/completions") ?: "")
         val hostBase=field("Android host base URL",prefs.getString("hostBase","https://gaminglaptop-1.tail54e01b.ts.net/android-api") ?: "")
-        val model=field("Online model name",prefs.getString("model","qwen3:8b") ?: "")
+        val model=field("Online model name",prefs.getString("model","qwen2.5-coder:1.5b") ?: "")
         val token=field("Private agent API token",prefs.getString("token","") ?: "",true)
         val edits=Switch(this).apply{text="Allow agent edits inside app workspace";setTextColor(ink);isChecked=prefs.getBoolean("edits",false)}
         listOf(endpoint,hostBase,model,token,edits).forEach{col.addView(it)}

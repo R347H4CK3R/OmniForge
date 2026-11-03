@@ -21,7 +21,7 @@ enum OmniSelfTest {
             if let key = OnlineModelClient.readKey(), !key.isEmpty {
                 req.setValue("Bearer " + key, forHTTPHeaderField: "Authorization")
             }
-            let payload: [String:Any] = ["model":UserDefaults.standard.string(forKey:"onlineModel") ?? "qwen3:8b",
+            let payload: [String:Any] = ["model":UserDefaults.standard.string(forKey:"onlineModel") ?? "qwen2.5-coder:1.5b",
                                         "messages":[["role":"user","content":"/self-test"]]]
             req.httpBody = try JSONSerialization.data(withJSONObject: payload)
             let (data,response) = try await URLSession.shared.data(for: req)

@@ -414,7 +414,7 @@ struct MainView: View {
                                 OnlineModelClient.saveKey(agentSecret)
                                 agentSecret = ""
                             }
-                            TextField("Model ID (example qwen3:8b)", text: $store.onlineModel)
+                            TextField("Model ID (example qwen2.5-coder:1.5b)", text: $store.onlineModel)
                                 .textInputAutocapitalization(.never)
                                 .autocorrectionDisabled()
                             Text("Use https://YOUR-TAILSCALE-DEVICE/v1/chat/completions. Your laptop runs Ollama; no paid AI API is required. When offline mode is selected, your imported GGUF runs on this iPhone.")

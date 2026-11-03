@@ -9,7 +9,11 @@ def find(label,description=False):
     last=None
     for attempt in range(10):
         try:
-            root=tree();node=next((n for n in root.iter('node') if n.get('content-desc' if description else 'text')==label),None)
+            root=tree()
+            if any(n.get('resource-id')=='android:id/immersive_cling_title' for n in root.iter('node')):
+                okay=next(n for n in root.iter('node') if n.get('resource-id')=='android:id/ok')
+                tap(okay);continue
+            node=next((n for n in root.iter('node') if n.get('content-desc' if description else 'text')==label),None)
             if node is not None:return node
         except (subprocess.SubprocessError,ET.ParseError) as e:last=e
         time.sleep(1)

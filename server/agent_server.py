@@ -20,7 +20,7 @@ except ImportError:
 ROOT=pathlib.Path(os.environ.get("OMNIFORGE_WORKSPACE", ".")).resolve()
 KEY=os.environ.get("OMNIFORGE_AGENT_KEY","")
 OLLAMA=os.environ.get("OLLAMA_URL","http://127.0.0.1:11434").rstrip("/")
-MODEL=os.environ.get("OLLAMA_MODEL","qwen3:8b")
+MODEL=os.environ.get("OLLAMA_MODEL","qwen2.5-coder:1.5b")
 MAX_STEPS=12
 MAX_BODY=100_000
 ROOT.mkdir(parents=True,exist_ok=True)

@@ -1,5 +1,5 @@
 """Launch the optional Android workbench with private laptop configuration."""
-import json,os,pathlib,runpy,sys
+import json,os,pathlib,runpy,sys,subprocess,urllib.request
 base=pathlib.Path(os.environ['LOCALAPPDATA'])/'OmniForge'
 log=(base/'AndroidHost/server.log').open('a',encoding='utf-8',buffering=1)
 sys.stdout=log;sys.stderr=log
@@ -13,6 +13,14 @@ keys=base/'AndroidHostKeys'
 if (keys/'development.jks').is_file():
     os.environ['ANDROID_WORKBENCH_KEYSTORE']=str(keys/'development.jks')
     os.environ['ANDROID_WORKBENCH_PASSWORD_FILE']=str(keys/'password.txt')
+# The model service stays idle until a request, then unloads model weights after 30 seconds.
+try:urllib.request.urlopen('http://127.0.0.1:11434/api/tags',timeout=2).close()
+except OSError:
+    ollama=pathlib.Path(os.environ['LOCALAPPDATA'])/'Programs/Ollama/ollama.exe'
+    if ollama.is_file():
+        model_env=os.environ.copy();model_env.pop('OMNIFORGE_AGENT_KEY',None)
+        model_env.update({'OLLAMA_HOST':'127.0.0.1:11434','OLLAMA_KEEP_ALIVE':'30s','OLLAMA_MAX_LOADED_MODELS':'1','OLLAMA_NUM_PARALLEL':'1'})
+        subprocess.Popen([str(ollama),'serve'],env=model_env,stdout=log,stderr=log,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
 server=base/'AndroidHost/server'
 sys.path.insert(0,str(server))
 runpy.run_path(str(server/'android_host.py'),run_name='__main__')
