@@ -11,7 +11,7 @@ object Net {
         try {
             if (token.isNotBlank()) c.setRequestProperty("Authorization", "Bearer $token")
             if (body != null) { c.requestMethod = "POST"; c.doOutput = true; c.setRequestProperty("Content-Type", "application/json"); c.outputStream.use { it.write(body.toByteArray()) } }
-            require(c.responseCode in 200..299) { "HTTP ${c.responseCode}: ${c.errorStream?.bufferedReader()?.use { it.readText().take(500) } ?: "Connection rejected"}" }
+            require(c.responseCode in 200..299) { "HTTP ${c.responseCode}: ${c.errorStream?.bufferedReader()?.use { Policy.prefix(it,500) } ?: "Connection rejected"}" }
             return c.inputStream.bufferedReader().use { reader ->
                 val out = StringBuilder(); val buf = CharArray(4096)
                 while (true) { val n = reader.read(buf); if (n < 0) break; require(out.length + n <= 2_000_000) { "Response too large" }; out.append(buf, 0, n) }; out.toString()
@@ -27,16 +27,17 @@ object Net {
         try {
             file.inputStream().use{input->c.outputStream.use{output->input.copyTo(output,65536)}}
             require(c.responseCode in 200..299){"Host upload HTTP ${c.responseCode}"}
-            return c.inputStream.bufferedReader().use{it.readText().take(2_000_000)}
+            return c.inputStream.bufferedReader().use{Policy.prefix(it,2_000_000)}
         }finally{c.disconnect()}
     }
-    fun download(address: String, out: File, expected: String, limit: Long = 256L*1024*1024) {
+    fun download(address: String, out: File, expected: String, limit: Long = 256L*1024*1024, token:String="") {
         var current = Policy.https(address)
         for (attempt in 0..5) {
             val c = URL(current).openConnection() as HttpURLConnection
             c.instanceFollowRedirects = false; c.connectTimeout = 20000; c.readTimeout = 60000
             try {
-                if (c.responseCode in listOf(301,302,303,307,308)) { current = Policy.https(URL(URL(current), c.getHeaderField("Location")).toString()); continue }
+                if (token.isNotEmpty()) c.setRequestProperty("Authorization","Bearer $token")
+                if (c.responseCode in listOf(301,302,303,307,308)) { require(token.isEmpty()){"Authenticated download redirected"}; current = Policy.https(URL(URL(current), c.getHeaderField("Location")).toString()); continue }
                 require(c.responseCode == 200) { "Download HTTP ${c.responseCode}" }
                 val hash = MessageDigest.getInstance("SHA-256"); var bytes = 0L
                 try {

@@ -5,3 +5,4 @@ vendor/
 local.properties
 *.jks
 *.keystore
+**/test-model.gguf

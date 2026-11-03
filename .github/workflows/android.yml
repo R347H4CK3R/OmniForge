@@ -34,6 +34,8 @@ jobs:
         with:
           gradle-version: '8.9'
       - uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
       - name: Android SDK and pinned llama.cpp
         run: |
           sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.2.12479018' 'cmake;3.22.1'
@@ -55,6 +57,10 @@ jobs:
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
           sudo udevadm trigger --name-match=kvm
+      - name: Small-model inference fixture
+        run: |
+          mkdir -p android/app/src/androidTest/assets
+          curl --fail --location --retry 3 https://huggingface.co/ggml-org/models/resolve/main/tinyllamas/stories15M-q4_0.gguf -o android/app/src/androidTest/assets/test-model.gguf
       - name: Android 15 launch and landscape smoke test
         uses: reactivecircus/android-emulator-runner@v2
         with:

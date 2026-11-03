@@ -132,6 +132,19 @@ def remote_capabilities():
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
+        if self.path.startswith("/v1/android/artifact?"):
+            if not KEY or not hmac.compare_digest(self.headers.get("Authorization",""),"Bearer "+KEY):
+                self.reply(401,{"error":"Unauthorized"});return
+            try:
+                from android_api import download_path
+                import urllib.parse
+                value=urllib.parse.parse_qs(urllib.parse.urlsplit(self.path).query).get("path",[""])[0]
+                target=download_path(ROOT,value)
+                self.send_response(200);self.send_header("Content-Type","application/vnd.android.package-archive")
+                self.send_header("Content-Length",str(target.stat().st_size));self.end_headers()
+                with target.open("rb") as source:shutil.copyfileobj(source,self.wfile,65536)
+            except (ValueError,OSError) as error:self.reply(400,{"error":str(error)[:500]})
+            return
         if self.path in ("/v1/self-test", "/v1/remote/capabilities"):
             if not KEY or not hmac.compare_digest(self.headers.get("Authorization",""),"Bearer "+KEY):
                 self.reply(401,{"error":"Unauthorized"});return

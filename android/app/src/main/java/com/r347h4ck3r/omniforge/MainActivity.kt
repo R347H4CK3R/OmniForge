@@ -57,7 +57,7 @@ class MainActivity:Activity() {
     private fun failure(e:Throwable){status.text="${e.javaClass.simpleName}: ${e.message}"}
     private fun background(title:String,task:()->String,done:(String)->Unit={status.text=it}){
         if(busy){status.text="Wait for the current task to finish";return};busy=true;status.text=title
-        worker.execute{try{val r=task();runOnUiThread{if(!isDestroyed){busy=false;done(r)}}}catch(e:Exception){runOnUiThread{if(!isDestroyed){busy=false;failure(e)}}}}
+        worker.execute{try{val r=task();runOnUiThread{if(!isDestroyed){busy=false;done(r)}}}catch(e:Exception){runOnUiThread{if(!isDestroyed){busy=false;failure(e)}}}catch(e:LinkageError){runOnUiThread{if(!isDestroyed){busy=false;status.text="Native runtime unavailable: ${e.message}"}}}}
     }
     private fun showPage(){content.removeAllViews();when(page){"Projects"->projects();"Remote"->remote();"Settings"->settings();else->chat()}}
     private fun chat(){
@@ -123,7 +123,19 @@ class MainActivity:Activity() {
         val base=Policy.https(prefs.getString("endpoint","") ?: "");val u=java.net.URI(base)
         val endpoint=java.net.URI(u.scheme,null,u.host,u.port,"/v1/android/workbench",null,null).toString()
         Net.request(endpoint,JSONObject().put("action",action).put("path",path).toString(),prefs.getString("token","") ?: "")
-    }){r->val text=label(r,13).apply{setTextIsSelectable(true)};val s=ScrollView(this);s.addView(text);AlertDialog.Builder(this).setTitle("Host result").setView(s).setPositiveButton("Close",null).show();status.text="Host task finished; read result for build status"}}
+    }){r->val text=label(r,13).apply{setTextIsSelectable(true)};val s=ScrollView(this);s.addView(text);val dialog=AlertDialog.Builder(this).setTitle("Host result").setView(s).setPositiveButton("Close",null)
+        val artifacts=try{JSONObject(r).optJSONArray("artifacts")}catch(e:Exception){null}
+        if(artifacts!=null && artifacts.length()>0)dialog.setNeutralButton("Download built APK"){_,_->downloadBuilt(artifacts.getJSONObject(0))}
+        dialog.show();status.text="Host task finished; read result for build status"}}
+    private fun downloadBuilt(artifact:JSONObject){
+        background("Downloading built APK privately…",{
+            val base=java.net.URI(Policy.https(prefs.getString("endpoint","") ?: ""))
+            val address=java.net.URI(base.scheme,null,base.host,base.port,"/v1/android/artifact","path="+artifact.getString("path"),null).toString()
+            val out=File(filesDir,"exports/built.apk").apply{parentFile?.mkdirs()}
+            Net.download(address,out,artifact.getString("sha256"),512L*1024*1024,prefs.getString("token","") ?: "")
+            out.path
+        }){path->status.text="Built APK downloaded and hash verified";share(File(path),"application/vnd.android.package-archive")}
+    }
     private fun remote(){
         val col=scroll();col.addView(label("Private remote access",22));col.addView(label("Connect Tailscale on this tablet first. Both sessions open full-screen and stay in landscape.",14))
         val desktop=field("Desktop HTTPS URL",prefs.getString("desktop","https://gaminglaptop-1.tail54e01b.ts.net:8443/vnc.html?autoconnect=1&resize=scale&path=websockify") ?: "")

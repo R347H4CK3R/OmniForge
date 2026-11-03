@@ -8,6 +8,16 @@ import androidx.test.uiautomator.Until
 import org.junit.Assert.*
 import org.junit.Test
 class LaunchTest {
+    @Test fun nativeRuntimeLoadsAndRejectsMissingModel(){
+        try {NativeModel.generate("/nonexistent/model.gguf","hello",1);fail("Missing model accepted")}
+        catch(expected:IllegalStateException){assertTrue(expected.message!!.contains("failed to load"))}
+    }
+    @Test fun offlineInferenceProducesText(){
+        val instrumentation=InstrumentationRegistry.getInstrumentation()
+        val model=java.io.File(instrumentation.targetContext.cacheDir,"smoke.gguf")
+        instrumentation.context.assets.open("test-model.gguf").use{input->model.outputStream().use{input.copyTo(it)}}
+        try {val result=NativeModel.generate(model.path,"Once upon a time",2);assertTrue(result.isNotBlank());assertFalse(result.contains("failed",true))}finally{model.delete()}
+    }
     @Test fun appLaunchesAndRemoteModesAreLandscape(){
         val instrumentation=InstrumentationRegistry.getInstrumentation()
         val context=instrumentation.targetContext

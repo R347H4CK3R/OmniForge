@@ -10,6 +10,14 @@ def execute(workspace,body):
     target=(root/value).resolve()
     if target!=root and root not in target.parents:raise ValueError('Outside authorized workspace')
     if action=='inspect':return inspect_apk(target)
-    if action=='build':return build_project(target)
+    if action=='build':
+        result=build_project(target)
+        for artifact in result.get('artifacts',[]):artifact['path']=str((target/artifact['path']).relative_to(root))
+        return result
     out=root/'AndroidAnalysis'/uuid.uuid4().hex
     return decompile_apk(target,out)
+
+def download_path(workspace,value):
+    root=pathlib.Path(workspace).resolve();target=(root/value).resolve()
+    if root not in target.parents or target.suffix.lower()!='.apk' or not target.is_file():raise ValueError('Invalid APK artifact path')
+    return target

@@ -2,6 +2,12 @@
 import hashlib,json,os,pathlib,shutil,subprocess,zipfile
 MAX_BYTES=512*1024*1024
 
+def artifact_info(path,root):
+    p=pathlib.Path(path);digest=hashlib.sha256()
+    with p.open('rb') as f:
+        for block in iter(lambda:f.read(65536),b''):digest.update(block)
+    return {'path':str(p.resolve().relative_to(pathlib.Path(root).resolve())),'sha256':digest.hexdigest(),'size':p.stat().st_size}
+
 def inspect_apk(path):
     p=pathlib.Path(path)
     if p.stat().st_size>MAX_BYTES:raise ValueError('APK exceeds 512 MiB')
@@ -13,7 +19,7 @@ def inspect_apk(path):
             if '\\' in n or n.startswith('/') or ':' in n or '..' in pathlib.PurePosixPath(n).parts:raise ValueError('Unsafe archive entry')
         names=[i.filename for i in infos]
         if 'AndroidManifest.xml' not in names:raise ValueError('Not an APK: manifest missing')
-        return {'schema':1,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'entries':len(names),
+        return {'schema':1,'sha256':artifact_info(p,p.parent)['sha256'],'entries':len(names),
           'dex_files':[n for n in names if n.endswith('.dex')],
           'abis':sorted({n.split('/')[1] for n in names if n.startswith('lib/') and len(n.split('/'))>2}),
           'files':names[:5000],'original_source_recovered':False,'signature_validated':False,
@@ -27,7 +33,7 @@ def build_project(folder,runner=subprocess.run):
     try:
         r=runner([gradle,'--no-daemon','assembleDebug'],cwd=root,capture_output=True,text=True,timeout=900,shell=False)
         apks=[str(p.relative_to(root)) for p in root.glob('**/build/outputs/apk/**/*.apk')]
-        return {'built':r.returncode==0 and bool(apks),'exit_code':r.returncode,'apks':apks,'log':(r.stdout+'\n'+r.stderr)[-24000:]}
+        return {'built':r.returncode==0 and bool(apks),'exit_code':r.returncode,'apks':apks,'artifacts':[artifact_info(root/p,root) for p in apks],'log':(r.stdout+'\n'+r.stderr)[-24000:]}
     except (OSError,subprocess.TimeoutExpired) as e:return {'built':False,'error':str(e)[:500]}
 
 def decompile_apk(path,out,runner=subprocess.run):

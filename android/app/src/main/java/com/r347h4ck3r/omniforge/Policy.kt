@@ -4,6 +4,11 @@ import java.io.File
 import java.net.URI
 
 object Policy {
+    fun prefix(reader:java.io.Reader,limit:Int):String {
+        val out=StringBuilder();val buffer=CharArray(minOf(4096,limit))
+        while(out.length<limit){val n=reader.read(buffer,0,minOf(buffer.size,limit-out.length));if(n<0)break;out.append(buffer,0,n)}
+        return out.toString()
+    }
     fun https(value: String): String {
         val u = URI(value.trim())
         require(u.scheme == "https" && !u.host.isNullOrBlank() && u.userInfo == null) { "Use an HTTPS address without embedded credentials" }
