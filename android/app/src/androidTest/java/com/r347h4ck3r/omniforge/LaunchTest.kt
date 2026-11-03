@@ -29,5 +29,19 @@ class LaunchTest {
         device.findObject(By.text("Remote")).click()
         assertNotNull(device.wait(Until.findObject(By.text("Open desktop")),5000))
         assertNotNull(device.findObject(By.text("Open terminal")))
+        for(title in listOf("Open desktop","Open terminal")){
+            device.findObject(By.text(title)).click()
+            assertNotNull(device.wait(Until.findObject(By.desc("Exit remote full screen")),10000))
+            device.waitForIdle()
+            assertTrue("Remote session must be landscape",device.displayWidth>device.displayHeight)
+            val web=device.findObject(By.clazz("android.webkit.WebView"))
+            assertNotNull(web)
+            assertTrue("Remote WebView must fill screen width",web.visibleBounds.width()>=device.displayWidth*0.95)
+            assertTrue("Remote WebView must fill screen height",web.visibleBounds.height()>=device.displayHeight*0.95)
+            val folder=java.io.File(context.getExternalFilesDir(null),"verification").apply{mkdirs()}
+            device.takeScreenshot(java.io.File(folder,title.replace(' ','_')+".png"))
+            device.findObject(By.desc("Exit remote full screen")).click()
+            assertNotNull(device.wait(Until.findObject(By.text("Open terminal")),5000))
+        }
     }
 }

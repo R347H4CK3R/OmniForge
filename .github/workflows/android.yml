@@ -68,7 +68,9 @@ jobs:
           arch: x86_64
           target: google_apis
           disable-animations: true
-          script: cd android && gradle --no-daemon --max-workers=2 connectedDebugAndroidTest
+          script: |
+            cd android && gradle --no-daemon --max-workers=2 connectedDebugAndroidTest
+            adb pull /sdcard/Android/data/com.r347h4ck3r.omniforge/files/verification app/build/reports/device-screenshots
       - name: Restore stable signing key
         if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || inputs.publish == true
         env:
