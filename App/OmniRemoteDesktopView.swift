@@ -55,6 +55,7 @@ struct OmniRemoteDesktopView: View {
                         webStatus = "Opening remote page…"
                         reconnectID = UUID()
                         activeURL = url
+                        OmniOrientationDelegate.remoteSessionActive = true
                         landscapePresented = true
                         if mode == 1 { terminalExpanded = true }
                     }
@@ -117,6 +118,7 @@ struct OmniRemoteDesktopView: View {
             .padding(.vertical, mode == 1 ? 4 : 16)
             .navigationTitle(terminalExpanded ? "Terminal" : "Remote Access")
             .fullScreenCover(isPresented: $landscapePresented, onDismiss: {
+                OmniOrientationDelegate.remoteSessionActive = false
                 activeURL = nil
                 terminalExpanded = false
             }) {
@@ -232,5 +234,12 @@ private final class OmniLandscapeController<Content: View>: UIHostingController<
         super.viewDidAppear(animated)
         setNeedsUpdateOfSupportedInterfaceOrientations()
         view.window?.windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape))
+    }
+}
+
+final class OmniOrientationDelegate: NSObject, UIApplicationDelegate {
+    static var remoteSessionActive = false
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        Self.remoteSessionActive ? .landscape : .allButUpsideDown
     }
 }
