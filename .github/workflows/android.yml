@@ -70,21 +70,21 @@ jobs:
           disable-animations: true
           script: cd android && gradle --no-daemon --max-workers=2 connectedDebugAndroidTest
       - name: Restore stable signing key
-        if: inputs.publish == true
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || inputs.publish == true
         env:
           KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
         run: |
           test -n "$KEYSTORE" || { echo 'Stable Android signing key secret missing'; exit 1; }
           printf '%s' "$KEYSTORE" | base64 --decode > "$RUNNER_TEMP/omniforge.jks"
       - name: Build signed release
-        if: inputs.publish == true
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || inputs.publish == true
         working-directory: android
         env:
           ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/omniforge.jks
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
         run: gradle --no-daemon --max-workers=2 assembleRelease
       - name: Verify, publish APK and update source
-        if: inputs.publish == true
+        if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || inputs.publish == true
         env:
           GH_TOKEN: ${{ secrets.OMNIFORGE_PUBLISH_TOKEN || github.token }}
         run: |
