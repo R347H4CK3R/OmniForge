@@ -2,9 +2,9 @@ name: Android build and source
 on:
   push:
     branches: [main, 'feat/android-*']
-    paths: ['android/**', 'shared/**', 'server/**', 'scripts/android*', 'scripts/test_android*', '.github/workflows/android.yml']
+    paths: ['App/**', 'project.yml', 'android/**', 'shared/**', 'server/**', 'scripts/android*', 'scripts/test_android*', '.github/workflows/android.yml']
   pull_request:
-    paths: ['android/**', 'shared/**', 'server/**', 'scripts/android*', 'scripts/test_android*', '.github/workflows/android.yml']
+    paths: ['App/**', 'project.yml', 'android/**', 'shared/**', 'server/**', 'scripts/android*', 'scripts/test_android*', '.github/workflows/android.yml']
   workflow_dispatch:
     inputs:
       publish:
@@ -33,6 +33,7 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
+      - uses: android-actions/setup-android@v3
       - name: Android SDK and pinned llama.cpp
         run: |
           sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.2.12479018' 'cmake;3.22.1'

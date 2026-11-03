@@ -29,7 +29,13 @@ class MainActivity:Activity() {
     override fun onCreate(savedInstanceState:Bundle?){
         super.onCreate(savedInstanceState)
         page=savedInstanceState?.getString("page") ?: "Chat"
+        importKind=savedInstanceState?.getString("importKind") ?: "apk"
         val root=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL;setBackgroundColor(Color.rgb(16,21,30));setPadding(dp(16),dp(12),dp(16),dp(6))}
+        root.setOnApplyWindowInsetsListener { view, insets ->
+            val bottom=if(android.os.Build.VERSION.SDK_INT>=30)insets.getInsets(android.view.WindowInsets.Type.systemBars() or android.view.WindowInsets.Type.ime()).bottom else insets.systemWindowInsetBottom
+            view.setPadding(dp(16)+insets.systemWindowInsetLeft,dp(12)+insets.systemWindowInsetTop,dp(16)+insets.systemWindowInsetRight,dp(6)+bottom)
+            insets
+        }
         root.addView(label("OmniForge",28).apply{setTypeface(null,1)})
         root.addView(label("ANDROID · YOUR WORKSPACE",11).apply{setTextColor(Color.rgb(130,170,220))})
         val nav=LinearLayout(this)
@@ -77,6 +83,19 @@ class MainActivity:Activity() {
             val name=field("Relative path, e.g. app/MainActivity.kt")
             AlertDialog.Builder(this).setTitle("Create workspace file").setView(name).setPositiveButton("Create"){_,_->try{val f=Policy.workspace(agent.workspace,name.text.toString());require(!f.exists()){ "File already exists" };f.parentFile?.mkdirs();f.writeText("");edit(f)}catch(e:Exception){failure(e)}}.setNegativeButton("Cancel",null).show()
         })
+        col.addView(button("Upload APK to laptop"){
+            val apks=agent.workspace.listFiles()?.filter{it.extension.equals("apk",true)} ?: emptyList()
+            if(apks.isEmpty()){status.text="Import an APK first";return@button}
+            AlertDialog.Builder(this).setTitle("Upload authorized APK privately").setItems(apks.map{it.name}.toTypedArray()){_,index->
+                background("Uploading APK to private host…",{
+                    val base=java.net.URI(Policy.https(prefs.getString("endpoint","") ?: ""))
+                    val endpoint=java.net.URI(base.scheme,null,base.host,base.port,"/v1/android/upload","name="+apks[index].name,null).toString()
+                    val result=JSONObject(Net.upload(endpoint,apks[index],prefs.getString("token","") ?: ""))
+                    prefs.edit().putString("lastHostPath",result.getString("host_path")).apply()
+                    "Uploaded to ${result.getString("host_path")}. Open Host Android workbench to inspect or decompile."
+                })
+            }.setNegativeButton("Cancel",null).show()
+        })
         col.addView(button("Host Android workbench") { hostDialog() })
         col.addView(label("Workspace",20))
         val files=agent.workspace.walkTopDown().filter{it.isFile}.take(200).toList()
@@ -97,7 +116,7 @@ class MainActivity:Activity() {
     private fun hostDialog(){
         val col=LinearLayout(this).apply{orientation=LinearLayout.VERTICAL;setPadding(dp(16),0,dp(16),0)}
         col.addView(label("Runs Android SDK/JADX tools on your private laptop. Paths refer to its authorized workspace. API token and endpoint come from Settings.",14))
-        val path=field("Host path, e.g. android-project");col.addView(path)
+        val path=field("Host path, e.g. android-project",prefs.getString("lastHostPath","") ?: "");col.addView(path)
         AlertDialog.Builder(this).setTitle("Android host tools").setView(col).setPositiveButton("Build source"){_,_->hostTask("build",path.text.toString())}.setNeutralButton("Inspect APK"){_,_->hostTask("inspect",path.text.toString())}.setNegativeButton("Decompile APK"){_,_->hostTask("decompile",path.text.toString())}.show()
     }
     private fun hostTask(action:String,path:String){background("Running host $action…",{
@@ -130,7 +149,7 @@ class MainActivity:Activity() {
         col.addView(button("Run self-test"){background("Checking…",{agent.ask("/self-test")})})
         col.addView(button("Check APK updates"){checkUpdate()})
         col.addView(button("Install downloaded update") {val f=File(cacheDir,"updates/OmniForge.apk");if(f.isFile)Updater.install(this,f)else status.text="Check for updates first"})
-        col.addView(button("Clear chat history"){AlertDialog.Builder(this).setMessage("Delete this tablet's chat history?").setPositiveButton("Delete"){_,_->prefs.edit().remove("chat").apply();status.text="Chat deleted"}.setNegativeButton("Cancel",null).show()})
+        col.addView(button("Clear chat history"){AlertDialog.Builder(this).setMessage("Delete this tablet's chat history?").setPositiveButton("Delete"){_,_->prefs.edit().remove("chat").apply();File(filesDir,"conversation.json").delete();status.text="Chat deleted"}.setNegativeButton("Cancel",null).show()})
         col.addView(label("Android app tools · APK edition\nRepository: R347H4CK3R/OmniForge\nSource: ${Updater.CATALOG}",12).apply{setTextIsSelectable(true)})
     }
     private fun checkUpdate(){var release:JSONObject?=null;background("Checking update source…",{release=Updater.check(this);release.toString()}){
@@ -152,6 +171,6 @@ class MainActivity:Activity() {
             }finally{temp.delete()}
         }){path->status.text="Imported ${File(path).name}";if(kind=="apk")inspect(File(path))else showPage()}
     }
-    override fun onSaveInstanceState(outState:Bundle){outState.putString("page",page);super.onSaveInstanceState(outState)}
+    override fun onSaveInstanceState(outState:Bundle){outState.putString("page",page);outState.putString("importKind",importKind);super.onSaveInstanceState(outState)}
     override fun onDestroy(){worker.shutdown();super.onDestroy()}
 }

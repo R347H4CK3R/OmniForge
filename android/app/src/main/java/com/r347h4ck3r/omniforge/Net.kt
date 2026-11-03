@@ -7,7 +7,7 @@ import java.security.MessageDigest
 object Net {
     fun request(address: String, body: String? = null, token: String = ""): String {
         val c = URL(Policy.https(address)).openConnection() as HttpURLConnection
-        c.connectTimeout = 20000; c.readTimeout = 180000; c.instanceFollowRedirects = false
+        c.connectTimeout = 20000; c.readTimeout = 900000; c.instanceFollowRedirects = false
         try {
             if (token.isNotBlank()) c.setRequestProperty("Authorization", "Bearer $token")
             if (body != null) { c.requestMethod = "POST"; c.doOutput = true; c.setRequestProperty("Content-Type", "application/json"); c.outputStream.use { it.write(body.toByteArray()) } }
@@ -17,6 +17,18 @@ object Net {
                 while (true) { val n = reader.read(buf); if (n < 0) break; require(out.length + n <= 2_000_000) { "Response too large" }; out.append(buf, 0, n) }; out.toString()
             }
         } finally { c.disconnect() }
+    }
+    fun upload(address:String,file:File,token:String):String {
+        require(file.length() in 1..512L*1024*1024){"Invalid APK upload size"}
+        val c=URL(Policy.https(address)).openConnection() as HttpURLConnection
+        c.instanceFollowRedirects=false;c.connectTimeout=20000;c.readTimeout=180000
+        c.requestMethod="POST";c.doOutput=true;c.setFixedLengthStreamingMode(file.length())
+        c.setRequestProperty("Authorization","Bearer $token");c.setRequestProperty("Content-Type","application/vnd.android.package-archive")
+        try {
+            file.inputStream().use{input->c.outputStream.use{output->input.copyTo(output,65536)}}
+            require(c.responseCode in 200..299){"Host upload HTTP ${c.responseCode}"}
+            return c.inputStream.bufferedReader().use{it.readText().take(2_000_000)}
+        }finally{c.disconnect()}
     }
     fun download(address: String, out: File, expected: String, limit: Long = 256L*1024*1024) {
         var current = Policy.https(address)
