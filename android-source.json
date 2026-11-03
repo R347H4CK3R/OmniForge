@@ -1,0 +1,12 @@
+{
+  "schema": 1,
+  "name": "OmniForge Android",
+  "applicationId": "com.r347h4ck3r.omniforge",
+  "versionCode": 14,
+  "versionName": "1.0.14",
+  "minSdk": 26,
+  "downloadUrl": "https://github.com/R347H4CK3R/OmniForge/releases/download/android-14/OmniForge-Android.apk",
+  "sha256": "6ed0ea148f0fd68518f5bb5fa28bd072b57839ef6a4155ff5f1ee576e0430444",
+  "size": 10526535,
+  "notes": "Android APK edition. Requires Android installation confirmation; private remote services need Tailscale."
+}
