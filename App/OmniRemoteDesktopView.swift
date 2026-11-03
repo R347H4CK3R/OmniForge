@@ -15,6 +15,7 @@ struct OmniRemoteDesktopView: View {
     @State private var reconnectID = UUID()
     @State private var webStatus = ""
     @State private var terminalExpanded = false
+    @State private var landscapePresented = false
     var body: some View {
         NavigationStack {
             VStack(spacing: 12) {
@@ -54,6 +55,7 @@ struct OmniRemoteDesktopView: View {
                         webStatus = "Opening remote page…"
                         reconnectID = UUID()
                         activeURL = url
+                        landscapePresented = true
                         if mode == 1 { terminalExpanded = true }
                     }
                     .buttonStyle(.borderedProminent)
@@ -89,7 +91,7 @@ struct OmniRemoteDesktopView: View {
                 }
                 if !error.isEmpty { Text(error).foregroundStyle(.red).font(.caption) }
                 if !terminalExpanded && !webStatus.isEmpty { Text(webStatus).font(.caption).foregroundStyle(.secondary).textSelection(.enabled) }
-                if let url = activeURL {
+                if let url = activeURL, !landscapePresented {
                     OmniRemoteWebView(url: url, zoom: mode == 0 ? zoom : 1.0, panMode: mode == 0 ? panMode : true, terminalMode: mode == 1, status: $webStatus)
                         .id(reconnectID)
                         .accessibilityIdentifier("remoteDesktopViewer")
@@ -114,7 +116,32 @@ struct OmniRemoteDesktopView: View {
             .padding(.horizontal, mode == 1 ? 4 : 16)
             .padding(.vertical, mode == 1 ? 4 : 16)
             .navigationTitle(terminalExpanded ? "Terminal" : "Remote Access")
-            .onDisappear { activeURL = nil }
+            .fullScreenCover(isPresented: $landscapePresented, onDismiss: {
+                activeURL = nil
+                terminalExpanded = false
+            }) {
+                OmniLandscapeHost {
+                    ZStack(alignment: .topTrailing) {
+                        Color.black.ignoresSafeArea()
+                        if let url = activeURL {
+                            OmniRemoteWebView(url: url, zoom: 1.0, panMode: mode == 1,
+                                              terminalMode: mode == 1, status: $webStatus)
+                                .ignoresSafeArea()
+                        }
+                        Button {
+                            landscapePresented = false
+                        } label: {
+                            Image(systemName: "xmark.circle.fill")
+                                .font(.title2)
+                                .foregroundStyle(.white, .black.opacity(0.65))
+                                .padding(8)
+                        }
+                        .accessibilityLabel("Exit remote full screen")
+                    }
+                    .statusBarHidden(true)
+                }
+                .ignoresSafeArea()
+            }
         }
     }
 }
@@ -181,5 +208,29 @@ private struct OmniRemoteWebView: UIViewRepresentable {
     static func dismantleUIView(_ view: WKWebView, coordinator: Coordinator) {
         view.stopLoading()
         view.loadHTMLString("", baseURL: nil)
+    }
+}
+
+/// A presented controller owns rotation for remote sessions only.
+private struct OmniLandscapeHost<Content: View>: UIViewControllerRepresentable {
+    let content: Content
+    init(@ViewBuilder content: () -> Content) { self.content = content() }
+    func makeUIViewController(context: Context) -> OmniLandscapeController<Content> {
+        OmniLandscapeController(rootView: content)
+    }
+    func updateUIViewController(_ controller: OmniLandscapeController<Content>, context: Context) {
+        controller.rootView = content
+    }
+}
+
+private final class OmniLandscapeController<Content: View>: UIHostingController<Content> {
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask { .landscape }
+    override var preferredInterfaceOrientationForPresentation: UIInterfaceOrientation { .landscapeRight }
+    override var shouldAutorotate: Bool { true }
+    override var prefersStatusBarHidden: Bool { true }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        setNeedsUpdateOfSupportedInterfaceOrientations()
+        view.window?.windowScene?.requestGeometryUpdate(.iOS(interfaceOrientations: .landscape))
     }
 }
