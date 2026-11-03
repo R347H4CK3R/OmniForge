@@ -26,7 +26,7 @@ jobs:
           TAG: ${{ inputs.release_tag }}
         run: |
           [[ "$TAG" =~ ^android-[0-9]+$ ]]
-          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern OmniForge-Android.apk --pattern android-source.json
+          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" --pattern OmniForge-Android.apk --pattern android-source.json --clobber
           python - <<'PY'
           import hashlib,json
           expected=json.load(open('android-source.json'))['sha256']
