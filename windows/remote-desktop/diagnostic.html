@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OmniForge connection check</title></head><body style="background:white;color:black;font:18px sans-serif;padding:16px"><h1>OmniForge connection check</h1><p>The laptop delivered this page.</p><pre id="out" style="white-space:pre-wrap;overflow-wrap:anywhere">JavaScript has not started yet.</pre><noscript>JavaScript is disabled. Enable it for this site.</noscript><script>
+(function(){
+var out=document.getElementById('out');out.textContent='JavaScript started.\n';
+function log(s){out.textContent+=s+'\n';}
+window.addEventListener('error',function(e){log('Browser error: '+e.message);});
+log('Secure HTTPS: '+window.isSecureContext);
+log('Browser: '+navigator.userAgent);
+function check(name,url,parse){
+log('Checking '+name+'...');
+var controller=new AbortController(),timer=setTimeout(function(){controller.abort();},12000);
+return fetch(url+'?check='+Date.now(),{cache:'no-store',signal:controller.signal}).then(function(r){if(!r.ok)throw Error('HTTP '+r.status);return r.text();}).then(function(t){if(parse)new Function(t);log('PASS '+name+' ('+t.length+' bytes)');}).catch(function(e){log('FAIL '+name+': '+e.message);}).finally(function(){clearTimeout(timer);});
+}
+Promise.all([check('small file','defaults.json'),check('stylesheet','app/styles/base.css'),check('viewer script','omniforge-bundle.js',true)]).then(function(){
+log('Checking VNC WebSocket...');
+var u=new URL('websockify',location.href);u.protocol='wss:';
+var w=new WebSocket(u.href),done=false;
+var timer=setTimeout(function(){finish('FAIL WebSocket: no VNC response within 12 seconds');},12000);
+function finish(s){if(done)return;done=true;clearTimeout(timer);log(s);w.close();log('Check finished. Share a screenshot of these results.');}
+w.onmessage=function(e){if(e.data instanceof Blob)e.data.text().then(function(t){finish(t.indexOf('RFB ')===0?'PASS VNC server replied':'FAIL unexpected server response');});else if(e.data instanceof ArrayBuffer){var t=new TextDecoder().decode(e.data);finish(t.indexOf('RFB ')===0?'PASS VNC server replied':'FAIL unexpected server response');}else finish('Server response: '+String(e.data));};
+w.onerror=function(){finish('FAIL WebSocket connection');};w.onclose=function(){if(!done)finish('FAIL WebSocket closed before VNC reply');};
+});
+})();</script></body></html>
