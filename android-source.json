@@ -2,11 +2,11 @@
   "schema": 1,
   "name": "OmniForge Android",
   "applicationId": "com.r347h4ck3r.omniforge",
-  "versionCode": 17,
-  "versionName": "1.0.17",
+  "versionCode": 18,
+  "versionName": "1.0.18",
   "minSdk": 26,
-  "downloadUrl": "https://github.com/R347H4CK3R/OmniForge/releases/download/android-17/OmniForge-Android.apk",
-  "sha256": "6dbac3d56a1087d891786c399bfa66c4c1cf3c9bae40f00d59c995a68c6c0b0f",
+  "downloadUrl": "https://github.com/R347H4CK3R/OmniForge/releases/download/android-18/OmniForge-Android.apk",
+  "sha256": "8195adcfa72053126849817987ca6c3eb09d0b2870e9ff6b8e9add79281af11d",
   "size": 10526539,
   "notes": "Android APK edition. Requires Android installation confirmation; private remote services need Tailscale."
 }
