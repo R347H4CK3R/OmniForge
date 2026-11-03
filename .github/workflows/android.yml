@@ -70,8 +70,8 @@ jobs:
           disable-animations: true
           script: |
             cd android && gradle --no-daemon --max-workers=2 connectedDebugAndroidTest
-            mkdir -p android/app/build/reports/device-screenshots
-            adb pull /sdcard/Android/data/com.r347h4ck3r.omniforge/files/verification android/app/build/reports/device-screenshots
+            # Gradle removes the target app after instrumentation. Capture release screenshots
+            # with android-release-smoke.yml instead; retain instrumentation XML reports here.
       - name: Restore stable signing key
         if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || inputs.publish == true
         env:
