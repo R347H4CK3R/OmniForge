@@ -13,6 +13,11 @@ def find(label,description=False):
             if node is not None:return node
         except (subprocess.SubprocessError,ET.ParseError) as e:last=e
         time.sleep(1)
+    try:
+        root=tree();(OUT/'failure-ui.xml').write_text(ET.tostring(root,encoding='unicode'))
+        screenshot('failure')
+        (OUT/'failure-logcat.txt').write_text(adb('logcat','-d','-t','300'))
+    except Exception:pass
     raise AssertionError(f'UI element missing: {label}; {last}')
 def bounds(node):return tuple(map(int,re.findall(r'\d+',node.get('bounds',''))))
 def tap(node):
