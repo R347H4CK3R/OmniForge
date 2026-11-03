@@ -1,0 +1,111 @@
+name: Android build and source
+on:
+  push:
+    branches: [main, 'feat/android-*']
+    paths: ['android/**', 'shared/**', 'server/**', 'scripts/android*', 'scripts/test_android*', '.github/workflows/android.yml']
+  pull_request:
+    paths: ['android/**', 'shared/**', 'server/**', 'scripts/android*', 'scripts/test_android*', '.github/workflows/android.yml']
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish stable signed APK and refresh Android source
+        type: boolean
+        default: false
+permissions:
+  contents: read
+concurrency:
+  group: android-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    env:
+      ANDROID_VERSION_CODE: ${{ github.run_number }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.9'
+      - name: Android SDK and pinned llama.cpp
+        run: |
+          sdkmanager 'platforms;android-35' 'build-tools;35.0.0' 'ndk;27.2.12479018' 'cmake;3.22.1'
+          git clone --depth 1 --branch "$(cat android/llama-ref.txt)" https://github.com/ggml-org/llama.cpp android/vendor/llama.cpp
+      - name: Shared and Android host tests
+        run: |
+          python -m unittest discover -s server -p 'test_*.py'
+          python -m unittest discover -s scripts -p 'test_android*.py'
+          python scripts/check_platform_contract.py
+      - name: Android tests, lint and native build
+        working-directory: android
+        run: gradle --no-daemon --max-workers=2 testDebugUnitTest lintDebug assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: OmniForge-Android-debug
+          path: android/app/build/outputs/apk/debug/app-debug.apk
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+      - name: Android 15 launch and landscape smoke test
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          disable-animations: true
+          script: cd android && gradle --no-daemon --max-workers=2 connectedDebugAndroidTest
+      - name: Restore stable signing key
+        if: inputs.publish == true
+        env:
+          KEYSTORE: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          test -n "$KEYSTORE" || { echo 'Stable Android signing key secret missing'; exit 1; }
+          printf '%s' "$KEYSTORE" | base64 --decode > "$RUNNER_TEMP/omniforge.jks"
+      - name: Build signed release
+        if: inputs.publish == true
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PATH: ${{ runner.temp }}/omniforge.jks
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+        run: gradle --no-daemon --max-workers=2 assembleRelease
+      - name: Verify, publish APK and update source
+        if: inputs.publish == true
+        env:
+          GH_TOKEN: ${{ secrets.OMNIFORGE_PUBLISH_TOKEN || github.token }}
+        run: |
+          set -euo pipefail
+          test '${{ github.ref }}' = 'refs/heads/main'
+          cp android/app/build/outputs/apk/release/app-release.apk OmniForge-Android.apk
+          "$ANDROID_HOME/build-tools/35.0.0/apksigner" verify --verbose --print-certs OmniForge-Android.apk
+          unzip -t OmniForge-Android.apk
+          TAG="android-${{ github.run_number }}"
+          URL="https://github.com/${{ github.repository }}/releases/download/$TAG/OmniForge-Android.apk"
+          python scripts/android_catalog.py OmniForge-Android.apk '${{ github.run_number }}' "$URL" android-source.json
+          gh release create "$TAG" OmniForge-Android.apk android-source.json --title "OmniForge Android $TAG" --notes 'Signed Android APK. Includes local GGUF runtime; import your model in Settings. Physical-device testing remains required.' --target '${{ github.sha }}'
+          python - <<'PY'
+          import base64,json,subprocess
+          repo='${{ github.repository }}'
+          source=open('android-source.json','rb').read()
+          for attempt in range(5):
+              old=subprocess.run(['gh','api',f'repos/{repo}/contents/android-source.json'],capture_output=True,text=True)
+              body={'message':'catalog: publish Android build ${{ github.run_number }}','content':base64.b64encode(source).decode(),'branch':'main'}
+              if old.returncode==0:body['sha']=json.loads(old.stdout)['sha']
+              result=subprocess.run(['gh','api','--method','PUT',f'repos/{repo}/contents/android-source.json','--input','-'],input=json.dumps(body),capture_output=True,text=True)
+              if result.returncode==0:break
+          else:raise SystemExit('APK published but catalog update failed')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: Android-verification-reports
+          path: |
+            android/app/build/reports/
+            android/app/build/outputs/androidTest-results/

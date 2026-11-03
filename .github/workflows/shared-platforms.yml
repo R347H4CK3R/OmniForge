@@ -1,0 +1,26 @@
+name: Shared change - iOS and Android contract
+on:
+  push:
+    paths: ['shared/**', 'server/**', 'App/**', 'android/**', 'project.yml', '.github/workflows/shared-platforms.yml']
+  pull_request:
+    paths: ['shared/**', 'server/**', 'App/**', 'android/**', 'project.yml', '.github/workflows/shared-platforms.yml']
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python scripts/check_platform_contract.py
+  ios:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - run: brew install xcodegen
+      - run: xcodegen generate
+      - run: xcodebuild -project OmniForge.xcodeproj -scheme OmniForge -sdk iphonesimulator -destination 'generic/platform=iOS Simulator' CODE_SIGNING_ALLOWED=NO build > ios-build.log 2>&1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ios-shared-change-log
+          path: ios-build.log

@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "common": ["chat", "offline_gguf", "workspace", "agent_tools", "diagnostics", "desktop_landscape", "terminal_landscape", "updates"],
+  "ios": {"source": "App", "package_type": "ipa", "application_id": "com.r347h4ck3r.omniforge"},
+  "android": {"source": "android", "package_type": "apk", "application_id": "com.r347h4ck3r.omniforge", "min_sdk": 26, "target_sdk": 35},
+  "maintenance": "Any common feature change requires reviewing both native clients and running both platform checks. Platform-specific tools stay platform-specific."
+}
