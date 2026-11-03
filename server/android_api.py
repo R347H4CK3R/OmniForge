@@ -32,3 +32,22 @@ def download_path(workspace,value):
     root=pathlib.Path(workspace).resolve();target=(root/value).resolve()
     if root not in target.parents or target.suffix.lower()!='.apk' or not target.is_file():raise ValueError('Invalid APK artifact path')
     return target
+
+def complete(body,default_model,ollama='http://127.0.0.1:11434',opener=None):
+    """Raw structured completion for the Android-owned tool loop; never nest the host agent."""
+    import json,urllib.request
+    messages=body.get('messages')
+    if not isinstance(messages,list) or not messages:raise ValueError('Missing conversation messages')
+    schema={'oneOf':[
+        {'type':'object','properties':{'answer':{'type':'string'}},'required':['answer'],'additionalProperties':False},
+        {'type':'object','properties':{'tool':{'type':'string','enum':['list_files','read_file','write_file','validate_json','inspect_apk','fetch_https','host_build_source','host_analyze_apk','host_action']},'args':{'type':'object'}},'required':['tool','args'],'additionalProperties':False}
+    ]}
+    payload={'model':body.get('model') or default_model,'messages':messages,'stream':False,'format':schema,'keep_alive':'30s','options':{'temperature':0,'num_ctx':8192,'num_predict':2048}}
+    req=urllib.request.Request(ollama.rstrip('/')+'/api/chat',data=json.dumps(payload).encode(),headers={'Content-Type':'application/json'})
+    with (opener or urllib.request.urlopen)(req,timeout=300) as response:
+        raw=response.read(2_000_001)
+        if len(raw)>2_000_000:raise ValueError('Model response exceeds limit')
+        data=json.loads(raw)
+    text=data.get('message',{}).get('content','')
+    if not text:raise ValueError('Model returned no content')
+    return {'model':data.get('model') or payload['model'],'choices':[{'index':0,'message':{'role':'assistant','content':text},'finish_reason':'stop'}]}

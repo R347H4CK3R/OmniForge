@@ -187,7 +187,7 @@ class MainActivity:Activity() {
         col.addView(label("Import a small instruction-tuned GGUF (start with 0.5B Q4). Model files remain private on this tablet. Larger models may exceed its memory.",14))
         col.addView(button("Import GGUF model"){pick("model")})
         col.addView(label("Imported model: "+File(filesDir,"models/model.gguf").let{if(it.isFile)"${it.length()/1024/1024} MiB" else "none"},13))
-        val endpoint=field("Chat endpoint (HTTPS, /v1/chat/completions)",prefs.getString("endpoint","https://gaminglaptop-1.tail54e01b.ts.net/v1/chat/completions") ?: "")
+        val endpoint=field("Private AI address (HTTPS)",prefs.getString("endpoint","https://gaminglaptop-1.tail54e01b.ts.net/android-api/v1/android/completions") ?: "")
         val hostBase=field("Android host base URL",prefs.getString("hostBase","https://gaminglaptop-1.tail54e01b.ts.net/android-api") ?: "")
         val model=field("Online model name",prefs.getString("model","qwen2.5-coder:1.5b") ?: "")
         val token=field("Private agent API token",prefs.getString("token","") ?: "",true)

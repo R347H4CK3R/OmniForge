@@ -38,3 +38,16 @@ class AndroidArtifactTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             p=pathlib.Path(d,'sample.apk');p.write_bytes(b'apk')
             self.assertEqual(download_path(d,'sample.apk'),p)
+
+class AndroidCompletionTests(unittest.TestCase):
+    def test_native_agent_owns_tool_loop(self):
+        from android_api import complete
+        import io,json
+        seen={}
+        def open_request(req,timeout):
+            seen.update(json.loads(req.data));return io.BytesIO(json.dumps({'message':{'content':'{"answer":"ok"}'}}).encode())
+        result=complete({'messages':[{'role':'user','content':'hello'}]},'qwen2.5-coder:1.5b',opener=open_request)
+        self.assertEqual(result['choices'][0]['message']['content'],'{"answer":"ok"}')
+        self.assertNotIn('tools',seen)
+        self.assertIn('format',seen)
+        self.assertEqual(seen['model'],'qwen2.5-coder:1.5b')

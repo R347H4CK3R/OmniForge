@@ -156,7 +156,7 @@ class Handler(BaseHTTPRequestHandler):
             if not KEY or not hmac.compare_digest(self.headers.get("Authorization",""),"Bearer "+KEY):
                 self.reply(401,{"error":"Unauthorized"});return
             try:
-                from android_api import execute,inspect_apk
+                from android_api import execute,inspect_apk,complete
                 from android_workbench import extract_project
                 if self.path.startswith("/v1/android/upload?") or self.path.startswith("/v1/android/project-upload?"):
                     import urllib.parse,uuid
@@ -180,6 +180,10 @@ class Handler(BaseHTTPRequestHandler):
                             result=inspect_apk(target);result["host_path"]=str(target.relative_to(ROOT))
                     except Exception:
                         target.unlink(missing_ok=True);raise
+                elif self.path=="/v1/android/completions":
+                    count=int(self.headers.get("Content-Length","0"))
+                    if not 0<count<=600000:raise ValueError("Request too large")
+                    result=complete(json.loads(self.rfile.read(count)),MODEL,OLLAMA)
                 elif self.path=="/v1/android/workbench":
                     count=int(self.headers.get("Content-Length","0"))
                     if not 0<count<=600000:raise ValueError("Request too large")
