@@ -130,7 +130,7 @@ class MainActivity:Activity() {
                 .setPositiveButton("Decode"){_,_->hostTask("decode",path.text.toString())}.setNeutralButton("Rebuild"){_,_->hostTask("rebuild",path.text.toString())}.setNegativeButton("Cancel",null).show()
         })
         col.addView(button("Host Android workbench") { hostDialog() })
-        col.addView(button("Install last built APK") {val f=File(filesDir,"exports/built.apk");if(f.isFile)Updater.install(this,f)else status.text="Download a successful host build first"})
+        col.addView(button("Install last built APK") {val exported=File(filesDir,"exports/built.apk");val generated=File(agent.workspace,"BuildOutputs/built.apk");val f=if(generated.isFile && generated.lastModified()>exported.lastModified())generated else exported;if(f.isFile){if(f==generated){exported.parentFile?.mkdirs();generated.copyTo(exported,true)};Updater.install(this,exported)}else status.text="Download a successful host build first"})
         col.addView(label("Workspace",20))
         val files=agent.workspace.walkTopDown().filter{it.isFile}.take(200).toList()
         if(files.isEmpty())col.addView(label("No files yet. Import an APK or create source.",14))

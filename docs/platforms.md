@@ -28,3 +28,6 @@ Laptop Android tools require JDK 17, Android SDK, Gradle and optionally JADX. St
 The Android APK does not bundle a complete on-device SDK/compiler.
 
 No installed app, local inference, reconstructed source, signing or physical-device behavior is called verified until its corresponding check has actually run. Emulator launch is separate from onn 100135925 physical-device verification.
+
+
+The Android JSON tool agent can use `host_build_source` to upload its local Gradle workspace, run the actual host compiler, observe its errors, edit source and try again. Successful artifacts are downloaded into BuildOutputs/. `host_analyze_apk` transfers local APKs for host inspection/decompilation/resource decoding; `host_action` can list/read permitted source text and edit it only when the app's workspace-edit setting is enabled. Android installation still requires an explicit system confirmation. These are implemented tool calls, not a claim that a small local model reliably solves arbitrary development tasks.

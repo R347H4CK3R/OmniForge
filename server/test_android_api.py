@@ -7,6 +7,15 @@ class AndroidAPITests(unittest.TestCase):
     def test_unknown_action_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             with self.assertRaises(ValueError):execute(pathlib.Path(d),{'action':'shell','path':'.'})
+    def test_android_agent_can_edit_and_read_host_source(self):
+        with tempfile.TemporaryDirectory() as d:
+            root=pathlib.Path(d)
+            execute(root,{'action':'write_file','path':'project/Main.kt','content':'class Main'})
+            self.assertEqual(execute(root,{'action':'read_file','path':'project/Main.kt'})['content'],'class Main')
+            self.assertIn('Main.kt',execute(root,{'action':'list_files','path':'project'})['files'])
+    def test_host_write_cannot_escape(self):
+        with tempfile.TemporaryDirectory() as d:
+            with self.assertRaises(ValueError):execute(pathlib.Path(d),{'action':'write_file','path':'../escape.kt','content':'x'})
     def test_missing_tool_is_failure(self):
         with tempfile.TemporaryDirectory() as d:
             pathlib.Path(d,'settings.gradle').write_text('')

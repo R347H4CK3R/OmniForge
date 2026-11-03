@@ -182,7 +182,7 @@ class Handler(BaseHTTPRequestHandler):
                         target.unlink(missing_ok=True);raise
                 elif self.path=="/v1/android/workbench":
                     count=int(self.headers.get("Content-Length","0"))
-                    if not 0<count<=100000:raise ValueError("Request too large")
+                    if not 0<count<=600000:raise ValueError("Request too large")
                     result=execute(ROOT,json.loads(self.rfile.read(count)))
                 else:self.send_error(404);return
                 self.reply(200,result)

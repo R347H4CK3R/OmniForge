@@ -5,10 +5,19 @@ from android_workbench import inspect_apk,build_project,decompile_apk,decode_res
 
 def execute(workspace,body):
     root=pathlib.Path(workspace).resolve();value=body.get('path','');action=body.get('action')
-    if action not in ('inspect','build','decompile','decode','rebuild'):raise ValueError('Unknown Android workbench action')
+    if action not in ('inspect','build','decompile','decode','rebuild','read_file','write_file','list_files'):raise ValueError('Unknown Android workbench action')
     if not isinstance(value,str) or not value or '\0' in value:raise ValueError('Invalid project path')
     target=(root/value).resolve()
     if target!=root and root not in target.parents:raise ValueError('Outside authorized workspace')
+    if action=='list_files':return {'files':[p.name for p in sorted(target.iterdir())][:150]}
+    if action in ('read_file','write_file'):
+        if target.suffix.lower() not in ('.kt','.java','.gradle','.kts','.xml','.yml','.yaml','.json','.txt','.properties','.smali','.md'):raise ValueError('Only source/configuration text files may be edited')
+        if action=='read_file':
+            if target.stat().st_size>500000:raise ValueError('File too large')
+            return {'content':target.read_text(encoding='utf-8')}
+        content=body.get('content')
+        if not isinstance(content,str) or len(content.encode('utf-8'))>500000:raise ValueError('Invalid or oversized source content')
+        target.parent.mkdir(parents=True,exist_ok=True);target.write_text(content,encoding='utf-8');return {'written':str(target.relative_to(root))}
     if action=='inspect':return inspect_apk(target)
     if action=='build':
         result=build_project(target)
