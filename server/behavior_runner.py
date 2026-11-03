@@ -29,7 +29,8 @@ def run_probes(project, evidence, timeout=120):
                 expected=requirement["sha256"].lower()
                 if len(expected)!=64 or any(c not in "0123456789abcdef" for c in expected):
                     raise ValueError("Invalid digest")
-                digest=hashlib.file_digest(candidate.open("rb"),"sha256").hexdigest()
+                with candidate.open("rb") as stream:
+                    digest=hashlib.file_digest(stream,"sha256").hexdigest()
                 passed=digest==expected
                 detail="SHA256: "+digest
             elif kind=="python_unittest":
