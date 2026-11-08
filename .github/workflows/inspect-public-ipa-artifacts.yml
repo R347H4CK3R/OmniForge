@@ -23,11 +23,8 @@ jobs:
       matrix:
         include:
           - repository: R347H4CK3R/PocketForge
-            run: 40411268941
-            artifact: '12693233058'
-          - repository: R347H4CK3R/madeira-cod-test
-            run: 40346816186
-            artifact: '12662370968'
+            run: 42518096757
+            artifact: '13632281608'
           - repository: R347H4CK3R/BO2-IOS-CS
             run: 36003097069
             artifact: '10809800035'

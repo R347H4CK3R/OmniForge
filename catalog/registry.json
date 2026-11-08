@@ -114,5 +114,21 @@
       "BOZ-Integrated-Input.sha256",
       "INSTALL.md"
     ]
+  },
+  {
+    "repository": "R347H4CK3R/-Native-Zombies-iOS",
+    "bundleIdentifier": "com.nativezombies.game",
+    "name": "Native Zombies Prototype",
+    "developerName": "R347H4CK3R",
+    "subtitle": "Original Metal survival-game prototype",
+    "localizedDescription": "Experimental original native survival-game prototype with procedural visuals, waves, weapons, touch/controller input and developer controls. Separate from Afterlight and not an Activision game. The reviewed source build passed 20 simulator unit tests and an ARM64 device build; physical-device gameplay and SideStore installation remain untested. Unsigned IPA requires compatible signing. iOS 17+. Owner avatar is used because no reviewed app screenshot or bundled icon is available.",
+    "category": "games",
+    "tagPattern": "prototype-[0-9.]+-build[0-9]+",
+    "assetPattern": "NativeZombies-unsigned\\.ipa",
+    "allowPrerelease": false,
+    "iconURL": "https://github.com/R347H4CK3R.png",
+    "requiredEvidenceAssets": [
+      "SHA256SUMS"
+    ]
   }
 ]
