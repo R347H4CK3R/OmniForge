@@ -22,27 +22,9 @@ jobs:
       max-parallel: 4
       matrix:
         include:
-          - repository: R347H4CK3R/PocketForge
-            run: 42518096757
-            artifact: '13632281608'
           - repository: R347H4CK3R/BO2-IOS-CS
-            run: 36003097069
-            artifact: '10809800035'
-          - repository: R347H4CK3R/BO2CS
-            run: 35542001636
-            artifact: '10614504342'
-          - repository: R347H4CK3R/CSNZ-iOS
-            run: 36201512410
-            artifact: '10891229849'
-          - repository: R347H4CK3R/Hijacked-Quake3-iOS-
-            run: 35221891882
-            artifact: '10501333638'
-          - repository: R347H4CK3R/-Native-Zombies-iOS
-            run: 36511217716
-            artifact: '11008099931'
-          - repository: R347H4CK3R/COD4iOS-COD4NS
-            run: 38847728229
-            artifact: '12024705977'
+            run: 42519149258
+            artifact: '13632817094'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -50,14 +32,14 @@ jobs:
           python-version: '3.12'
       - name: Test read-only inspector
         run: python3 -m unittest discover -s scripts -p 'test_inspect_ci_ipas.py' -v
-      - name: Require public repository and successful source run
+      - name: Require public repository and exact candidate source revision
         env:
           GH_TOKEN: ${{ github.token }}
           TARGET_REPO: ${{ matrix.repository }}
           SOURCE_RUN: ${{ matrix.run }}
         run: |
           gh api "repos/$TARGET_REPO" --jq '.private == false and .visibility == "public"' | grep -x true
-          gh api "repos/$TARGET_REPO/actions/runs/$SOURCE_RUN" --jq '.conclusion == "success"' | grep -x true
+          gh api "repos/$TARGET_REPO/actions/runs/$SOURCE_RUN" --jq '.head_sha == "b2af0a851d64d8505b9ac9075661f793499d7592"' | grep -x true
       - name: Download exact public build artifact
         uses: actions/download-artifact@v4
         with:
