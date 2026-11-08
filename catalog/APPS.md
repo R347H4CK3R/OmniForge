@@ -57,14 +57,14 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <p><strong>Offline character speech and voice tools</strong></p>
 <p>Import your own character folders, create offline speech and convert recordings with local neural engines. No stock characters are bundled. Experimental character-test edition: native diagnostic speech and simulator conversion checks pass, but physical iPhone behavior and character likeness remain unverified. Requires iOS 26.</p>
 
-- Version: 0.4.3 · Build: 1
-- Requires iOS 26.0 or later · Download: 731.05 MB
+- Version: 0.4.4 · Build: 1
+- Requires iOS 26.0 or later · Download: 731.08 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.3/VoiceMatrix-0.4.3.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.4/VoiceMatrix-0.4.4.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Playback controls and diagnostics, character-selection guidance, and in-app update checks/downloads with Strata handoff. No stock voices or private character audio bundled. Native/simulator checks passed; physical iPhone sound and character likeness remain unverified.</p>
+<p>A refreshed voice studio with one-tap character selection, searchable voices, clearer speech controls and collection management. Working audio engines and private storage are unchanged. No bundled stock or character voices. Native and simulator checks passed; physical iPhone interface and likeness checks remain pending.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
@@ -223,6 +223,32 @@ The IPA is unchanged from reviewed artifact 10614504342,522884 bytes. SHA256: 2a
 This exact unsigned IPA was built at commit 241f76173741a4c39b2d0abb9e69b7ccc6dbfd96 in https://github.com/R347H4CK3R/COD4iOS-COD4NS/actions/runs/38847728229 . Its public packager excludes retail game data and signing profiles, includes third-party license notices, and validates the archive. Independent inspection verified app identity, ARM64 device platform, minimum OS and SHA256. The app was not run on a physical iPhone in this review.
 
 The matching source archive is included, recreated byte-for-byte against the original build receipt, including the matching OpenAL source and build scripts. Read its GPL and third-party licenses. Retail game files are not included; supply your own legally obtained compatible files. Sign the IPA with a compatible sideloading tool; preserve saves and existing data before changing installations.
+</p>
+</details>
+
+---
+
+## BO2 iOS CS Runtime
+
+<img src="https://github.com/R347H4CK3R.png" width="72" height="72" alt="BO2 iOS CS Runtime catalog icon">
+
+<p><strong>Experimental native startup/config runtime</strong></p>
+<p>Experimental Xash-based iOS runtime using safe normalized fixtures. Native startup and generated-config execution are verified; full converted BO2 gameplay, campaign and multiplayer are not present. This is not a finished commercial-game port. Includes Xash GPL, HLSDK and SDL notices, with complete matching patched source and pinned dependencies in the release. Corrected logging verified the exact existing simulator candidate without changing its binary. Physical-device gameplay and SideStore installation remain untested. Unsigned IPA needs compatible signing, iOS 17+. Owner avatar is used pending reviewed artwork.</p>
+
+- Version: 0.1 · Build: 3
+- Requires iOS 17.0 or later · Download: 5.57 MB
+- Bundle ID: com.r347h4ck3r.bo2ioscs.xash
+
+<a href="https://github.com/R347H4CK3R/BO2-IOS-CS/releases/download/runtime-0.1-build3/BO2IOSCS-Xash-integrated.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>BO2 iOS CS experimental Xash runtime 0.1 (3), iOS 17 or later. This is a native startup/runtime research build using safe normalized fixtures, not full converted BO2 gameplay or a complete commercial-game port. Physical-device gameplay and SideStore installation have not been tested.
+
+The exact unsigned IPA comes from verified source commit 19b855bd032587eed6f2f972b1019997a8c72b89 and build https://github.com/R347H4CK3R/BO2-IOS-CS/actions/runs/42521767991 . Native compilation, unit tests and archive checks passed. The first startup check missed an early log line. After fixing log capture without changing the app or pass criteria, startup/config execution was verified using the exact existing simulator artifact: https://github.com/R347H4CK3R/BO2-IOS-CS/actions/runs/42523257291 . Independent inspection verified the ARM64 device payload, bundle/version, OS requirement and embedded legal notices.
+
+Required Xash GPL, HLSDK and SDL license texts are included in the app. The accompanying corresponding-source archive contains 9,203 tracked source files, initialized pinned dependencies, applied patches, original notices and build scripts, with a per-file hash manifest. GPL-covered code and upstream notices retain their licenses. The HLSDK components are distributed free of charge. No proprietary PS3 source dumps or retail game files are included.
+
+Sign the unsigned IPA using a compatible sideloading tool. Preserve existing saves/data. Read the source README and build scripts for the project&#x27;s current limitations; this release does not prove complete game conversion, campaign or multiplayer support.
 </p>
 </details>
 

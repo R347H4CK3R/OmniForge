@@ -96,19 +96,19 @@
       },
       "versions": [
         {
-          "date": "2026-11-08T19:14:08Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.3/VoiceMatrix-0.4.3.ipa",
-          "size": 731052434,
-          "version": "0.4.3",
+          "date": "2026-11-08T20:50:00Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.4/VoiceMatrix-0.4.4.ipa",
+          "size": 731078368,
+          "version": "0.4.4",
           "buildVersion": "1",
           "minOSVersion": "26.0",
-          "localizedDescription": "Playback controls and diagnostics, character-selection guidance, and in-app update checks/downloads with Strata handoff. No stock voices or private character audio bundled. Native/simulator checks passed; physical iPhone sound and character likeness remain unverified."
+          "localizedDescription": "A refreshed voice studio with one-tap character selection, searchable voices, clearer speech controls and collection management. Working audio engines and private storage are unchanged. No bundled stock or character voices. Native and simulator checks passed; physical iPhone interface and likeness checks remain pending."
         }
       ],
-      "version": "0.4.3",
-      "versionDate": "2026-11-08T19:14:08Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.3/VoiceMatrix-0.4.3.ipa",
-      "size": 731052434,
+      "version": "0.4.4",
+      "versionDate": "2026-11-08T20:50:00Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.4/VoiceMatrix-0.4.4.ipa",
+      "size": 731078368,
       "subtitle": "Offline character speech and voice tools",
       "category": "entertainment",
       "screenshots": [
@@ -124,9 +124,9 @@
         }
       ],
       "_verification": {
-        "sha256": "7c01b000cfe07c73b29a9800ed5f17eebc001cdf6b6741c39767df547c03ab4a",
-        "release": "https://github.com/R347H4CK3R/Ghostline/releases/tag/voicematrix-v0.4.3",
-        "assetId": 724928913,
+        "sha256": "274ca2b0f64d0a884358f04e624f30f454830be0d7921bd02eeaa2a9c2c64059",
+        "release": "https://github.com/R347H4CK3R/Ghostline/releases/tag/voicematrix-v0.4.4",
+        "assetId": 725156728,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     },
@@ -360,6 +360,41 @@
         "sha256": "4f70ec22afb32cbb4cad656198f31888bf284172f96f182bc9653ac47b401945",
         "release": "https://github.com/R347H4CK3R/COD4iOS-COD4NS/releases/tag/diagnostic-1.0.3-build4",
         "assetId": 725140548,
+        "level": "IPA structure and published release metadata; physical device behavior not certified"
+      }
+    },
+    {
+      "name": "BO2 iOS CS Runtime",
+      "bundleIdentifier": "com.r347h4ck3r.bo2ioscs.xash",
+      "developerName": "Xash3D FWGS / HLSDK contributors / R347H4CK3R",
+      "subtitle": "Experimental native startup/config runtime",
+      "localizedDescription": "Experimental Xash-based iOS runtime using safe normalized fixtures. Native startup and generated-config execution are verified; full converted BO2 gameplay, campaign and multiplayer are not present. This is not a finished commercial-game port. Includes Xash GPL, HLSDK and SDL notices, with complete matching patched source and pinned dependencies in the release. Corrected logging verified the exact existing simulator candidate without changing its binary. Physical-device gameplay and SideStore installation remain untested. Unsigned IPA needs compatible signing, iOS 17+. Owner avatar is used pending reviewed artwork.",
+      "iconURL": "https://github.com/R347H4CK3R.png",
+      "category": "developer",
+      "appPermissions": {
+        "privacy": {
+          "NSMicrophoneUsageDescription": "Voice input may be used by the game runtime."
+        }
+      },
+      "versions": [
+        {
+          "date": "2026-11-08T21:12:46Z",
+          "downloadURL": "https://github.com/R347H4CK3R/BO2-IOS-CS/releases/download/runtime-0.1-build3/BO2IOSCS-Xash-integrated.ipa",
+          "size": 5570497,
+          "version": "0.1",
+          "buildVersion": "3",
+          "minOSVersion": "17.0",
+          "localizedDescription": "BO2 iOS CS experimental Xash runtime 0.1 (3), iOS 17 or later. This is a native startup/runtime research build using safe normalized fixtures, not full converted BO2 gameplay or a complete commercial-game port. Physical-device gameplay and SideStore installation have not been tested.\n\nThe exact unsigned IPA comes from verified source commit 19b855bd032587eed6f2f972b1019997a8c72b89 and build https://github.com/R347H4CK3R/BO2-IOS-CS/actions/runs/42521767991 . Native compilation, unit tests and archive checks passed. The first startup check missed an early log line. After fixing log capture without changing the app or pass criteria, startup/config execution was verified using the exact existing simulator artifact: https://github.com/R347H4CK3R/BO2-IOS-CS/actions/runs/42523257291 . Independent inspection verified the ARM64 device payload, bundle/version, OS requirement and embedded legal notices.\n\nRequired Xash GPL, HLSDK and SDL license texts are included in the app. The accompanying corresponding-source archive contains 9,203 tracked source files, initialized pinned dependencies, applied patches, original notices and build scripts, with a per-file hash manifest. GPL-covered code and upstream notices retain their licenses. The HLSDK components are distributed free of charge. No proprietary PS3 source dumps or retail game files are included.\n\nSign the unsigned IPA using a compatible sideloading tool. Preserve existing saves/data. Read the source README and build scripts for the project's current limitations; this release does not prove complete game conversion, campaign or multiplayer support.\n"
+        }
+      ],
+      "version": "0.1",
+      "versionDate": "2026-11-08T21:12:46Z",
+      "downloadURL": "https://github.com/R347H4CK3R/BO2-IOS-CS/releases/download/runtime-0.1-build3/BO2IOSCS-Xash-integrated.ipa",
+      "size": 5570497,
+      "_verification": {
+        "sha256": "73df157af5fded447d1542bf2f7a8de3f8270ec80e9c71599ffde3f80bb9c6d2",
+        "release": "https://github.com/R347H4CK3R/BO2-IOS-CS/releases/tag/runtime-0.1-build3",
+        "assetId": 725208941,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     }
