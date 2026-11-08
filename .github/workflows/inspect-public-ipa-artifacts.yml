@@ -23,8 +23,8 @@ jobs:
       matrix:
         include:
           - repository: R347H4CK3R/BO2-IOS-CS
-            run: 42519149258
-            artifact: '13632817094'
+            run: 42521767991
+            artifact: '13633392701'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -39,7 +39,7 @@ jobs:
           SOURCE_RUN: ${{ matrix.run }}
         run: |
           gh api "repos/$TARGET_REPO" --jq '.private == false and .visibility == "public"' | grep -x true
-          gh api "repos/$TARGET_REPO/actions/runs/$SOURCE_RUN" --jq '.head_sha == "b2af0a851d64d8505b9ac9075661f793499d7592"' | grep -x true
+          gh api "repos/$TARGET_REPO/actions/runs/$SOURCE_RUN" --jq '.head_sha == "19b855bd032587eed6f2f972b1019997a8c72b89"' | grep -x true
       - name: Download exact public build artifact
         uses: actions/download-artifact@v4
         with:
@@ -72,6 +72,26 @@ jobs:
               outcome={k:data[k] for k in ('status','passed','device_ipa_executed') if k in data}
               if outcome not in outcomes: outcomes.append(outcome)
           print(json.dumps({'simulatorOutcomes':outcomes},indent=2))
+          PYCODE
+      - name: Verify complete matching source archive
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,pathlib,zipfile
+          paths=list(pathlib.Path('candidate').rglob('BO2IOSCS-Xash-source.zip'));assert len(paths)==1
+          p=paths[0];assert p.stat().st_size==96351192
+          assert hashlib.sha256(p.read_bytes()).hexdigest()=='d976a87e9c3e54dff86a7e8048ce08badfbb6d6f43ad88cd7f44ec9c262beb0b'
+          with zipfile.ZipFile(p) as z:
+              assert len(z.infolist())==9204
+              assert sum(x.file_size for x in z.infolist())<2_000_000_000
+              assert z.testzip() is None
+              manifest=json.loads(z.read('SOURCE-MANIFEST.json'))
+              assert len(manifest['files'])==9203
+              revisions={x['component']:x['revision'] for x in manifest['repositories']}
+              assert revisions=={'BO2-IOS-CS':'19b855bd032587eed6f2f972b1019997a8c72b89','xash3d-fwgs':'4857b389e6ba32ddaa68582aedcbc950c138f46a','SDL2':'b90ac95029d801c5abc59472ba8e2200dff31e1e','hlsdk-portable':'fe0248bb6de2e61bbb4ece0221e90dc6c4c9dc7b'}
+              for entry in manifest['files']:
+                  assert hashlib.sha256(z.read(entry['path'])).hexdigest()==entry['sha256']
+              assert not any('.git' in pathlib.PurePosixPath(x.filename).parts or '..' in pathlib.PurePosixPath(x.filename).parts for x in z.infolist())
+          print('Matching source archive verified: 9203 tracked files, exact source/dependency revisions and per-file hashes.')
           PYCODE
       - name: Publish inspection receipt only, never app binaries
         uses: actions/upload-artifact@v4
