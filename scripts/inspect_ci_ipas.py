@@ -21,11 +21,18 @@ def inspect_directory(directory):
             names=[n for n in z.namelist() if n.startswith('Payload/') and n.count('/')==2 and n.endswith('.app/Info.plist')]
             if len(names)!=1 or z.getinfo(names[0]).file_size>1_000_000: raise ValueError('invalid app metadata')
             info=plistlib.loads(z.read(names[0]));bid=info['CFBundleIdentifier']
+            notices=[]
+            for entry in z.infolist():
+                name=Path(entry.filename).name
+                if any(word in name.upper() for word in ('LICENSE','COPYING','NOTICE')) and not entry.is_dir():
+                    if entry.file_size>1_000_000: raise ValueError('oversized legal notice')
+                    data=z.read(entry)
+                    notices.append({'name':name,'size':len(data),'sha256':hashlib.sha256(data).hexdigest()})
         details=inspect_ipa(path,bid)
         digest=hashlib.sha256()
         with path.open('rb') as stream:
             for chunk in iter(lambda:stream.read(1024*1024),b''):digest.update(chunk)
-        result.append({'file':path.name,'bundleIdentifier':bid,'size':path.stat().st_size,'sha256':digest.hexdigest(),**details})
+        result.append({'file':path.name,'bundleIdentifier':bid,'size':path.stat().st_size,'sha256':digest.hexdigest(),'noticeInventory':notices,**details})
     return result
 
 
