@@ -150,4 +150,32 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 
 ---
 
+## Native Zombies Prototype
+
+<img src="https://github.com/R347H4CK3R.png" width="72" height="72" alt="Native Zombies Prototype catalog icon">
+
+<p><strong>Original Metal survival-game prototype</strong></p>
+<p>Experimental original native survival-game prototype with procedural visuals, waves, weapons, touch/controller input and developer controls. Separate from Afterlight and not an Activision game. The reviewed source build passed 20 simulator unit tests and an ARM64 device build; physical-device gameplay and SideStore installation remain untested. Unsigned IPA requires compatible signing. iOS 17+. Owner avatar is used because no reviewed app screenshot or bundled icon is available.</p>
+
+- Version: 1.0 · Build: 1
+- Requires iOS 17.0 or later · Download: 0.15 MB
+- Bundle ID: com.nativezombies.game
+
+<a href="https://github.com/R347H4CK3R/-Native-Zombies-iOS/releases/download/prototype-1.0-build1/NativeZombies-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>Original Native Zombies prototype, version 1.0 (1), for iOS 17 or later.
+
+A small native Metal survival-game prototype with procedural visuals, rounds, weapons, touch/controller input and developer controls. This is an experimental development build, not an Activision game or a finished commercial title.
+
+This unchanged unsigned IPA comes from source commit 1874b504502d00a2b120e15de1fd8e4a2cd374dd and successful build https://github.com/R347H4CK3R/-Native-Zombies-iOS/actions/runs/36511217716 . That run passed 20 simulator unit tests and an ARM64 device build. Separate archive checks verified the app identity, version, device platform and minimum OS. Physical-device gameplay and SideStore installation have not been tested.
+
+Sign with a compatible sideloading tool before installation. Keep save backups; do not confuse this app with Afterlight, which has a different bundle identifier. No proprietary game assets are included by this project&#x27;s build.
+
+SHA-256: 249ea989a36898129a5edec08ba9d4c094b44b7e5ea0f469e44b7ef57f554c28
+</p>
+</details>
+
+---
+
 Catalog versions and requirements are generated from inspected public release IPAs. Missing app icons use the repository owner avatar, not invented artwork.
