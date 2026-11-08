@@ -10,16 +10,16 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 
 ## Asterion Veyra
 
-<img src="https://raw.githubusercontent.com/R347H4CK3R/GhostAI/c517179f56f258451836344886d87d8d8318ce26/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png" width="72" height="72" alt="Asterion Veyra catalog icon">
+<img src="https://raw.githubusercontent.com/R347H4CK3R/GhostAI/983e06fb393db37c2171fc13e1e2e587189b0bde/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png" width="72" height="72" alt="Asterion Veyra catalog icon">
 
 <p><strong>Personal assistant, voice and desktop pairing</strong></p>
 <p>Personal AI assistant with voice, notes and explicitly paired desktop access. Choose a supported response source and pair only the desktop you intend to use. Requires iOS 26 or later and a supported signing/container setup. Published build and automated checks are verified; installation and behavior on your physical device remain untested by this catalog.</p>
 
-- Version: 0.3.4 · Build: 37
-- Requires iOS 26.0 or later · Download: 2.53 MB
+- Version: 0.3.5 · Build: 42
+- Requires iOS 26.0 or later · Download: 2.97 MB
 - Bundle ID: dev.asterionveyra.assistant
 
-<a href="https://github.com/R347H4CK3R/GhostAI/releases/download/ios-build-37/AsterionVeyra-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/GhostAI/releases/download/ios-build-42/AsterionVeyra-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
 <p>A personal AI assistant with voice, notes, and explicitly paired desktop access. Requires iOS 26 or later.</p>
