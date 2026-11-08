@@ -1,0 +1,40 @@
+name: Inspect Xash runtime failure evidence
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/inspect-xash-runtime-evidence.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          repository: R347H4CK3R/BO2-IOS-CS
+          run-id: 42521767991
+          artifact-ids: '13634350558'
+          github-token: ${{ github.token }}
+          path: evidence
+      - name: Print synthetic simulator outcome and relevant startup errors
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          reports=list(Path('evidence').rglob('XASH_SIMULATOR_TEST_REPORT.md'))
+          assert len(reports)==1
+          for line in reports[0].read_text().splitlines():
+              if line.startswith(('- status:','- noninteractive','- engine/filesystem','- runtime metadata','- secondary','- fatal')):
+                  print(line)
+          markers=('BO2IOSCS_AUTOTEST launch path enabled','BO2IOSCS_RUNTIME_METADATA_LOADED','BO2IOSCS_GAMEDATA_CONFIG_LOADED')
+          for p in Path('evidence').rglob('*'):
+              if p.name not in ('xash.log','xash-live.log','launch.log','install.log'): continue
+              text=p.read_text(errors='replace')
+              print(p.name, {m:text.count(m) for m in markers})
+              errors=[l for l in text.splitlines() if re.search(r'Host_ErrorInit|can.t initialize cl_dlls|Library not loaded|dyld.*missing|fatal error',l,re.I)]
+              for line in errors[:10]:
+                  print(re.sub(r'/Users/[^/ ]+', '<CI-home>',line)[:700])
+          PY
