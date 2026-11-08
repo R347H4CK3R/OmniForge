@@ -35,19 +35,19 @@
       "size": 2530647,
       "subtitle": "Personal assistant, voice and desktop pairing",
       "category": "productivity",
-      "_verification": {
-        "sha256": "f4de6599376ed0da5f68138f6e84e5fef5ea1fbb80f912a44ca95fdc87e8ff62",
-        "release": "https://github.com/R347H4CK3R/GhostAI/releases/tag/ios-build-37",
-        "assetId": 725000882,
-        "level": "IPA structure and published release metadata; physical device behavior not certified"
-      },
       "screenshots": [
         {
           "imageURL": "https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/veyra-chat-simulator.png",
           "width": 1206,
           "height": 2622
         }
-      ]
+      ],
+      "_verification": {
+        "sha256": "f4de6599376ed0da5f68138f6e84e5fef5ea1fbb80f912a44ca95fdc87e8ff62",
+        "release": "https://github.com/R347H4CK3R/GhostAI/releases/tag/ios-build-37",
+        "assetId": 725000882,
+        "level": "IPA structure and published release metadata; physical device behavior not certified"
+      }
     },
     {
       "name": "OmniForge",
