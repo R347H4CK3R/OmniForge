@@ -178,4 +178,54 @@ SHA-256: 249ea989a36898129a5edec08ba9d4c094b44b7e5ea0f469e44b7ef57f554c28
 
 ---
 
+## BO2CS Tactical Prototype
+
+<img src="https://github.com/R347H4CK3R.png" width="72" height="72" alt="BO2CS Tactical Prototype catalog icon">
+
+<p><strong>Original SDL tactical-game prototype</strong></p>
+<p>Original MIT-licensed tactical FPS prototype using SDL2 and original validation fixtures. Not a Call of Duty game or a complete commercial-game port. Native compile, archive validation and the recorded simulator gameplay autotest passed. Physical-device gameplay and SideStore installation remain untested. Unsigned IPA requires compatible signing, iOS 16+. Owner avatar is shown because no reviewed app icon or screenshot is available.</p>
+
+- Version: 0.1.0 · Build: 1
+- Requires iOS 16.0 or later · Download: 0.52 MB
+- Bundle ID: io.github.r347h4ck3r.bo2cs
+
+<a href="https://github.com/R347H4CK3R/BO2CS/releases/download/prototype-0.1.0-build1/GameName-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>BO2CS Tactical Prototype 0.1.0 (1), iOS 16 or later. Original MIT-licensed tactical FPS prototype using SDL2, not a Call of Duty game and not a complete commercial-game port. Uses original validation fixtures; no proprietary game data is required.
+
+Exact source: https://github.com/R347H4CK3R/BO2CS/tree/0a00baf09cf89697e3c5341a76800c5dbcb7cd3f . The source pins SDL and JSON dependencies; their notices are bundled in the IPA. Project MIT license accompanies this release.
+
+Build https://github.com/R347H4CK3R/BO2CS/actions/runs/35542001636 passed native compilation, IPA validation and simulator gameplay autotest. The actual simulator receipt reports PASS and passed=true. The device IPA was not executed, and physical-device gameplay/SideStore installation are untested. Unsigned IPA requires compatible signing. Keep existing saves backed up.
+
+The IPA is unchanged from reviewed artifact 10614504342,522884 bytes. SHA256: 2a1a19d9692be8e163c0a2b3a38f3c96c41e2e10251b30ef53e14e76b3836838.
+</p>
+</details>
+
+---
+
+## COD4iOS Diagnostic
+
+<img src="https://github.com/R347H4CK3R.png" width="72" height="72" alt="COD4iOS Diagnostic catalog icon">
+
+<p><strong>Experimental runtime diagnostic build</strong></p>
+<p>Experimental COD4iOS diagnostic build, not verified complete campaign or multiplayer behavior. Public package excludes retail game data and signing profiles; supply your own legally obtained compatible original PC game files. Includes third-party notices and an exact matching-source archive in the release. ARM64 archive structure and hashes are verified; physical-device gameplay and SideStore installation are untested. Requires compatible signing and iOS 17+. Back up existing saves. Owner avatar is used pending reviewed artwork.</p>
+
+- Version: 1.0.3 · Build: 4
+- Requires iOS 17.0 or later · Download: 9.57 MB
+- Bundle ID: com.devz.cod4ios
+
+<a href="https://github.com/R347H4CK3R/COD4iOS-COD4NS/releases/download/diagnostic-1.0.3-build4/COD4iOS-playtest-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>COD4iOS diagnostic 1.0.3 (4), iOS 17 or later. Experimental development build, not a promise of complete campaign/multiplayer compatibility or physical-device stability.
+
+This exact unsigned IPA was built at commit 241f76173741a4c39b2d0abb9e69b7ccc6dbfd96 in https://github.com/R347H4CK3R/COD4iOS-COD4NS/actions/runs/38847728229 . Its public packager excludes retail game data and signing profiles, includes third-party license notices, and validates the archive. Independent inspection verified app identity, ARM64 device platform, minimum OS and SHA256. The app was not run on a physical iPhone in this review.
+
+The matching source archive is included, recreated byte-for-byte against the original build receipt, including the matching OpenAL source and build scripts. Read its GPL and third-party licenses. Retail game files are not included; supply your own legally obtained compatible files. Sign the IPA with a compatible sideloading tool; preserve saves and existing data before changing installations.
+</p>
+</details>
+
+---
+
 Catalog versions and requirements are generated from inspected public release IPAs. Missing app icons use the repository owner avatar, not invented artwork.
