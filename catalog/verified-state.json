@@ -59,12 +59,6 @@
       "size": 731052434,
       "subtitle": "Offline character speech and voice tools",
       "category": "entertainment",
-      "_verification": {
-        "sha256": "7c01b000cfe07c73b29a9800ed5f17eebc001cdf6b6741c39767df547c03ab4a",
-        "release": "https://github.com/R347H4CK3R/Ghostline/releases/tag/voicematrix-v0.4.3",
-        "assetId": 724928913,
-        "level": "IPA structure and published release metadata; physical device behavior not certified"
-      },
       "screenshots": [
         {
           "imageURL": "https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png",
@@ -76,7 +70,13 @@
           "width": 1206,
           "height": 2622
         }
-      ]
+      ],
+      "_verification": {
+        "sha256": "7c01b000cfe07c73b29a9800ed5f17eebc001cdf6b6741c39767df547c03ab4a",
+        "release": "https://github.com/R347H4CK3R/Ghostline/releases/tag/voicematrix-v0.4.3",
+        "assetId": 724928913,
+        "level": "IPA structure and published release metadata; physical device behavior not certified"
+      }
     }
   ],
   "news": [],
