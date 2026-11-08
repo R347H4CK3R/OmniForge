@@ -164,5 +164,22 @@
       "SHA256SUMS",
       "COD4iOS-playtest-source.zip"
     ]
+  },
+  {
+    "repository": "R347H4CK3R/BO2-IOS-CS",
+    "bundleIdentifier": "com.r347h4ck3r.bo2ioscs.xash",
+    "name": "BO2 iOS CS Runtime",
+    "developerName": "Xash3D FWGS / HLSDK contributors / R347H4CK3R",
+    "subtitle": "Experimental native startup/config runtime",
+    "localizedDescription": "Experimental Xash-based iOS runtime using safe normalized fixtures. Native startup and generated-config execution are verified; full converted BO2 gameplay, campaign and multiplayer are not present. This is not a finished commercial-game port. Includes Xash GPL, HLSDK and SDL notices, with complete matching patched source and pinned dependencies in the release. Corrected logging verified the exact existing simulator candidate without changing its binary. Physical-device gameplay and SideStore installation remain untested. Unsigned IPA needs compatible signing, iOS 17+. Owner avatar is used pending reviewed artwork.",
+    "category": "developer",
+    "tagPattern": "runtime-[0-9.]+-build[0-9]+",
+    "assetPattern": "BO2IOSCS-Xash-integrated\\.ipa",
+    "allowPrerelease": false,
+    "iconURL": "https://github.com/R347H4CK3R.png",
+    "requiredEvidenceAssets": [
+      "SHA256SUMS",
+      "BO2IOSCS-Xash-source.zip"
+    ]
   }
 ]

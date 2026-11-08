@@ -2,11 +2,11 @@
 
 Audit snapshot: 8 November 2026. Public projects only; private repository contents are not listed.
 
-The catalog installs separately versioned apps from public release URLs. These additional projects currently have CI artifacts, not permanent public IPA release downloads. They remain pending archive, identity, dependency and content checks plus release publication. Successful compilation is not proof of working gameplay.
+The catalog installs separately versioned apps from public release URLs. This page tracks additional projects inspected during the catalog review. Released entries link to permanent public downloads; pending entries still need the checks or release materials described below. Successful compilation is not proof of working gameplay.
 
 - **PocketForge**: [successful build run](https://github.com/R347H4CK3R/PocketForge/actions/runs/42518096757); metadata fixed and fresh native build passed. New IPA still needs archive inspection before public release.
 - **madeira-cod-test**: [successful build run](https://github.com/R347H4CK3R/madeira-cod-test/actions/runs/40346816186); obsolete PocketForge artifact sharing the PocketForge identity, not a separate Madeira app. Current Madeira development must be reviewed independently.
-- **BO2-IOS-CS**: [successful build run](https://github.com/R347H4CK3R/BO2-IOS-CS/actions/runs/36003097069); BO2IOSCS-Xash-integrated-IPA. Not yet promoted into a permanent public release; required notices and provenance are under review.
+- **BO2-IOS-CS**: [reviewed runtime release](https://github.com/R347H4CK3R/BO2-IOS-CS/releases/tag/runtime-0.1-build3) includes required notices and complete matching sources. Native startup/config execution was verified against the exact simulator artifact with corrected log capture. No complete BO2 gameplay or physical-device success is claimed; catalog admission is gated on automated verification.
 - **BO2CS**: [reviewed prototype release](https://github.com/R347H4CK3R/BO2CS/releases/tag/prototype-0.1.0-build1) is public. Native compilation, IPA structure, dependency notices and simulator autotest were verified; catalog admission is gated on automated verification.
 - **CSNZ-iOS**: [successful build run](https://github.com/R347H4CK3R/CSNZ-iOS/actions/runs/36201512410); CSNZ-iOS-ARM64-runtime. Not yet promoted into a permanent public release; required notices and provenance are under review.
 - **Hijacked-Quake3-iOS-**: [successful build run](https://github.com/R347H4CK3R/Hijacked-Quake3-iOS-/actions/runs/35221891882); Hijacked-Quake3-iOS-stabilized-v2-unsigned-IPA. Not yet promoted into a permanent public release; required notices and provenance are under review.
