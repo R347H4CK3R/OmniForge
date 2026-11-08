@@ -130,5 +130,39 @@
     "requiredEvidenceAssets": [
       "SHA256SUMS"
     ]
+  },
+  {
+    "repository": "R347H4CK3R/BO2CS",
+    "bundleIdentifier": "io.github.r347h4ck3r.bo2cs",
+    "name": "BO2CS Tactical Prototype",
+    "developerName": "R347H4CK3R",
+    "subtitle": "Original SDL tactical-game prototype",
+    "localizedDescription": "Original MIT-licensed tactical FPS prototype using SDL2 and original validation fixtures. Not a Call of Duty game or a complete commercial-game port. Native compile, archive validation and the recorded simulator gameplay autotest passed. Physical-device gameplay and SideStore installation remain untested. Unsigned IPA requires compatible signing, iOS 16+. Owner avatar is shown because no reviewed app icon or screenshot is available.",
+    "category": "games",
+    "tagPattern": "prototype-[0-9.]+-build[0-9]+",
+    "assetPattern": "GameName-unsigned\\.ipa",
+    "allowPrerelease": false,
+    "iconURL": "https://github.com/R347H4CK3R.png",
+    "requiredEvidenceAssets": [
+      "SHA256SUMS",
+      "LICENSE"
+    ]
+  },
+  {
+    "repository": "R347H4CK3R/COD4iOS-COD4NS",
+    "bundleIdentifier": "com.devz.cod4ios",
+    "name": "COD4iOS Diagnostic",
+    "developerName": "COD4iOS contributors / R347H4CK3R",
+    "subtitle": "Experimental runtime diagnostic build",
+    "localizedDescription": "Experimental COD4iOS diagnostic build, not verified complete campaign or multiplayer behavior. Public package excludes retail game data and signing profiles; supply your own legally obtained compatible original PC game files. Includes third-party notices and an exact matching-source archive in the release. ARM64 archive structure and hashes are verified; physical-device gameplay and SideStore installation are untested. Requires compatible signing and iOS 17+. Back up existing saves. Owner avatar is used pending reviewed artwork.",
+    "category": "games",
+    "tagPattern": "diagnostic-[0-9.]+-build[0-9]+",
+    "assetPattern": "COD4iOS-playtest-unsigned\\.ipa",
+    "allowPrerelease": false,
+    "iconURL": "https://github.com/R347H4CK3R.png",
+    "requiredEvidenceAssets": [
+      "SHA256SUMS",
+      "COD4iOS-playtest-source.zip"
+    ]
   }
 ]
