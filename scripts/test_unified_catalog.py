@@ -57,6 +57,29 @@ class CatalogTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self.c.inspect_ipa(self.archive(d, CFBundleSupportedPlatforms=['iPhoneSimulator'], DTPlatformName='iphonesimulator'), 'com.example.app')
 
+    def test_embedded_library_raises_effective_minimum_ios(self):
+        import struct
+        with tempfile.TemporaryDirectory() as d:
+            p=self.archive(d)
+            with zipfile.ZipFile(p,'a') as z:
+                z.writestr('Payload/Example.app/Frameworks/Helper.dylib',struct.pack('<8I',0xfeedfacf,0x100000c,0,6,1,24,0,0)+struct.pack('<6I',0x32,24,2,18<<16,0,0))
+            self.assertEqual(self.c.inspect_ipa(p,'com.example.app')['minOSVersion'],'18.0')
+
+    def test_rejects_embedded_simulator_library(self):
+        import struct
+        with tempfile.TemporaryDirectory() as d:
+            p=self.archive(d)
+            with zipfile.ZipFile(p,'a') as z:
+                z.writestr('Payload/Example.app/Frameworks/Helper.dylib',struct.pack('<8I',0xfeedfacf,0x100000c,0,6,1,24,0,0)+struct.pack('<6I',0x32,24,7,17<<16,0,0))
+            with self.assertRaises(ValueError):self.c.inspect_ipa(p,'com.example.app')
+
+    def test_privacy_is_read_from_actual_ipa_not_source_metadata(self):
+        with tempfile.TemporaryDirectory() as d:
+            p=self.archive(d,NSMicrophoneUsageDescription='Record only when requested',PrivateOtherField='not exposed')
+            details=self.c.inspect_ipa(p,'com.example.app',include_permissions=True)
+            self.assertEqual(details['appPermissions']['privacy'],{'NSMicrophoneUsageDescription':'Record only when requested'})
+            self.assertNotIn('PrivateOtherField',str(details))
+
     def test_rejects_multiple_app_payloads(self):
         with tempfile.TemporaryDirectory() as d:
             p=self.archive(d)
@@ -124,3 +147,47 @@ class PublicMetadataTests(unittest.TestCase):
         self.assertEqual(result['name'],'App')
         src['iconURL']='https://private.example/icon.png'
         with self.assertRaises(ValueError): c.public_app_metadata(src,'a/b')
+
+class ReleaseSelectionTests(unittest.TestCase):
+    def setUp(self):
+        import unified_catalog
+        self.c=unified_catalog
+        self.entry={'repository':'a/b','tagPattern':'v[0-9]+','assetPattern':'App\\.ipa','allowPrerelease':False}
+        self.release={'tag_name':'v1','draft':False,'prerelease':False,'published_at':'2026-01-01T00:00:00Z',
+                      'assets':[{'name':'App.ipa','state':'uploaded','size':20,'browser_download_url':'https://github.com/a/b/releases/download/v1/App.ipa'}]}
+
+    def test_selects_newest_approved_ipa_not_unrelated_or_draft(self):
+        newer=copy.deepcopy(self.release);newer.update(tag_name='v2',published_at='2026-02-01T00:00:00Z')
+        newer['assets'][0]['browser_download_url']='https://github.com/a/b/releases/download/v2/App.ipa'
+        unrelated=dict(newer,tag_name='windows-3',published_at='2026-03-01T00:00:00Z')
+        draft=dict(newer,draft=True,published_at='2026-04-01T00:00:00Z')
+        release,asset=self.c.select_public_release([unrelated,self.release,draft,newer],self.entry)
+        self.assertEqual(release['tag_name'],'v2');self.assertEqual(asset['name'],'App.ipa')
+
+    def test_does_not_silently_promote_prerelease(self):
+        with self.assertRaises(ValueError): self.c.select_public_release([dict(self.release,prerelease=True)],self.entry)
+
+    def test_rejects_ambiguous_multiple_ipa_assets(self):
+        release=copy.deepcopy(self.release);release['assets'].append(dict(release['assets'][0]))
+        with self.assertRaises(ValueError): self.c.select_public_release([release],self.entry)
+
+    def test_requires_uploaded_positive_size_assets(self):
+        for change in ({'state':'new'},{'size':0}):
+            release=copy.deepcopy(self.release);release['assets'][0].update(change)
+            with self.assertRaises(ValueError): self.c.select_public_release([release],self.entry)
+
+class CatalogIconTests(unittest.TestCase):
+    def test_owner_avatar_allowed_only_for_correct_repository_owner(self):
+        import unified_catalog as c
+        src={'name':'Prototype','bundleIdentifier':'a','iconURL':'https://github.com/owner.png'}
+        self.assertEqual(c.public_app_metadata(src,'owner/repo')['iconURL'],src['iconURL'])
+        with self.assertRaises(ValueError):c.public_app_metadata(src,'different/repo')
+
+class StoreGuideTests(unittest.TestCase):
+    def test_guide_uses_live_catalog_and_escapes_text(self):
+        import unified_catalog as c
+        app={'name':'App <unsafe>','bundleIdentifier':'a','localizedDescription':'Prototype & test','iconURL':'https://github.com/owner.png',
+             'versions':[{'version':'1.2','buildVersion':'3','minOSVersion':'17.0','size':1200000,'downloadURL':'https://github.com/a/b/releases/download/v1/a.ipa','localizedDescription':'Changes <safe>'}]}
+        guide=c.render_store_guide({'apps':[app]})
+        self.assertIn('App &lt;unsafe&gt;',guide);self.assertIn('1.2',guide);self.assertIn('17.0',guide)
+        self.assertNotIn('App <unsafe>',guide);self.assertIn('Physical-device',guide)

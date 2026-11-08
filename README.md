@@ -1,5 +1,11 @@
 # OmniForge
 
+## Browse the app catalog
+
+**[Open Chris’s Apps storefront](catalog/APPS.md)** · [Add the combined iOS source](https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/unified-source.json) · [Live update logs](https://github.com/R347H4CK3R/OmniForge/actions/workflows/unified-source.yml)
+
+One source for public IPA releases, with separate app pages, versions, requirements, release notes and honest prototype status. Existing app identifiers and data containers stay separate.
+
 **Your AI. Your Device. Your Rules.**
 
 OmniForge is an open-source project for a native, fully offline iPhone AI assistant and developer toolkit. The goal is to provide useful local intelligence and user-controlled tools **without subscriptions, paid AI APIs, telemetry, daily message quotas, or deliberately locked features**.

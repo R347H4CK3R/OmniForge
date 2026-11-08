@@ -44,13 +44,17 @@ jobs:
           state=json.loads(Path('catalog/verified-state.json').read_text())
           for app in state['apps']: app.pop('_verification',None)
           assert state==json.loads(Path('unified-source.json').read_text()), 'Output/state mismatch'
+          import sys
+          sys.path.insert(0,'scripts')
+          from unified_catalog import render_store_guide
+          assert Path('catalog/APPS.md').read_text()==render_store_guide(state), 'Storefront/output mismatch'
           PYCODE
           built_from=$(git rev-parse HEAD)
           git fetch origin main
           test "$(git rev-parse origin/main)" = "$built_from" || { echo 'Main changed during verification; retry using fresh inputs.'; exit 1; }
           git config user.name 'github-actions[bot]' 
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add unified-source.json catalog/verified-state.json
+          git add unified-source.json catalog/verified-state.json catalog/APPS.md
           if ! git diff --cached --quiet; then
             git commit -m 'catalog: refresh verified app releases'
             git push origin HEAD:main

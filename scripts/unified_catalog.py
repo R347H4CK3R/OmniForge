@@ -7,6 +7,7 @@ Downloaded apps are inspected as ZIP data, never executed or extracted.
 import argparse
 import copy
 import hashlib
+import html
 import json
 import os
 import plistlib
@@ -34,7 +35,43 @@ def version_key(app):
     return numeric(v['version']), numeric(v['buildVersion'])
 
 
-def inspect_ipa(path, bundle_id):
+def inspect_macho(f, file_size, file_types):
+    header=f.read(32); magic=header[:4]; offset=0
+    if magic in (b'\xca\xfe\xba\xbe',b'\xbe\xba\xfe\xca'):
+        order='big' if magic==b'\xca\xfe\xba\xbe' else 'little'
+        count=int.from_bytes(header[4:8],order)
+        if not 0<count<=32: raise ValueError('invalid fat Mach-O')
+        f.seek(8); entries=f.read(count*20)
+        candidates=[int.from_bytes(entries[i*20+8:i*20+12],order) for i in range(count)
+                    if int.from_bytes(entries[i*20:i*20+4],order)==0x0100000c]
+        if len(candidates)!=1: raise ValueError('expected one ARM64 Mach-O slice')
+        offset=candidates[0]; f.seek(offset); header=f.read(32); magic=header[:4]
+    if magic not in (b'\xcf\xfa\xed\xfe',b'\xfe\xed\xfa\xcf'): raise ValueError('invalid Mach-O')
+    endian='<' if magic==b'\xcf\xfa\xed\xfe' else '>'
+    fields=struct.unpack(endian+'8I',header)
+    if fields[1]!=0x0100000c or fields[3] not in file_types: raise ValueError('expected ARM64 executable')
+    count,size=fields[4:6]
+    if not 0<count<=4096 or not 0<size<=2_000_000 or offset+32+size>file_size:
+        raise ValueError('invalid Mach-O commands')
+    commands=f.read(size); pos=0; ios=False; minimum=0
+    for _ in range(count):
+        if pos+8>len(commands): raise ValueError('truncated load command')
+        cmd,length=struct.unpack_from(endian+'2I',commands,pos)
+        if length<8 or pos+length>len(commands): raise ValueError('invalid load command')
+        if cmd==0x32:
+            if length<24 or struct.unpack_from(endian+'I',commands,pos+8)[0]!=2:
+                raise ValueError('Mach-O is not an iOS device build')
+            ios=True; minimum=max(minimum,struct.unpack_from(endian+'I',commands,pos+12)[0])
+        elif cmd==0x25:
+            if length<16: raise ValueError('invalid minimum iOS command')
+            ios=True; minimum=max(minimum,struct.unpack_from(endian+'I',commands,pos+8)[0])
+        elif cmd in (0x24,0x2f,0x30): raise ValueError('non-iOS Mach-O platform')
+        pos+=length
+    if not ios: raise ValueError('missing iOS device platform command')
+    return f'{minimum>>16}.{(minimum>>8)&255}.{minimum&255}'
+
+
+def inspect_ipa(path, bundle_id, include_permissions=False):
     with zipfile.ZipFile(path) as z:
         names = [n for n in z.namelist() if re.fullmatch(r'Payload/[^/]+\.app/Info\.plist', n)]
         if len(names) != 1: raise ValueError('expected exactly one top-level app')
@@ -50,41 +87,29 @@ def inspect_ipa(path, bundle_id):
         platforms=info.get('CFBundleSupportedPlatforms', ['iPhoneOS'])
         if platforms != ['iPhoneOS'] or info.get('DTPlatformName','iphoneos')!='iphoneos':
             raise ValueError('IPA is not an iOS device build')
-        with z.open(binary) as f:
-            header=f.read(32); magic=header[:4]; offset=0
-            if magic in (b'\xca\xfe\xba\xbe',b'\xbe\xba\xfe\xca'):
-                order='big' if magic==b'\xca\xfe\xba\xbe' else 'little'
-                count=int.from_bytes(header[4:8],order)
-                if not 0<count<=32: raise ValueError('invalid fat Mach-O')
-                f.seek(8); entries=f.read(count*20)
-                candidates=[int.from_bytes(entries[i*20+8:i*20+12],order) for i in range(count)
-                            if int.from_bytes(entries[i*20:i*20+4],order)==0x0100000c]
-                if len(candidates)!=1: raise ValueError('expected one ARM64 Mach-O slice')
-                offset=candidates[0]; f.seek(offset); header=f.read(32); magic=header[:4]
-            if magic not in (b'\xcf\xfa\xed\xfe',b'\xfe\xed\xfa\xcf'): raise ValueError('invalid Mach-O')
-            endian='<' if magic==b'\xcf\xfa\xed\xfe' else '>'
-            fields=struct.unpack(endian+'8I',header)
-            if fields[1]!=0x0100000c or fields[3]!=2: raise ValueError('expected ARM64 executable')
-            count,size=fields[4:6]
-            if not 0<count<=4096 or not 0<size<=2_000_000 or offset+32+size>binary.file_size:
-                raise ValueError('invalid Mach-O commands')
-            commands=f.read(size); pos=0; ios=False
-            for _ in range(count):
-                if pos+8>len(commands): raise ValueError('truncated load command')
-                cmd,length=struct.unpack_from(endian+'2I',commands,pos)
-                if length<8 or pos+length>len(commands): raise ValueError('invalid load command')
-                if cmd==0x32:
-                    if length<24 or struct.unpack_from(endian+'I',commands,pos+8)[0]!=2:
-                        raise ValueError('Mach-O is not an iOS device build')
-                    ios=True
-                elif cmd==0x25: ios=True
-                elif cmd in (0x24,0x2f,0x30): raise ValueError('non-iOS Mach-O platform')
-                pos+=length
-            if not ios: raise ValueError('missing iOS device platform command')
+        with z.open(binary) as f: device_minimum=inspect_macho(f,binary.file_size,(2,))
+        minimums=[str(info['MinimumOSVersion']),device_minimum]
+        root=names[0].rsplit('/',1)[0]+'/'
+        for member_name in z.namelist():
+            relative=member_name[len(root):] if member_name.startswith(root) else ''
+            is_library=relative.endswith('.dylib') or bool(re.search(r'[^/]+\.framework/[^/]+$',relative))
+            if not is_library: continue
+            member=z.getinfo(member_name)
+            with z.open(member) as f:
+                magic=f.read(4)
+                if magic not in (b'\xcf\xfa\xed\xfe',b'\xfe\xed\xfa\xcf',b'\xca\xfe\xba\xbe',b'\xbe\xba\xfe\xca'):
+                    if relative.endswith('.dylib'): raise ValueError('invalid bundled dynamic library')
+                    continue
+                f.seek(0); minimums.append(inspect_macho(f,member.file_size,(6,)))
         version = str(info['CFBundleShortVersionString']); build = str(info['CFBundleVersion'])
         numeric(version); numeric(build)
-        minimum = str(info['MinimumOSVersion']); numeric(minimum)
-        return {'version':version,'buildVersion':build,'minOSVersion':minimum}
+        minimum=max(minimums,key=numeric)
+        parts=minimum.split('.')
+        if len(parts)==3 and parts[-1]=='0': minimum='.'.join(parts[:2])
+        result={'version':version,'buildVersion':build,'minOSVersion':minimum}
+        if include_permissions:
+            result['appPermissions']={'privacy':{k:v for k,v in info.items() if re.fullmatch(r'NS[A-Za-z]+UsageDescription',k) and isinstance(v,str)}}
+        return result
 
 
 def release_coordinates(url, repository):
@@ -144,9 +169,26 @@ def public_app_metadata(source, repo):
     url=urllib.parse.urlsplit(app.get('iconURL',''))
     if url.scheme!='https' or url.query or url.fragment or not (
         url.netloc=='raw.githubusercontent.com' and url.path.startswith('/'+repo+'/')
-        or url.netloc=='github.com' and url.path.startswith('/'+repo+'/releases/download/')):
+        or url.netloc=='github.com' and url.path.startswith('/'+repo+'/releases/download/')
+        or url.netloc=='github.com' and url.path=='/'+repo.split('/')[0]+'.png'):
         raise ValueError('icon must be public media in the approved repository')
     return app
+
+
+def select_public_release(releases, entry):
+    eligible=[]
+    for release in releases:
+        if release.get('draft') or (release.get('prerelease') and not entry.get('allowPrerelease',False)):
+            continue
+        if not re.fullmatch(entry['tagPattern'],release.get('tag_name','')): continue
+        assets=[a for a in release.get('assets',[]) if re.fullmatch(entry['assetPattern'],a.get('name',''))
+                and a.get('state')=='uploaded' and 0<a.get('size',0)<=MAX_IPA]
+        if len(assets)>1: raise ValueError('ambiguous release IPA assets')
+        if len(assets)==1 and release.get('published_at'):
+            release_coordinates(assets[0]['browser_download_url'],entry['repository'])
+            eligible.append((release,assets[0]))
+    if not eligible: raise ValueError('no approved published IPA release')
+    return max(eligible,key=lambda pair:pair[0]['published_at'])
 
 
 def load_app(entry):
@@ -155,15 +197,25 @@ def load_app(entry):
     # An unauthenticated read is intentional: private repositories cannot enter a public catalog.
     meta=public_json('https://api.github.com/repos/'+repo)
     if meta.get('private') or meta.get('visibility','public')!='public': raise ValueError('repository is not public')
-    feed=public_json(entry['sourceURL'])
-    apps=[a for a in feed.get('apps',[]) if a.get('bundleIdentifier')==bid]
-    if len(apps)!=1: raise ValueError('missing or duplicate source app')
-    app=public_app_metadata(apps[0],repo); candidate=apps[0]['versions'][0]
-    url=candidate['downloadURL']; tag,_=release_coordinates(url,repo)
-    if not re.fullmatch(entry['tagPattern'],tag): raise ValueError('release tag outside approved channel')
-    release=public_json('https://api.github.com/repos/'+repo+'/releases/tags/'+urllib.parse.quote(tag,safe=''))
-    if release.get('tag_name')!=tag: raise ValueError('release tag mismatch')
-    asset=verify_release(release,url,candidate['size'],entry.get('allowPrerelease',False))
+    if entry.get('sourceURL'):
+        feed=public_json(entry['sourceURL'])
+        apps=[a for a in feed.get('apps',[]) if a.get('bundleIdentifier')==bid]
+        if len(apps)!=1: raise ValueError('missing or duplicate source app')
+        app=public_app_metadata(apps[0],repo); candidate=apps[0]['versions'][0]
+        url=candidate['downloadURL']; tag,_=release_coordinates(url,repo)
+        if not re.fullmatch(entry['tagPattern'],tag): raise ValueError('release tag outside approved channel')
+        release=public_json('https://api.github.com/repos/'+repo+'/releases/tags/'+urllib.parse.quote(tag,safe=''))
+        if release.get('tag_name')!=tag: raise ValueError('release tag mismatch')
+        asset=verify_release(release,url,candidate['size'],entry.get('allowPrerelease',False))
+    else:
+        # Release-only projects need no hand-maintained per-app source file.
+        # The registry explicitly fixes app identity, channel and asset name pattern.
+        releases=public_json('https://api.github.com/repos/'+repo+'/releases?per_page=100')
+        release,asset=select_public_release(releases,entry)
+        app=public_app_metadata(entry,repo)
+        tag=release['tag_name']; url=asset['browser_download_url']
+        verify_release(release,url,asset['size'],entry.get('allowPrerelease',False))
+        candidate={'localizedDescription':release.get('body') or entry['localizedDescription']}
     names={a['name']:a for a in release['assets']}
     for name in entry.get('requiredEvidenceAssets',[]):
         if name not in names or names[name].get('state')!='uploaded' or not names[name]['size']:
@@ -172,12 +224,13 @@ def load_app(entry):
         print(f'Inspecting {repo} {tag}: downloading {asset["size"]} bytes', flush=True)
         path=Path(tmp)/'app.ipa'; sha=download(url,path,asset['size'])
         if asset.get('digest') and asset['digest']!='sha256:'+sha: raise ValueError('release SHA-256 mismatch')
-        actual=inspect_ipa(path,bid)
+        actual=inspect_ipa(path,bid,include_permissions=True)
+        app['appPermissions']=actual.pop('appPermissions')
     if entry.get('evidencePolicy')=='character':
         proof=public_json(names['character-release-verification.json']['browser_download_url'])
         verify_character_evidence(proof,bid,actual,sha,asset['size'])
     current={'date':release['published_at'],'downloadURL':url,'size':asset['size'],**actual}
-    current['localizedDescription']=candidate.get('localizedDescription',app.get('localizedDescription',''))
+    current['localizedDescription']=entry.get('releaseNotes') or candidate.get('localizedDescription',app.get('localizedDescription',''))
     # Only the newly inspected version is emitted. Do not copy uninspected historical entries.
     app['versions']=[current]
     app.update({'version':actual['version'],'versionDate':current['date'],'downloadURL':url,'size':asset['size']})
@@ -213,6 +266,29 @@ def refresh(previous, registry, loader=load_app):
     return result,errors
 
 
+def render_store_guide(source):
+    e=lambda value:html.escape(str(value),quote=True)
+    lines=["# Chris's Apps", "", "One catalog. Separate apps. Clearly labeled release status.", "",
+           "**Add source:** https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/unified-source.json", "",
+           "[Live refresh logs](https://github.com/R347H4CK3R/OmniForge/actions/workflows/unified-source.yml) · [How this catalog works](README.md)", "",
+           "Physical-device installation and behavior are not certified by this catalog. Unsigned apps need a compatible container or signing. This is not Apple's App Store.", ""]
+    for app in source['apps']:
+        v=app['versions'][0]
+        lines.extend([f"## {e(app['name'])}", "",f'<img src="{e(app["iconURL"])}" width="72" height="72" alt="{e(app["name"])} catalog icon">',"",
+                      f'<p><strong>{e(app.get("subtitle",""))}</strong></p>',f'<p>{e(app.get("localizedDescription",""))}</p>',"",
+                      f'- Version: {e(v["version"])} · Build: {e(v["buildVersion"])}',
+                      f'- Requires iOS {e(v["minOSVersion"])} or later · Download: {v["size"]/1_000_000:.2f} MB',
+                      f'- Bundle ID: {e(app["bundleIdentifier"])}',"",
+                      f'<a href="{e(v["downloadURL"])}">Download published IPA</a>',"",
+                      '<details><summary>Release notes</summary>',f'<p>{e(v.get("localizedDescription",""))}</p>','</details>',""])
+        for screenshot in app.get('screenshots',[]):
+            lines.append(f'<img src="{e(screenshot["imageURL"])}" width="220" alt="{e(app["name"])} simulator preview">')
+        if app.get('screenshots'): lines.extend(['','Screenshots are reviewed simulator previews, not proof of physical-device behavior.',''])
+        lines.extend(['---',''])
+    lines.extend(['Catalog versions and requirements are generated from inspected public release IPAs. Missing app icons use the repository owner avatar, not invented artwork.',''])
+    return '\n'.join(lines)
+
+
 def main():
     p=argparse.ArgumentParser(); p.add_argument('--registry',default='catalog/registry.json'); p.add_argument('--output',default='unified-source.json'); p.add_argument('--report',default='catalog-refresh-report.json'); args=p.parse_args()
     path=Path(args.output); state=Path('catalog/verified-state.json')
@@ -224,6 +300,7 @@ def main():
     for app in public['apps']: app.pop('_verification',None)
     serialized=json.dumps(public,indent=2)+'\n'
     temp=path.with_suffix(path.suffix+'.tmp'); temp.write_text(serialized); os.replace(temp,path)
+    Path('catalog/APPS.md').write_text(render_store_guide(public))
     Path(args.report).write_text(json.dumps({'complete':True,'errors':errors,'apps':[{'bundleIdentifier':a['bundleIdentifier'],'verification':a.get('_verification')} for a in result['apps']]},indent=2)+'\n')
     print(json.dumps({'apps':len(result['apps']),'errors':errors}))
     if errors: raise SystemExit(1)

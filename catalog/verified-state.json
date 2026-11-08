@@ -6,6 +6,50 @@
   "website": "https://github.com/R347H4CK3R/OmniForge/blob/main/catalog/README.md",
   "apps": [
     {
+      "name": "Asterion Veyra",
+      "bundleIdentifier": "dev.asterionveyra.assistant",
+      "developerName": "R347H4CK3R",
+      "localizedDescription": "Personal AI assistant with voice, notes and explicitly paired desktop access. Choose a supported response source and pair only the desktop you intend to use. Requires iOS 26 or later and a supported signing/container setup. Published build and automated checks are verified; installation and behavior on your physical device remain untested by this catalog.",
+      "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/GhostAI/c517179f56f258451836344886d87d8d8318ce26/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png",
+      "appPermissions": {
+        "privacy": {
+          "NSLocalNetworkUsageDescription": "Connect only to the desktop you explicitly pair for bounded read-only jobs.",
+          "NSMicrophoneUsageDescription": "Record your voice only during a conversation you start.",
+          "NSSpeechRecognitionUsageDescription": "Transcribe spoken messages using available on-device recognition."
+        }
+      },
+      "versions": [
+        {
+          "date": "2026-11-08T19:44:09Z",
+          "downloadURL": "https://github.com/R347H4CK3R/GhostAI/releases/download/ios-build-37/AsterionVeyra-unsigned.ipa",
+          "size": 2530647,
+          "version": "0.3.4",
+          "buildVersion": "37",
+          "minOSVersion": "26.0",
+          "localizedDescription": "A personal AI assistant with voice, notes, and explicitly paired desktop access. Requires iOS 26 or later."
+        }
+      ],
+      "version": "0.3.4",
+      "versionDate": "2026-11-08T19:44:09Z",
+      "downloadURL": "https://github.com/R347H4CK3R/GhostAI/releases/download/ios-build-37/AsterionVeyra-unsigned.ipa",
+      "size": 2530647,
+      "subtitle": "Personal assistant, voice and desktop pairing",
+      "category": "productivity",
+      "_verification": {
+        "sha256": "f4de6599376ed0da5f68138f6e84e5fef5ea1fbb80f912a44ca95fdc87e8ff62",
+        "release": "https://github.com/R347H4CK3R/GhostAI/releases/tag/ios-build-37",
+        "assetId": 725000882,
+        "level": "IPA structure and published release metadata; physical device behavior not certified"
+      },
+      "screenshots": [
+        {
+          "imageURL": "https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/veyra-chat-simulator.png",
+          "width": 1206,
+          "height": 2622
+        }
+      ]
+    },
+    {
       "name": "OmniForge",
       "bundleIdentifier": "com.r347h4ck3r.omniforge",
       "developerName": "R347H4CK3R",
@@ -14,6 +58,9 @@
       "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-156/OmniForgeIcon.png",
       "tintColor": "4065B5",
       "category": "developer",
+      "appPermissions": {
+        "privacy": {}
+      },
       "versions": [
         {
           "date": "2026-11-03T16:18:28Z",
@@ -42,6 +89,11 @@
       "developerName": "VoiceMatrix",
       "localizedDescription": "Import your own character folders, create offline speech and convert recordings with local neural engines. No stock characters are bundled. Experimental character-test edition: native diagnostic speech and simulator conversion checks pass, but physical iPhone behavior and character likeness remain unverified. Requires iOS 26.",
       "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+      "appPermissions": {
+        "privacy": {
+          "NSMicrophoneUsageDescription": "Record audio privately on your iPhone."
+        }
+      },
       "versions": [
         {
           "date": "2026-11-08T19:14:08Z",
@@ -75,6 +127,140 @@
         "sha256": "7c01b000cfe07c73b29a9800ed5f17eebc001cdf6b6741c39767df547c03ab4a",
         "release": "https://github.com/R347H4CK3R/Ghostline/releases/tag/voicematrix-v0.4.3",
         "assetId": 724928913,
+        "level": "IPA structure and published release metadata; physical device behavior not certified"
+      }
+    },
+    {
+      "name": "Afterlight",
+      "bundleIdentifier": "com.r347h4ck3r.nativezombies",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Original survival-game prototype",
+      "localizedDescription": "Original procedural survival-game prototype, separate from Call of Duty. Contains no BO2 assets or third-party game engine in this published version. Simulation and simulator smoke checks are reported as passed; physical-device play remains unverified. Unsigned IPA requires LiveContainer or signing. iOS 17+. Owner avatar is shown because this prototype has no bundled app icon.",
+      "iconURL": "https://github.com/R347H4CK3R.png",
+      "category": "games",
+      "appPermissions": {
+        "privacy": {}
+      },
+      "versions": [
+        {
+          "date": "2026-09-09T03:56:14Z",
+          "downloadURL": "https://github.com/R347H4CK3R/NativeZombies-IOS/releases/download/v0.1.0-prototype/Afterlight-unsigned.ipa",
+          "size": 102770,
+          "version": "0.1.0",
+          "buildVersion": "1",
+          "minOSVersion": "17.0",
+          "localizedDescription": "Native ARM64 iOS survival prototype. Simulation and simulator smoke tests passed. Import the unsigned IPA into a configured LiveContainer or sign before installing. Physical-device compatibility remains unverified."
+        }
+      ],
+      "version": "0.1.0",
+      "versionDate": "2026-09-09T03:56:14Z",
+      "downloadURL": "https://github.com/R347H4CK3R/NativeZombies-IOS/releases/download/v0.1.0-prototype/Afterlight-unsigned.ipa",
+      "size": 102770,
+      "_verification": {
+        "sha256": "f3664c6a4777b176e7176134b7f9b509d2f3fd14fa96cde824c0fdc8d71a5763",
+        "release": "https://github.com/R347H4CK3R/NativeZombies-IOS/releases/tag/v0.1.0-prototype",
+        "assetId": 551930250,
+        "level": "IPA structure and published release metadata; physical device behavior not certified"
+      }
+    },
+    {
+      "name": "Zombies iOS File Tools",
+      "bundleIdentifier": "com.r347h4ck3r.zombiesios",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Game-file scanner and runtime research",
+      "localizedDescription": "Experimental BO2/PS3 file scanner and importer with native runtime development in progress. Supply your own legally obtained files. This is not verified complete Zombies gameplay. Unsigned automated build; physical-device behavior remains unverified. iOS 17+. Owner avatar is shown because the build has no bundled app icon.",
+      "iconURL": "https://github.com/R347H4CK3R.png",
+      "category": "developer",
+      "appPermissions": {
+        "privacy": {}
+      },
+      "versions": [
+        {
+          "date": "2026-09-09T15:55:53Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Zombies-IOS/releases/download/latest-build/ZombiesIOS-unsigned.ipa",
+          "size": 465494,
+          "version": "1.0",
+          "buildVersion": "3",
+          "minOSVersion": "17.0",
+          "localizedDescription": "Automated unsigned iOS build from commit 542bccac2f7413a23cb12b95bcee3baa76907dfc. Sign with SideStore/AltStore or your preferred signing method."
+        }
+      ],
+      "version": "1.0",
+      "versionDate": "2026-09-09T15:55:53Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Zombies-IOS/releases/download/latest-build/ZombiesIOS-unsigned.ipa",
+      "size": 465494,
+      "_verification": {
+        "sha256": "7a047d361232f1f9d5254cfaba3a67290f800f3535f1a5ec348754859c6c293b",
+        "release": "https://github.com/R347H4CK3R/Zombies-IOS/releases/tag/latest-build",
+        "assetId": 561732651,
+        "level": "IPA structure and published release metadata; physical device behavior not certified"
+      }
+    },
+    {
+      "name": "CS2 iOS Runtime Lab",
+      "bundleIdentifier": "com.cs2ios.runtime",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Native graphics and input test shell",
+      "localizedDescription": "Clean-room native iOS runtime research shell for Metal graphics, audio, controllers, touch and lifecycle logging. This device-test build is not Counter-Strike 2 gameplay and contains no Valve game assets. Requires signing or a compatible container, iOS 17+. Physical-device behavior remains unverified. Owner avatar is shown because no app icon is bundled.",
+      "iconURL": "https://github.com/R347H4CK3R.png",
+      "category": "developer",
+      "appPermissions": {
+        "privacy": {}
+      },
+      "versions": [
+        {
+          "date": "2026-10-01T03:51:19Z",
+          "downloadURL": "https://github.com/R347H4CK3R/CS2-iOS/releases/download/step3-test/CS2iOS-Step3-unsigned.ipa",
+          "size": 39316,
+          "version": "0.1",
+          "buildVersion": "1",
+          "minOSVersion": "17.0",
+          "localizedDescription": "Unsigned ARM64 Step 3 device-test build. Sign with your sideloading method before installation."
+        }
+      ],
+      "version": "0.1",
+      "versionDate": "2026-10-01T03:51:19Z",
+      "downloadURL": "https://github.com/R347H4CK3R/CS2-iOS/releases/download/step3-test/CS2iOS-Step3-unsigned.ipa",
+      "size": 39316,
+      "_verification": {
+        "sha256": "4b511f01ef667c78f95bcff33652874f44f8ff336faacb80f2fe83d14094b7ad",
+        "release": "https://github.com/R347H4CK3R/CS2-iOS/releases/tag/step3-test",
+        "assetId": 602377213,
+        "level": "IPA structure and published release metadata; physical device behavior not certified"
+      }
+    },
+    {
+      "name": "BOZ Compatibility Test",
+      "bundleIdentifier": "com.activision.callofduty.blackopszombies",
+      "developerName": "Activision / community compatibility patches",
+      "subtitle": "Experimental integrated-input build",
+      "localizedDescription": "Experimental unsigned compatibility update for an existing COD: Black Ops Zombies installation in Strata. Includes integrated manual touch controls; physical-device input feel and session stability remain unverified. This release retains third-party game engine/content and is not an original engine reconstruction; redistribution rights are not certified by this catalog. Read the release INSTALL.md before updating and preserve the existing data container. The listed iOS requirement includes embedded-library minimums, not only the app plist.",
+      "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/BOZ-Strata-Source/main/source-icon.png",
+      "category": "games",
+      "appPermissions": {
+        "privacy": {
+          "NSMicrophoneUsageDescription": "The game may use the microphone for voice communication during multiplayer."
+        }
+      },
+      "versions": [
+        {
+          "date": "2026-11-04T03:27:36Z",
+          "downloadURL": "https://github.com/R347H4CK3R/BOZ-Strata-Source/releases/download/integrated-input-v1/BOZ-Integrated-Input-unsigned.ipa",
+          "size": 378303723,
+          "version": "1.3.5",
+          "buildVersion": "135.20",
+          "minOSVersion": "15.0",
+          "localizedDescription": "Integrated-input compatibility test build. Native ARM64 input checks are reported by the release. Existing engine and content are retained. Follow the published installation guide for the existing Strata setup; no new maps or weapons. Device behavior remains unverified."
+        }
+      ],
+      "version": "1.3.5",
+      "versionDate": "2026-11-04T03:27:36Z",
+      "downloadURL": "https://github.com/R347H4CK3R/BOZ-Strata-Source/releases/download/integrated-input-v1/BOZ-Integrated-Input-unsigned.ipa",
+      "size": 378303723,
+      "_verification": {
+        "sha256": "158398f2de38f4486c94212e864ed8b2d6fc444872650816a748f8c9f92d9ca9",
+        "release": "https://github.com/R347H4CK3R/BOZ-Strata-Source/releases/tag/integrated-input-v1",
+        "assetId": 708071021,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     }

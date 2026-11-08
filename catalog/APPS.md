@@ -1,0 +1,153 @@
+# Chris's Apps
+
+One catalog. Separate apps. Clearly labeled release status.
+
+**Add source:** https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/unified-source.json
+
+[Live refresh logs](https://github.com/R347H4CK3R/OmniForge/actions/workflows/unified-source.yml) · [How this catalog works](README.md)
+
+Physical-device installation and behavior are not certified by this catalog. Unsigned apps need a compatible container or signing. This is not Apple's App Store.
+
+## Asterion Veyra
+
+<img src="https://raw.githubusercontent.com/R347H4CK3R/GhostAI/c517179f56f258451836344886d87d8d8318ce26/App/Assets.xcassets/AppIcon.appiconset/AppIcon-1024.png" width="72" height="72" alt="Asterion Veyra catalog icon">
+
+<p><strong>Personal assistant, voice and desktop pairing</strong></p>
+<p>Personal AI assistant with voice, notes and explicitly paired desktop access. Choose a supported response source and pair only the desktop you intend to use. Requires iOS 26 or later and a supported signing/container setup. Published build and automated checks are verified; installation and behavior on your physical device remain untested by this catalog.</p>
+
+- Version: 0.3.4 · Build: 37
+- Requires iOS 26.0 or later · Download: 2.53 MB
+- Bundle ID: dev.asterionveyra.assistant
+
+<a href="https://github.com/R347H4CK3R/GhostAI/releases/download/ios-build-37/AsterionVeyra-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>A personal AI assistant with voice, notes, and explicitly paired desktop access. Requires iOS 26 or later.</p>
+</details>
+
+<img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/veyra-chat-simulator.png" width="220" alt="Asterion Veyra simulator preview">
+
+Screenshots are reviewed simulator previews, not proof of physical-device behavior.
+
+---
+
+## OmniForge
+
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/lc-156/OmniForgeIcon.png" width="72" height="72" alt="OmniForge catalog icon">
+
+<p><strong>Offline AI developer workbench</strong></p>
+<p>Import local GGUF models, inspect IPA files and work with development projects. Models are supplied separately. Unsigned iOS guest app for a configured LiveContainer or a supported signing method. Minimum iOS 17. Release packaging has been inspected; this catalog does not certify physical-device operation.</p>
+
+- Version: 1.1.56 · Build: 156
+- Requires iOS 17.0 or later · Download: 4.38 MB
+- Bundle ID: com.r347h4ck3r.omniforge
+
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/lc-156/OmniForge-LiveContainer.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>LiveContainer update 156</p>
+</details>
+
+---
+
+## VoiceMatrix
+
+<img src="https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="VoiceMatrix catalog icon">
+
+<p><strong>Offline character speech and voice tools</strong></p>
+<p>Import your own character folders, create offline speech and convert recordings with local neural engines. No stock characters are bundled. Experimental character-test edition: native diagnostic speech and simulator conversion checks pass, but physical iPhone behavior and character likeness remain unverified. Requires iOS 26.</p>
+
+- Version: 0.4.3 · Build: 1
+- Requires iOS 26.0 or later · Download: 731.05 MB
+- Bundle ID: com.voicematrix.app
+
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.3/VoiceMatrix-0.4.3.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>Playback controls and diagnostics, character-selection guidance, and in-app update checks/downloads with Strata handoff. No stock voices or private character audio bundled. Native/simulator checks passed; physical iPhone sound and character likeness remain unverified.</p>
+</details>
+
+<img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
+<img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-conversion-simulator.png" width="220" alt="VoiceMatrix simulator preview">
+
+Screenshots are reviewed simulator previews, not proof of physical-device behavior.
+
+---
+
+## Afterlight
+
+<img src="https://github.com/R347H4CK3R.png" width="72" height="72" alt="Afterlight catalog icon">
+
+<p><strong>Original survival-game prototype</strong></p>
+<p>Original procedural survival-game prototype, separate from Call of Duty. Contains no BO2 assets or third-party game engine in this published version. Simulation and simulator smoke checks are reported as passed; physical-device play remains unverified. Unsigned IPA requires LiveContainer or signing. iOS 17+. Owner avatar is shown because this prototype has no bundled app icon.</p>
+
+- Version: 0.1.0 · Build: 1
+- Requires iOS 17.0 or later · Download: 0.10 MB
+- Bundle ID: com.r347h4ck3r.nativezombies
+
+<a href="https://github.com/R347H4CK3R/NativeZombies-IOS/releases/download/v0.1.0-prototype/Afterlight-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>Native ARM64 iOS survival prototype. Simulation and simulator smoke tests passed. Import the unsigned IPA into a configured LiveContainer or sign before installing. Physical-device compatibility remains unverified.</p>
+</details>
+
+---
+
+## Zombies iOS File Tools
+
+<img src="https://github.com/R347H4CK3R.png" width="72" height="72" alt="Zombies iOS File Tools catalog icon">
+
+<p><strong>Game-file scanner and runtime research</strong></p>
+<p>Experimental BO2/PS3 file scanner and importer with native runtime development in progress. Supply your own legally obtained files. This is not verified complete Zombies gameplay. Unsigned automated build; physical-device behavior remains unverified. iOS 17+. Owner avatar is shown because the build has no bundled app icon.</p>
+
+- Version: 1.0 · Build: 3
+- Requires iOS 17.0 or later · Download: 0.47 MB
+- Bundle ID: com.r347h4ck3r.zombiesios
+
+<a href="https://github.com/R347H4CK3R/Zombies-IOS/releases/download/latest-build/ZombiesIOS-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>Automated unsigned iOS build from commit 542bccac2f7413a23cb12b95bcee3baa76907dfc. Sign with SideStore/AltStore or your preferred signing method.</p>
+</details>
+
+---
+
+## CS2 iOS Runtime Lab
+
+<img src="https://github.com/R347H4CK3R.png" width="72" height="72" alt="CS2 iOS Runtime Lab catalog icon">
+
+<p><strong>Native graphics and input test shell</strong></p>
+<p>Clean-room native iOS runtime research shell for Metal graphics, audio, controllers, touch and lifecycle logging. This device-test build is not Counter-Strike 2 gameplay and contains no Valve game assets. Requires signing or a compatible container, iOS 17+. Physical-device behavior remains unverified. Owner avatar is shown because no app icon is bundled.</p>
+
+- Version: 0.1 · Build: 1
+- Requires iOS 17.0 or later · Download: 0.04 MB
+- Bundle ID: com.cs2ios.runtime
+
+<a href="https://github.com/R347H4CK3R/CS2-iOS/releases/download/step3-test/CS2iOS-Step3-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>Unsigned ARM64 Step 3 device-test build. Sign with your sideloading method before installation.</p>
+</details>
+
+---
+
+## BOZ Compatibility Test
+
+<img src="https://raw.githubusercontent.com/R347H4CK3R/BOZ-Strata-Source/main/source-icon.png" width="72" height="72" alt="BOZ Compatibility Test catalog icon">
+
+<p><strong>Experimental integrated-input build</strong></p>
+<p>Experimental unsigned compatibility update for an existing COD: Black Ops Zombies installation in Strata. Includes integrated manual touch controls; physical-device input feel and session stability remain unverified. This release retains third-party game engine/content and is not an original engine reconstruction; redistribution rights are not certified by this catalog. Read the release INSTALL.md before updating and preserve the existing data container. The listed iOS requirement includes embedded-library minimums, not only the app plist.</p>
+
+- Version: 1.3.5 · Build: 135.20
+- Requires iOS 15.0 or later · Download: 378.30 MB
+- Bundle ID: com.activision.callofduty.blackopszombies
+
+<a href="https://github.com/R347H4CK3R/BOZ-Strata-Source/releases/download/integrated-input-v1/BOZ-Integrated-Input-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>Integrated-input compatibility test build. Native ARM64 input checks are reported by the release. Existing engine and content are retained. Follow the published installation guide for the existing Strata setup; no new maps or weapons. Device behavior remains unverified.</p>
+</details>
+
+---
+
+Catalog versions and requirements are generated from inspected public release IPAs. Missing app icons use the repository owner avatar, not invented artwork.
