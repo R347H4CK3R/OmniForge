@@ -24,7 +24,7 @@ def inspect_directory(directory):
             notices=[]
             for entry in z.infolist():
                 name=Path(entry.filename).name
-                if any(word in name.upper() for word in ('LICENSE','COPYING','NOTICE')) and not entry.is_dir():
+                if (any(word in name.upper() for word in ('LICENSE','COPYING','NOTICE')) or any(part.lower() in ('licenses','licences','notices') for part in Path(entry.filename).parts[:-1])) and not entry.is_dir():
                     if entry.file_size>1_000_000: raise ValueError('oversized legal notice')
                     data=z.read(entry)
                     notices.append({'name':name,'size':len(data),'sha256':hashlib.sha256(data).hexdigest()})

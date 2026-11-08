@@ -21,9 +21,11 @@ class ArtifactInspectionTests(unittest.TestCase):
             with zipfile.ZipFile(p,'w') as z:
                 z.writestr('Payload/App.app/Info.plist',plistlib.dumps(info))
                 z.writestr('Payload/App.app/Licenses/HLSDK-LICENSE.txt','Half Life 1 SDK LICENSE\nrequired legal text')
+                z.writestr('Payload/App.app/Licenses/GPL-3.0.txt','legal notice fixture')
                 z.writestr('Payload/App.app/App',struct.pack('<8I',0xfeedfacf,0x100000c,0,2,1,24,0,0)+struct.pack('<6I',0x32,24,2,17<<16,0,0))
             result=c.inspect_directory(Path(d))
             self.assertEqual(result[0]['noticeInventory'][0]['name'],'HLSDK-LICENSE.txt')
+            self.assertEqual(len(result[0]['noticeInventory']),2)
             self.assertNotIn('required legal text',json.dumps(result))
             self.assertEqual(result[0]['bundleIdentifier'],'app.example');self.assertEqual(result[0]['version'],'1.2')
             self.assertNotIn('NeverPrintMe',json.dumps(result));self.assertEqual(len(result[0]['sha256']),64)

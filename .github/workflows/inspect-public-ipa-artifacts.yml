@@ -85,10 +85,14 @@ jobs:
         run: |
           python3 - <<'PYCODE'
           import json,pathlib
-          paths=list(pathlib.Path('runtime-receipt').rglob('AUTOTEST_RESULT.json'))
-          assert len(paths)==1
-          data=json.loads(paths[0].read_text())
-          print(json.dumps({k:data[k] for k in ('status','passed','device_ipa_executed') if k in data},indent=2))
+          paths=list(pathlib.Path('runtime-receipt').rglob('AUTOTEST_RESULT.json'))+list(pathlib.Path('runtime-receipt').rglob('runtime.json'))
+          assert 0<len(paths)<=10
+          outcomes=[]
+          for path in paths:
+              data=json.loads(path.read_text())
+              outcome={k:data[k] for k in ('status','passed','device_ipa_executed') if k in data}
+              if outcome not in outcomes: outcomes.append(outcome)
+          print(json.dumps({'simulatorOutcomes':outcomes},indent=2))
           PYCODE
       - name: Publish inspection receipt only, never app binaries
         uses: actions/upload-artifact@v4
