@@ -6,3 +6,6 @@
 *.mobileprovision
 .env
 __pycache__/
+
+# Local catalog refresh reports are uploaded as CI artifacts.
+catalog-refresh-report.json

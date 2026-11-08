@@ -1,0 +1,69 @@
+name: Refresh unified app source
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 * * * *'
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/unified_catalog.py'
+      - 'scripts/test_unified_catalog.py'
+      - 'catalog/registry.json'
+      - '.github/workflows/unified-source.yml'
+permissions:
+  contents: write
+concurrency:
+  group: unified-app-source
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test catalog safety rules
+        run: python3 -m unittest discover -s scripts -p 'test_unified_catalog.py' -v
+      - name: Inspect public release assets and refresh catalog
+        id: refresh
+        continue-on-error: true
+        run: |
+          rm -f catalog-refresh-report.json
+          python3 -u scripts/unified_catalog.py
+      - name: Publish verified entries, retaining last-good versions
+        run: |
+          python3 - <<'PYCODE'
+          import json
+          from pathlib import Path
+          report=json.loads(Path('catalog-refresh-report.json').read_text())
+          assert report.get('complete') is True, 'Refresh did not complete'
+          state=json.loads(Path('catalog/verified-state.json').read_text())
+          for app in state['apps']: app.pop('_verification',None)
+          assert state==json.loads(Path('unified-source.json').read_text()), 'Output/state mismatch'
+          PYCODE
+          built_from=$(git rev-parse HEAD)
+          git fetch origin main
+          test "$(git rev-parse origin/main)" = "$built_from" || { echo 'Main changed during verification; retry using fresh inputs.'; exit 1; }
+          git config user.name 'github-actions[bot]' 
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add unified-source.json catalog/verified-state.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'catalog: refresh verified app releases'
+            git push origin HEAD:main
+          fi
+      - name: Save verification report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalog-verification-report
+          path: catalog-refresh-report.json
+          retention-days: 14
+      - name: Report skipped updates
+        if: steps.refresh.outcome == 'failure'
+        run: |
+          echo 'One or more updates failed verification. Previous good entries were retained. See the refresh log and report.'
+          exit 1

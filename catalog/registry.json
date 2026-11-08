@@ -1,0 +1,42 @@
+[
+  {
+    "repository": "R347H4CK3R/OmniForge",
+    "bundleIdentifier": "com.r347h4ck3r.omniforge",
+    "sourceURL": "https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/livecontainer-source.json",
+    "tagPattern": "lc-[0-9]+",
+    "allowPrerelease": false,
+    "name": "OmniForge",
+    "subtitle": "Offline AI developer workbench",
+    "localizedDescription": "Import local GGUF models, inspect IPA files and work with development projects. Models are supplied separately. Unsigned iOS guest app for a configured LiveContainer or a supported signing method. Minimum iOS 17. Release packaging has been inspected; this catalog does not certify physical-device operation.",
+    "category": "developer"
+  },
+  {
+    "repository": "R347H4CK3R/Ghostline",
+    "bundleIdentifier": "com.voicematrix.app",
+    "sourceURL": "https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/strata-source.json",
+    "tagPattern": "voicematrix-v[0-9.]+(?:-character-test-[0-9]+)?",
+    "allowPrerelease": true,
+    "requiredEvidenceAssets": [
+      "character-release-verification.json",
+      "speech-evidence.json",
+      "conversion-result.json"
+    ],
+    "name": "VoiceMatrix",
+    "subtitle": "Offline character speech and voice tools",
+    "localizedDescription": "Import your own character folders, create offline speech and convert recordings with local neural engines. No stock characters are bundled. Experimental character-test edition: native diagnostic speech and simulator conversion checks pass, but physical iPhone behavior and character likeness remain unverified. Requires iOS 26.",
+    "category": "entertainment",
+    "evidencePolicy": "character",
+    "screenshots": [
+      {
+        "imageURL": "https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png",
+        "width": 1206,
+        "height": 2622
+      },
+      {
+        "imageURL": "https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-conversion-simulator.png",
+        "width": 1206,
+        "height": 2622
+      }
+    ]
+  }
+]
