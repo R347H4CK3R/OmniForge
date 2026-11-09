@@ -181,5 +181,23 @@
       "SHA256SUMS",
       "BO2IOSCS-Xash-source.zip"
     ]
+  },
+  {
+    "repository": "R347H4CK3R/OmniForge",
+    "bundleIdentifier": "com.prismpuzzle.app",
+    "name": "Prism Puzzle",
+    "developerName": "R347H4CK3R",
+    "subtitle": "Offline cube and logic playground",
+    "localizedDescription": "Offline touch-controlled 3×3 cube, Lights Out and Slide Nine with unlimited free path-based hints and local progress saving. No accounts, ads or network service. Eleven engine tests, automated mobile-browser checks and iOS device compilation passed. Unsigned iPhone/iPad test build requires compatible signing or a configured container. Physical iPhone gameplay and Strata installation remain unverified. iOS 15+.",
+    "category": "games",
+    "tagPattern": "prism-puzzle-[0-9.]+-build[0-9]+",
+    "assetPattern": "Prism-Puzzle-unsigned\\.ipa",
+    "allowPrerelease": true,
+    "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-icon.png",
+    "requiredEvidenceAssets": [
+      "SHA256SUMS",
+      "verification.json",
+      "RELEASE-NOTES.md"
+    ]
   }
 ]
