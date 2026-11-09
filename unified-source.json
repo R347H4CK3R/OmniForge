@@ -331,6 +331,33 @@
       "versionDate": "2026-11-08T21:12:46Z",
       "downloadURL": "https://github.com/R347H4CK3R/BO2-IOS-CS/releases/download/runtime-0.1-build3/BO2IOSCS-Xash-integrated.ipa",
       "size": 5570497
+    },
+    {
+      "name": "Prism Puzzle",
+      "bundleIdentifier": "com.prismpuzzle.app",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Offline cube and logic playground",
+      "localizedDescription": "Offline touch-controlled 3\u00d73 cube, Lights Out and Slide Nine with unlimited free path-based hints and local progress saving. No accounts, ads or network service. Eleven engine tests, automated mobile-browser checks and iOS device compilation passed. Unsigned iPhone/iPad test build requires compatible signing or a configured container. Physical iPhone gameplay and Strata installation remain unverified. iOS 15+.",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-icon.png",
+      "category": "games",
+      "appPermissions": {
+        "privacy": {}
+      },
+      "versions": [
+        {
+          "date": "2026-11-09T13:10:43Z",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-unsigned.ipa",
+          "size": 46541,
+          "version": "1.0.0",
+          "buildVersion": "1",
+          "minOSVersion": "15.0",
+          "localizedDescription": "# Prism Puzzle 1.0.0 (1)\r\n\r\nOffline 3\u00d73 touch cube, Lights Out and Slide Nine with unlimited free hints. Hints retrace the play path, not necessarily the shortest solution. No account, network service, ads or analytics. Progress stays local.\r\n\r\nUnsigned ARM64 iPhone/iPad IPA, minimum iOS 15. Requires a compatible signing tool or configured container. Native compilation, eleven engine tests and automated mobile-browser smoke tests passed. Archive metadata and SHA256 were independently checked. Physical iPhone gameplay and Strata installation have not been tested. This is a development/test release, not App Store-ready.\r\n\r\nThe IPA contains its required bundled game runtime and assets. No signing credentials, provisioning profiles, personal data or unrelated private repository files are included. The private source repository remains private.\r\n\r\nRead SHA256SUMS and verification.json. Preserve existing app data when updating.\r\n"
+        }
+      ],
+      "version": "1.0.0",
+      "versionDate": "2026-11-09T13:10:43Z",
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-unsigned.ipa",
+      "size": 46541
     }
   ],
   "news": [],

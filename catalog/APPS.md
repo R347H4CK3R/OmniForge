@@ -23,6 +23,7 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 | [BO2CS Tactical Prototype](#bo2cs-tactical-prototype) | Original SDL tactical-game prototype | iOS 16.0+ |
 | [COD4iOS Diagnostic](#cod4ios-diagnostic) | Experimental runtime diagnostic build | iOS 17.0+ |
 | [BO2 iOS CS Runtime](#bo2-ios-cs-runtime) | Experimental native startup/config runtime | iOS 17.0+ |
+| [Prism Puzzle](#prism-puzzle) | Offline cube and logic playground | iOS 15.0+ |
 
 ## Screenshots
 
@@ -285,6 +286,36 @@ The exact unsigned IPA comes from verified source commit 19b855bd032587eed6f2f97
 Required Xash GPL, HLSDK and SDL license texts are included in the app. The accompanying corresponding-source archive contains 9,203 tracked source files, initialized pinned dependencies, applied patches, original notices and build scripts, with a per-file hash manifest. GPL-covered code and upstream notices retain their licenses. The HLSDK components are distributed free of charge. No proprietary PS3 source dumps or retail game files are included.
 
 Sign the unsigned IPA using a compatible sideloading tool. Preserve existing saves/data. Read the source README and build scripts for the project&#x27;s current limitations; this release does not prove complete game conversion, campaign or multiplayer support.
+</p>
+</details>
+
+**Preview coming soon** · No reviewed screenshot available yet.
+
+---
+
+## Prism Puzzle
+
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-icon.png" width="72" height="72" alt="Prism Puzzle catalog icon">
+
+<p><strong>Offline cube and logic playground</strong></p>
+<p>Offline touch-controlled 3×3 cube, Lights Out and Slide Nine with unlimited free path-based hints and local progress saving. No accounts, ads or network service. Eleven engine tests, automated mobile-browser checks and iOS device compilation passed. Unsigned iPhone/iPad test build requires compatible signing or a configured container. Physical iPhone gameplay and Strata installation remain unverified. iOS 15+.</p>
+
+- Version: 1.0.0 · Build: 1
+- Requires iOS 15.0 or later · Download: 0.05 MB
+- Bundle ID: com.prismpuzzle.app
+
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p># Prism Puzzle 1.0.0 (1)
+
+Offline 3×3 touch cube, Lights Out and Slide Nine with unlimited free hints. Hints retrace the play path, not necessarily the shortest solution. No account, network service, ads or analytics. Progress stays local.
+
+Unsigned ARM64 iPhone/iPad IPA, minimum iOS 15. Requires a compatible signing tool or configured container. Native compilation, eleven engine tests and automated mobile-browser smoke tests passed. Archive metadata and SHA256 were independently checked. Physical iPhone gameplay and Strata installation have not been tested. This is a development/test release, not App Store-ready.
+
+The IPA contains its required bundled game runtime and assets. No signing credentials, provisioning profiles, personal data or unrelated private repository files are included. The private source repository remains private.
+
+Read SHA256SUMS and verification.json. Preserve existing app data when updating.
 </p>
 </details>
 
