@@ -358,6 +358,60 @@
       "versionDate": "2026-11-09T13:10:43Z",
       "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-unsigned.ipa",
       "size": 46541
+    },
+    {
+      "name": "ScopePilot",
+      "bundleIdentifier": "app.scopepilot.mobile",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Authorized security research companion",
+      "localizedDescription": "User-triggered HackerOne/Bugcrowd public-directory discovery, official-policy review and authorization gates, local cookie/CORS/HSTS/CSP/cache evidence analysis, and redacted report drafts. No autonomous target probing, exploit execution, automatic submission, guaranteed bounty or confirmed vulnerabilities. 25 core tests, browser workflow and iPhone simulator smoke checks passed. Unsigned iOS 16+ preview requires compatible signing or configured container. Physical iPhone/Strata installation and full feature/device QA remain untested.",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.2.0-build2/ScopePilot-icon.png",
+      "category": "developer",
+      "appPermissions": {
+        "privacy": {}
+      },
+      "versions": [
+        {
+          "date": "2026-11-09T13:24:47Z",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.2.0-build2/ScopePilot-unsigned.ipa",
+          "size": 51976,
+          "version": "0.2.0",
+          "buildVersion": "2",
+          "minOSVersion": "16.0",
+          "localizedDescription": "User-triggered HackerOne/Bugcrowd public community-directory discovery, official-policy review and authorization gates, local evidence analysis of cookies/CORS/HSTS/CSP/authenticated caching, and redacted report drafts.\r\n\r\nNo autonomous target probing, exploit execution, automatic submission, guaranteed bounty, or confirmed vulnerabilities. Directory listings are not authorization.\r\n\r\nUnsigned arm64 IPA requires iOS 16.0+ and supported signing or configured container. Not an App Store release. Physical iPhone installation, Strata installation and full feature/device QA remain untested.\r\n\r\nPassed: 25 core tests, browser workflow, iPhone 16 Pro simulator install/launch/navigation smoke checks, device compilation, ZIP/Info.plist/Mach-O/assets checks.\r\n\r\nSHA-256: 3e50f58fb04faf8872f9aef796b6a61bcaad126345c26190b9da2a5933cab721\r\nBytes: 51976\r\nBundle: app.scopepilot.mobile\r\nSource commit: 12493cc5b9bc5300596b34a9789f43f5400ae25f\r\nBuild run: 42623411198\r\n\r\nAsset-only distribution. ScopePilot source remains private. Automatic source archives refer to OmniForge, not ScopePilot. See attached RELEASE-NOTES.md and verification.json."
+        }
+      ],
+      "version": "0.2.0",
+      "versionDate": "2026-11-09T13:24:47Z",
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.2.0-build2/ScopePilot-unsigned.ipa",
+      "size": 51976
+    },
+    {
+      "name": "Luma Preview",
+      "bundleIdentifier": "app.luma.personal",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Local memory and simple planning",
+      "localizedDescription": "Early local-first personal-planning preview with saved notes, keyword search and fixed-template goal checklists. Optional AI chat needs your own compatible HTTPS model server; hosting may cost money. No bundled/on-device LLM, voice, external integrations, sync or autonomous execution. Notes and backups are unencrypted. Unsigned arm64 iPhone build for user signing, iOS 14+. CI compilation, bundle and archive checks passed; physical installation and native backup behavior remain unverified. Not a full assistant replacement.",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/luma-preview-1.0-build2/Luma-icon.png",
+      "category": "productivity",
+      "appPermissions": {
+        "privacy": {}
+      },
+      "versions": [
+        {
+          "date": "2026-11-09T13:26:31Z",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/luma-preview-1.0-build2/Luma-unsigned.ipa",
+          "size": 729721,
+          "version": "1.0",
+          "buildVersion": "2",
+          "minOSVersion": "14.0",
+          "localizedDescription": "Early personal-planning preview. Local notes/search and fixed-template checklists; optional user-configured HTTPS AI server.\r\n\r\nNo bundled/on-device LLM, voice, external integrations, cross-device sync or autonomous action execution. Model hosting may cost money. Notes and exported backups are unencrypted.\r\n\r\nRequires iOS 14 or later. Bundle app.luma.personal, version 1.0, build 2. Unsigned arm64 IPA requires user signing with a compatible sideloading tool. CI compile/archive checks pass; physical iPhone installation and native backup behavior are unverified. Not App Store-ready.\r\n\r\nPrivate source stays private. Source revision: a4e7abf37f842802aafe8d11958c088b7152e407. No signing keys or user data included. Read PREVIEW_NOTES.md, VERIFICATION.txt and inspection.json.\r\n\r\nIPA SHA256: 193a0c5177581cb60b2f0251c83ad8c3eae06e02efd04ae734efd9586a459414 (729721 bytes)."
+        }
+      ],
+      "version": "1.0",
+      "versionDate": "2026-11-09T13:26:31Z",
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/luma-preview-1.0-build2/Luma-unsigned.ipa",
+      "size": 729721
     }
   ],
   "news": [],
