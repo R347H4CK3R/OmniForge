@@ -25,7 +25,7 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 | [BO2 iOS CS Runtime](#bo2-ios-cs-runtime) | Experimental native startup/config runtime | iOS 17.0+ |
 | [Prism Puzzle](#prism-puzzle) | Offline cube and logic playground | iOS 15.0+ |
 | [ScopePilot](#scopepilot) | Authorized security research companion | iOS 16.0+ |
-| [Luma Preview](#luma-preview) | Local memory and on-device iPhone AI | iOS 14.0+ |
+| [Luma Preview](#luma-preview) | Offline tools and private iPhone AI | iOS 14.0+ |
 
 ## Screenshots
 
@@ -362,31 +362,43 @@ Asset-only distribution. ScopePilot source remains private. Automatic source arc
 
 ## Luma Preview
 
-<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/luma-preview-1.1-build3/Luma-icon.png" width="72" height="72" alt="Luma Preview catalog icon">
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/luma-preview-1.2-build4/Luma-icon.png" width="72" height="72" alt="Luma Preview catalog icon">
 
-<p><strong>Local memory and on-device iPhone AI</strong></p>
-<p>Local-first personal assistant with saved notes, search and simple goal checklists. Version 1.1 adds Apple on-device AI on eligible iOS26 Apple Intelligence devices, with opt-in bounded memory, cancellation and reviewed saving. No automatic cloud fallback. Older devices keep iOS14+ notes/checklists; optional compatible server AI may cost money. No voice, external integrations, sync or autonomous execution. Notes/backups are unencrypted. Unsigned user-signable build; compile, native logic and browser tests passed, but physical inference/installation remain unverified. Still an early product increment.</p>
+<p><strong>Offline tools and private iPhone AI</strong></p>
+<p>Local-first assistant with notes, search, seven offline planning kits, six editable prompt starters and setup guidance. Version 1.2 adds native Files import/sharing and optional password-encrypted portable backups. Local app notes and plain backups remain unencrypted. Apple on-device AI requires eligible iOS26 Apple Intelligence hardware and available system model; older iOS14+ devices retain offline tools. Optional compatible server may cost money. No automatic cloud fallback, voice, sync, reminders or autonomous external actions. Unsigned user-signable preview. Unit/browser/native tests and builds passed; physical installation, inference and Files behavior remain unverified.</p>
 
-- Version: 1.1 · Build: 3
-- Requires iOS 14.0 or later · Download: 3.29 MB
+- Version: 1.2 · Build: 4
+- Requires iOS 14.0 or later · Download: 3.32 MB
 - Bundle ID: app.luma.personal
 
-<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/luma-preview-1.1-build3/Luma-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/luma-preview-1.2-build4/Luma-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p># Luma 1.1 (3): local AI on supported iPhones
+<p># Luma 1.2 (build 4)
 
-This update adds an Ask tab backed by Apple&#x27;s on-device Foundation Models. Eligible iPhones can draft, summarize and plan without a model API subscription. Requires iOS 26 or later, Apple Intelligence-capable hardware, Apple Intelligence enabled, downloaded model assets and a supported language/region. Local requests never fall back to cloud.
+Unsigned arm64 iPhone preview for user signing with Strata/SideStore. This is not an App Store release or a fully autonomous assistant.
 
-Questions are limited to 2,000 characters; memory is excluded unless selected, then at most three notes of 500 characters each. You can cancel generation. Answers never execute actions or save themselves: review/edit an excerpt before saving it to memory. Existing app identity, memory storage and backup schema are unchanged.
+## Included
 
-Notes, keyword search and fixed-template checklists still work on iOS14+. Optional server chat remains separate and can incur provider costs. No voice, external app integrations, cross-device sync or autonomous execution. Notes/backups are not encrypted. This is still an early product increment, not a replacement for every assistant or an App Store-ready release.
+- Local notes, search and goal checklists.
+- Seven offline planning kits, six editable prompt starters and a setup guide, without an account or model download.
+- Native iPhone Files backup import and system sharing.
+- Optional AES-256-GCM password-encrypted portable backups. Keep the passphrase safe; it cannot be recovered. Local app notes and plain JSON backups remain unencrypted.
+- Apple on-device AI on eligible iOS 26 Apple Intelligence devices with an available system model, opt-in bounded memory context and reviewed answer saving. Apple supplies the model through the operating system; no model weights are bundled.
 
-Verified: 16 JavaScript unit tests; seven browser UI tests including mocked native save/cancel flows; native input/lifecycle tests; real FoundationModels and fallback compilation; unsigned arm64 iPhone device build and archive inspection. FoundationModels is weak-linked in the actual IPA. Browser mocks do not prove native inference: physical iPhone generation, cancellation and installation remain unverified.
+Older iOS 14+ devices retain local tools. Optional user-configured HTTPS model servers receive only submitted content and may charge fees. No automatic cloud fallback, voice, external integrations, sync, reminders or background autonomy are included. Answers never execute actions or save themselves.
 
-Unsigned IPA requires user signing. Bundle app.luma.personal, version1.1 build3, minimum iOS14. Source revision a20cae21cd58bf07c3c0977ad99058d7b0f963bd. Additional test-only revision d53375c0c29c9c491248f4800b7df06783e7aa9c. No signing keys, credentials or user data included. Private repository stays private.
+Sharing is user-directed through the system sheet. Temporary export files are protected and normally removed after sharing, but may remain temporarily after abrupt termination. Encryption protects only the exported backup, not app-local notes or later decrypted copies.
 
-IPA: 3287896 bytes. SHA256 b96ac925f49fdeaad26cabf7105a4d93d30382ccdaf886955019b4c55ca44091
+## Verification and limits
+
+Source commit: 99bb28d4fa20467ccb000fc60281a28a6def9303.
+
+23 JavaScript unit tests, 10 browser tests, native validation tests, actual FoundationModels and unavailable-framework fallback compilation, simulator compilation and unsigned device compilation passed. Browser report upload failed because GitHub Actions artifact storage was full; tests passed.
+
+Physical iPhone installation, real model inference, Files picker/share behavior and accessibility remain unverified. Signing and Apple platform restrictions apply. The local interface requires iOS 14 or later; on-device AI requires supported iOS 26 hardware, enabled Apple Intelligence and available system assets, with language/region restrictions.
+
+Third-party notices are bundled and supplied alongside the release. No credentials, user data or private source code are included.
 </p>
 </details>
 
