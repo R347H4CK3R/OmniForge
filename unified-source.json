@@ -84,19 +84,19 @@
       },
       "versions": [
         {
-          "date": "2026-11-08T20:50:00Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.4/VoiceMatrix-0.4.4.ipa",
-          "size": 731078368,
-          "version": "0.4.4",
+          "date": "2026-11-09T13:23:46Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.5/VoiceMatrix-0.4.5.ipa",
+          "size": 731110554,
+          "version": "0.4.5",
           "buildVersion": "1",
           "minOSVersion": "26.0",
-          "localizedDescription": "A refreshed voice studio with one-tap character selection, searchable voices, clearer speech controls and collection management. Working audio engines and private storage are unchanged. No bundled stock or character voices. Native and simulator checks passed; physical iPhone interface and likeness checks remain pending."
+          "localizedDescription": "Long speech with a practical 30-minute raw-audio budget; saved/shared speed, pitch, volume and pause controls; explicitly public suggestion drafts. Imported data preserved, no bundled stock voices. Native and simulator checks passed; physical iPhone evaluation remains pending."
         }
       ],
-      "version": "0.4.4",
-      "versionDate": "2026-11-08T20:50:00Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.4/VoiceMatrix-0.4.4.ipa",
-      "size": 731078368,
+      "version": "0.4.5",
+      "versionDate": "2026-11-09T13:23:46Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.5/VoiceMatrix-0.4.5.ipa",
+      "size": 731110554,
       "subtitle": "Offline character speech and voice tools",
       "category": "entertainment",
       "screenshots": [

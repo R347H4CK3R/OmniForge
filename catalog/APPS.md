@@ -82,14 +82,14 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <p><strong>Offline character speech and voice tools</strong></p>
 <p>Import your own character folders, create offline speech and convert recordings with local neural engines. No stock characters are bundled. Experimental character-test edition: native diagnostic speech and simulator conversion checks pass, but physical iPhone behavior and character likeness remain unverified. Requires iOS 26.</p>
 
-- Version: 0.4.4 · Build: 1
-- Requires iOS 26.0 or later · Download: 731.08 MB
+- Version: 0.4.5 · Build: 1
+- Requires iOS 26.0 or later · Download: 731.11 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.4/VoiceMatrix-0.4.4.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.5/VoiceMatrix-0.4.5.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>A refreshed voice studio with one-tap character selection, searchable voices, clearer speech controls and collection management. Working audio engines and private storage are unchanged. No bundled stock or character voices. Native and simulator checks passed; physical iPhone interface and likeness checks remain pending.</p>
+<p>Long speech with a practical 30-minute raw-audio budget; saved/shared speed, pitch, volume and pause controls; explicitly public suggestion drafts. Imported data preserved, no bundled stock voices. Native and simulator checks passed; physical iPhone evaluation remains pending.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
