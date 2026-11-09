@@ -6,7 +6,7 @@ from pathlib import Path
 SOURCE_URL = 'https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/unified-source.json'
 
 def render_storefront(source):
-    e=lambda value: html.escape(str(value), quote=True)
+    e=lambda value: html.escape(str(value).replace('\r\n', '\n').replace('\r', '\n'), quote=True)
     cards=[]
     for app in source['apps']:
         v=app['versions'][0]
@@ -27,3 +27,4 @@ def render_storefront(source):
 
 if __name__=='__main__':
     Path('catalog/index.html').write_text(render_storefront(json.loads(Path('unified-source.json').read_text())))
+

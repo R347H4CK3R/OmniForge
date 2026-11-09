@@ -26,3 +26,19 @@ class StorefrontTests(unittest.TestCase):
             self.assertIn(app['versions'][0]['downloadURL'],rendered)
         self.assertIn('id="search"',rendered)
         self.assertEqual(source,original)
+
+    def test_rendered_release_notes_survive_text_file_round_trip(self):
+        import tempfile
+        from storefront import render_storefront
+        source=json.loads(Path('unified-source.json').read_text())
+        source['apps'][0]['versions'][0]['localizedDescription']='First line\r\n\r\nSecond line\rThird line'
+        original=copy.deepcopy(source)
+        for render in (render_storefront, render_store_guide):
+            with self.subTest(renderer=render.__name__), tempfile.TemporaryDirectory() as directory:
+                path=Path(directory)/'rendered.txt'
+                rendered=render(source)
+                self.assertIn('First line\n\nSecond line\nThird line',rendered)
+                path.write_text(rendered)
+                self.assertEqual(path.read_text(),render(source))
+        self.assertEqual(source,original)
+

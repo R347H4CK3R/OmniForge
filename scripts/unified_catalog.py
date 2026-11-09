@@ -267,7 +267,7 @@ def refresh(previous, registry, loader=load_app):
 
 
 def render_store_guide(source):
-    e=lambda value:html.escape(str(value),quote=True)
+    e=lambda value:html.escape(str(value).replace('\r\n', '\n').replace('\r', '\n'),quote=True)
     lines=["# Chris's Apps", "", "Discover something different. Independent apps, creative tools and experimental projects.", "",
            "**Add source:** https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/unified-source.json", "",
            "[Live refresh logs](https://github.com/R347H4CK3R/OmniForge/actions/workflows/unified-source.yml) · [How this catalog works](README.md)", "",
@@ -314,3 +314,4 @@ def main():
     if errors: raise SystemExit(1)
 
 if __name__=='__main__': main()
+
