@@ -24,7 +24,7 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 | [COD4iOS Diagnostic](#cod4ios-diagnostic) | Experimental runtime diagnostic build | iOS 17.0+ |
 | [BO2 iOS CS Runtime](#bo2-ios-cs-runtime) | Experimental native startup/config runtime | iOS 17.0+ |
 | [Prism Puzzle](#prism-puzzle) | Offline cube and logic playground | iOS 15.0+ |
-| [ScopePilot](#scopepilot) | Authorized security research companion | iOS 16.0+ |
+| [ScopePilot](#scopepilot) | Offline captured-traffic evidence review | iOS 16.0+ |
 | [Luma Preview](#luma-preview) | Offline tools and private iPhone AI | iOS 14.0+ |
 
 ## Screenshots
@@ -327,33 +327,35 @@ Read SHA256SUMS and verification.json. Preserve existing app data when updating.
 
 ## ScopePilot
 
-<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.2.0-build2/ScopePilot-icon.png" width="72" height="72" alt="ScopePilot catalog icon">
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.3.0-build3/ScopePilot-icon.png" width="72" height="72" alt="ScopePilot catalog icon">
 
-<p><strong>Authorized security research companion</strong></p>
-<p>User-triggered HackerOne/Bugcrowd public-directory discovery, official-policy review and authorization gates, local cookie/CORS/HSTS/CSP/cache evidence analysis, and redacted report drafts. No autonomous target probing, exploit execution, automatic submission, guaranteed bounty or confirmed vulnerabilities. 25 core tests, browser workflow and iPhone simulator smoke checks passed. Unsigned iOS 16+ preview requires compatible signing or configured container. Physical iPhone/Strata installation and full feature/device QA remain untested.</p>
+<p><strong>Offline captured-traffic evidence review</strong></p>
+<p>Scope-gated offline HAR import with preview/save/discard and sensitive-data filtering, plus user-triggered public-program discovery, official-policy review, local cookie/CORS/HSTS/CSP/cache evidence analysis and redacted report drafts. No autonomous probing, exploits, automatic submissions, guaranteed bounties or confirmed vulnerabilities. 34 core tests, browser/HAR UI tests, iPhone simulator smoke and device compilation passed. Unsigned iOS16+ preview needs compatible signing/container. Physical iPhone/Strata installation, native HAR picker and full device QA remain unverified.</p>
 
-- Version: 0.2.0 · Build: 2
+- Version: 0.3.0 · Build: 3
 - Requires iOS 16.0 or later · Download: 0.05 MB
 - Bundle ID: app.scopepilot.mobile
 
-<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.2.0-build2/ScopePilot-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.3.0-build3/ScopePilot-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>User-triggered HackerOne/Bugcrowd public community-directory discovery, official-policy review and authorization gates, local evidence analysis of cookies/CORS/HSTS/CSP/authenticated caching, and redacted report drafts.
+<p># ScopePilot 0.3.0 (3) unsigned iPhone preview
 
-No autonomous target probing, exploit execution, automatic submission, guaranteed bounty, or confirmed vulnerabilities. Directory listings are not authorization.
+Adds private, offline HAR import for scope-gated review of captured browser traffic. Preview results before saving or discarding; sensitive-data filtering limits retained evidence. Review current official policies and obtain authorization before testing.
 
-Unsigned arm64 IPA requires iOS 16.0+ and supported signing or configured container. Not an App Store release. Physical iPhone installation, Strata installation and full feature/device QA remain untested.
+Includes user-triggered HackerOne/Bugcrowd public-directory discovery, authorization gates, local cookie/CORS/HSTS/CSP/cache evidence analysis and redacted report drafts. No autonomous probing, exploit execution, automatic submissions, guaranteed bounty or confirmed vulnerabilities.
 
-Passed: 25 core tests, browser workflow, iPhone 16 Pro simulator install/launch/navigation smoke checks, device compilation, ZIP/Info.plist/Mach-O/assets checks.
+Verified: 34 core tests, browser/HAR import UI checks, native iPhone simulator install/launch/navigation, unsigned iPhone compilation and IPA integrity/metadata/arm64 inspection. Physical iPhone and Strata installation, native HAR file picker and full feature/device QA remain unverified. Unsigned iOS16+ arm64 package requires compatible signing or a supported configured container. Not an App Store release.
 
-SHA-256: 3e50f58fb04faf8872f9aef796b6a61bcaad126345c26190b9da2a5933cab721
-Bytes: 51976
 Bundle: app.scopepilot.mobile
-Source commit: 12493cc5b9bc5300596b34a9789f43f5400ae25f
-Build run: 42623411198
+Version: 0.3.0 build3
+IPA bytes: 53907
+SHA-256: 7d8916cab61cbdd882d49ceac02fe9505c10d343e0a446708d79c69b8a25435c
+Source commit: 30a3c3a065fe5728e3196c69fdd2a3cd826368e8
+Build run: 42628336191
 
-Asset-only distribution. ScopePilot source remains private. Automatic source archives refer to OmniForge, not ScopePilot. See attached RELEASE-NOTES.md and verification.json.</p>
+Asset-only distribution; ScopePilot source remains private. Automatic GitHub source archives refer to OmniForge, not ScopePilot. No user traffic captures, credentials or signing keys are included.
+</p>
 </details>
 
 **Preview coming soon** · No reviewed screenshot available yet.

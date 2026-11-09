@@ -435,32 +435,32 @@
       "name": "ScopePilot",
       "bundleIdentifier": "app.scopepilot.mobile",
       "developerName": "R347H4CK3R",
-      "subtitle": "Authorized security research companion",
-      "localizedDescription": "User-triggered HackerOne/Bugcrowd public-directory discovery, official-policy review and authorization gates, local cookie/CORS/HSTS/CSP/cache evidence analysis, and redacted report drafts. No autonomous target probing, exploit execution, automatic submission, guaranteed bounty or confirmed vulnerabilities. 25 core tests, browser workflow and iPhone simulator smoke checks passed. Unsigned iOS 16+ preview requires compatible signing or configured container. Physical iPhone/Strata installation and full feature/device QA remain untested.",
-      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.2.0-build2/ScopePilot-icon.png",
+      "subtitle": "Offline captured-traffic evidence review",
+      "localizedDescription": "Scope-gated offline HAR import with preview/save/discard and sensitive-data filtering, plus user-triggered public-program discovery, official-policy review, local cookie/CORS/HSTS/CSP/cache evidence analysis and redacted report drafts. No autonomous probing, exploits, automatic submissions, guaranteed bounties or confirmed vulnerabilities. 34 core tests, browser/HAR UI tests, iPhone simulator smoke and device compilation passed. Unsigned iOS16+ preview needs compatible signing/container. Physical iPhone/Strata installation, native HAR picker and full device QA remain unverified.",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.3.0-build3/ScopePilot-icon.png",
       "category": "developer",
       "appPermissions": {
         "privacy": {}
       },
       "versions": [
         {
-          "date": "2026-11-09T13:24:47Z",
-          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.2.0-build2/ScopePilot-unsigned.ipa",
-          "size": 51976,
-          "version": "0.2.0",
-          "buildVersion": "2",
+          "date": "2026-11-09T22:22:06Z",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.3.0-build3/ScopePilot-unsigned.ipa",
+          "size": 53907,
+          "version": "0.3.0",
+          "buildVersion": "3",
           "minOSVersion": "16.0",
-          "localizedDescription": "User-triggered HackerOne/Bugcrowd public community-directory discovery, official-policy review and authorization gates, local evidence analysis of cookies/CORS/HSTS/CSP/authenticated caching, and redacted report drafts.\r\n\r\nNo autonomous target probing, exploit execution, automatic submission, guaranteed bounty, or confirmed vulnerabilities. Directory listings are not authorization.\r\n\r\nUnsigned arm64 IPA requires iOS 16.0+ and supported signing or configured container. Not an App Store release. Physical iPhone installation, Strata installation and full feature/device QA remain untested.\r\n\r\nPassed: 25 core tests, browser workflow, iPhone 16 Pro simulator install/launch/navigation smoke checks, device compilation, ZIP/Info.plist/Mach-O/assets checks.\r\n\r\nSHA-256: 3e50f58fb04faf8872f9aef796b6a61bcaad126345c26190b9da2a5933cab721\r\nBytes: 51976\r\nBundle: app.scopepilot.mobile\r\nSource commit: 12493cc5b9bc5300596b34a9789f43f5400ae25f\r\nBuild run: 42623411198\r\n\r\nAsset-only distribution. ScopePilot source remains private. Automatic source archives refer to OmniForge, not ScopePilot. See attached RELEASE-NOTES.md and verification.json."
+          "localizedDescription": "# ScopePilot 0.3.0 (3) unsigned iPhone preview\r\n\r\nAdds private, offline HAR import for scope-gated review of captured browser traffic. Preview results before saving or discarding; sensitive-data filtering limits retained evidence. Review current official policies and obtain authorization before testing.\r\n\r\nIncludes user-triggered HackerOne/Bugcrowd public-directory discovery, authorization gates, local cookie/CORS/HSTS/CSP/cache evidence analysis and redacted report drafts. No autonomous probing, exploit execution, automatic submissions, guaranteed bounty or confirmed vulnerabilities.\r\n\r\nVerified: 34 core tests, browser/HAR import UI checks, native iPhone simulator install/launch/navigation, unsigned iPhone compilation and IPA integrity/metadata/arm64 inspection. Physical iPhone and Strata installation, native HAR file picker and full feature/device QA remain unverified. Unsigned iOS16+ arm64 package requires compatible signing or a supported configured container. Not an App Store release.\r\n\r\nBundle: app.scopepilot.mobile\r\nVersion: 0.3.0 build3\r\nIPA bytes: 53907\r\nSHA-256: 7d8916cab61cbdd882d49ceac02fe9505c10d343e0a446708d79c69b8a25435c\r\nSource commit: 30a3c3a065fe5728e3196c69fdd2a3cd826368e8\r\nBuild run: 42628336191\r\n\r\nAsset-only distribution; ScopePilot source remains private. Automatic GitHub source archives refer to OmniForge, not ScopePilot. No user traffic captures, credentials or signing keys are included.\r\n"
         }
       ],
-      "version": "0.2.0",
-      "versionDate": "2026-11-09T13:24:47Z",
-      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.2.0-build2/ScopePilot-unsigned.ipa",
-      "size": 51976,
+      "version": "0.3.0",
+      "versionDate": "2026-11-09T22:22:06Z",
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/scopepilot-0.3.0-build3/ScopePilot-unsigned.ipa",
+      "size": 53907,
       "_verification": {
-        "sha256": "3e50f58fb04faf8872f9aef796b6a61bcaad126345c26190b9da2a5933cab721",
-        "release": "https://github.com/R347H4CK3R/OmniForge/releases/tag/scopepilot-0.2.0-build2",
-        "assetId": 727578784,
+        "sha256": "7d8916cab61cbdd882d49ceac02fe9505c10d343e0a446708d79c69b8a25435c",
+        "release": "https://github.com/R347H4CK3R/OmniForge/releases/tag/scopepilot-0.3.0-build3",
+        "assetId": 729196641,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     },
