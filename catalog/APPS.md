@@ -1,12 +1,32 @@
 # Chris's Apps
 
-One catalog. Separate apps. Clearly labeled release status.
+Discover something different. Independent apps, creative tools and experimental projects.
 
 **Add source:** https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/unified-source.json
 
 [Live refresh logs](https://github.com/R347H4CK3R/OmniForge/actions/workflows/unified-source.yml) · [How this catalog works](README.md)
 
 Physical-device installation and behavior are not certified by this catalog. Unsigned apps need a compatible container or signing. This is not Apple's App Store.
+
+## Explore the collection
+
+| App | Discover | Requires |
+| :-- | :-- | :-- |
+| [Asterion Veyra](#asterion-veyra) | Personal assistant, voice and desktop pairing | iOS 26.0+ |
+| [OmniForge](#omniforge) | Offline AI developer workbench | iOS 17.0+ |
+| [VoiceMatrix](#voicematrix) | Offline character speech and voice tools | iOS 26.0+ |
+| [Afterlight](#afterlight) | Original survival-game prototype | iOS 17.0+ |
+| [Zombies iOS File Tools](#zombies-ios-file-tools) | Game-file scanner and runtime research | iOS 17.0+ |
+| [CS2 iOS Runtime Lab](#cs2-ios-runtime-lab) | Native graphics and input test shell | iOS 17.0+ |
+| [BOZ Compatibility Test](#boz-compatibility-test) | Experimental integrated-input build | iOS 15.0+ |
+| [Native Zombies Prototype](#native-zombies-prototype) | Original Metal survival-game prototype | iOS 17.0+ |
+| [BO2CS Tactical Prototype](#bo2cs-tactical-prototype) | Original SDL tactical-game prototype | iOS 16.0+ |
+| [COD4iOS Diagnostic](#cod4ios-diagnostic) | Experimental runtime diagnostic build | iOS 17.0+ |
+| [BO2 iOS CS Runtime](#bo2-ios-cs-runtime) | Experimental native startup/config runtime | iOS 17.0+ |
+
+## Screenshots
+
+Genuine reviewed simulator previews appear with each app. Open an image to inspect the full interface. Development captures may differ from the latest published build.
 
 ## Asterion Veyra
 
@@ -47,6 +67,8 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <details><summary>Release notes</summary>
 <p>LiveContainer update 156</p>
 </details>
+
+**Preview coming soon** · No reviewed screenshot available yet.
 
 ---
 
@@ -91,6 +113,8 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <p>Native ARM64 iOS survival prototype. Simulation and simulator smoke tests passed. Import the unsigned IPA into a configured LiveContainer or sign before installing. Physical-device compatibility remains unverified.</p>
 </details>
 
+**Preview coming soon** · No reviewed screenshot available yet.
+
 ---
 
 ## Zombies iOS File Tools
@@ -109,6 +133,8 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <details><summary>Release notes</summary>
 <p>Automated unsigned iOS build from commit 542bccac2f7413a23cb12b95bcee3baa76907dfc. Sign with SideStore/AltStore or your preferred signing method.</p>
 </details>
+
+**Preview coming soon** · No reviewed screenshot available yet.
 
 ---
 
@@ -129,6 +155,8 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <p>Unsigned ARM64 Step 3 device-test build. Sign with your sideloading method before installation.</p>
 </details>
 
+**Preview coming soon** · No reviewed screenshot available yet.
+
 ---
 
 ## BOZ Compatibility Test
@@ -147,6 +175,8 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <details><summary>Release notes</summary>
 <p>Integrated-input compatibility test build. Native ARM64 input checks are reported by the release. Existing engine and content are retained. Follow the published installation guide for the existing Strata setup; no new maps or weapons. Device behavior remains unverified.</p>
 </details>
+
+**Preview coming soon** · No reviewed screenshot available yet.
 
 ---
 
@@ -176,6 +206,8 @@ SHA-256: 249ea989a36898129a5edec08ba9d4c094b44b7e5ea0f469e44b7ef57f554c28
 </p>
 </details>
 
+**Preview coming soon** · No reviewed screenshot available yet.
+
 ---
 
 ## BO2CS Tactical Prototype
@@ -202,6 +234,8 @@ The IPA is unchanged from reviewed artifact 10614504342,522884 bytes. SHA256: 2a
 </p>
 </details>
 
+**Preview coming soon** · No reviewed screenshot available yet.
+
 ---
 
 ## COD4iOS Diagnostic
@@ -225,6 +259,8 @@ This exact unsigned IPA was built at commit 241f76173741a4c39b2d0abb9e69b7ccc6db
 The matching source archive is included, recreated byte-for-byte against the original build receipt, including the matching OpenAL source and build scripts. Read its GPL and third-party licenses. Retail game files are not included; supply your own legally obtained compatible files. Sign the IPA with a compatible sideloading tool; preserve saves and existing data before changing installations.
 </p>
 </details>
+
+**Preview coming soon** · No reviewed screenshot available yet.
 
 ---
 
@@ -251,6 +287,8 @@ Required Xash GPL, HLSDK and SDL license texts are included in the app. The acco
 Sign the unsigned IPA using a compatible sideloading tool. Preserve existing saves/data. Read the source README and build scripts for the project&#x27;s current limitations; this release does not prove complete game conversion, campaign or multiplayer support.
 </p>
 </details>
+
+**Preview coming soon** · No reviewed screenshot available yet.
 
 ---
 

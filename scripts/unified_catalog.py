@@ -268,10 +268,15 @@ def refresh(previous, registry, loader=load_app):
 
 def render_store_guide(source):
     e=lambda value:html.escape(str(value),quote=True)
-    lines=["# Chris's Apps", "", "One catalog. Separate apps. Clearly labeled release status.", "",
+    lines=["# Chris's Apps", "", "Discover something different. Independent apps, creative tools and experimental projects.", "",
            "**Add source:** https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/unified-source.json", "",
            "[Live refresh logs](https://github.com/R347H4CK3R/OmniForge/actions/workflows/unified-source.yml) · [How this catalog works](README.md)", "",
            "Physical-device installation and behavior are not certified by this catalog. Unsigned apps need a compatible container or signing. This is not Apple's App Store.", ""]
+    lines.extend(['## Explore the collection', '', '| App | Discover | Requires |', '| :-- | :-- | :-- |'])
+    for app in source['apps']:
+        anchor=app['name'].lower().replace(' ', '-')
+        lines.append(f"| [{e(app['name'])}](#{anchor}) | {e(app.get('subtitle',''))} | iOS {e(app['versions'][0]['minOSVersion'])}+ |")
+    lines.extend(['', '## Screenshots', '', 'Genuine reviewed simulator previews appear with each app. Open an image to inspect the full interface. Development captures may differ from the latest published build.', ''])
     for app in source['apps']:
         v=app['versions'][0]
         lines.extend([f"## {e(app['name'])}", "",f'<img src="{e(app["iconURL"])}" width="72" height="72" alt="{e(app["name"])} catalog icon">',"",
@@ -283,6 +288,7 @@ def render_store_guide(source):
                       '<details><summary>Release notes</summary>',f'<p>{e(v.get("localizedDescription",""))}</p>','</details>',""])
         for screenshot in app.get('screenshots',[]):
             lines.append(f'<img src="{e(screenshot["imageURL"])}" width="220" alt="{e(app["name"])} simulator preview">')
+        if not app.get('screenshots'): lines.extend(['**Preview coming soon** · No reviewed screenshot available yet.', ''])
         if app.get('screenshots'): lines.extend(['','Screenshots are reviewed simulator previews, not proof of physical-device behavior.',''])
         lines.extend(['---',''])
     lines.extend(['Catalog versions and requirements are generated from inspected public release IPAs. Missing app icons use the repository owner avatar, not invented artwork.',''])
@@ -301,6 +307,8 @@ def main():
     serialized=json.dumps(public,indent=2)+'\n'
     temp=path.with_suffix(path.suffix+'.tmp'); temp.write_text(serialized); os.replace(temp,path)
     Path('catalog/APPS.md').write_text(render_store_guide(public))
+    from storefront import render_storefront
+    Path('catalog/index.html').write_text(render_storefront(public))
     Path(args.report).write_text(json.dumps({'complete':True,'errors':errors,'apps':[{'bundleIdentifier':a['bundleIdentifier'],'verification':a.get('_verification')} for a in result['apps']]},indent=2)+'\n')
     print(json.dumps({'apps':len(result['apps']),'errors':errors}))
     if errors: raise SystemExit(1)

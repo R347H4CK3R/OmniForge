@@ -8,6 +8,9 @@ on:
     paths:
       - 'scripts/unified_catalog.py'
       - 'scripts/test_unified_catalog.py'
+      - 'scripts/storefront.py'
+      - 'scripts/storefront.html'
+      - 'scripts/test_storefront.py'
       - 'catalog/registry.json'
       - '.github/workflows/unified-source.yml'
 permissions:
@@ -27,7 +30,9 @@ jobs:
         with:
           python-version: '3.12'
       - name: Test catalog safety rules
-        run: python3 -m unittest discover -s scripts -p 'test_unified_catalog.py' -v
+        run: |
+          python3 -m unittest discover -s scripts -p 'test_unified_catalog.py' -v
+          python3 -m unittest discover -s scripts -p 'test_storefront.py' -v
       - name: Inspect public release assets and refresh catalog
         id: refresh
         continue-on-error: true
@@ -47,6 +52,8 @@ jobs:
           import sys
           sys.path.insert(0,'scripts')
           from unified_catalog import render_store_guide
+          from storefront import render_storefront
+          assert Path('catalog/index.html').read_text()==render_storefront(state), 'HTML storefront/output mismatch'
           assert Path('catalog/APPS.md').read_text()==render_store_guide(state), 'Storefront/output mismatch'
           PYCODE
           built_from=$(git rev-parse HEAD)
@@ -54,7 +61,7 @@ jobs:
           test "$(git rev-parse origin/main)" = "$built_from" || { echo 'Main changed during verification; retry using fresh inputs.'; exit 1; }
           git config user.name 'github-actions[bot]' 
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add unified-source.json catalog/verified-state.json catalog/APPS.md
+          git add unified-source.json catalog/verified-state.json catalog/APPS.md catalog/index.html
           if ! git diff --cached --quiet; then
             git commit -m 'catalog: refresh verified app releases'
             git push origin HEAD:main

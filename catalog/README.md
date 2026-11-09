@@ -55,3 +55,11 @@ Apps without a genuine bundled icon show the repository owner's avatar. Missing 
 ## IPA project pipeline
 
 [See remaining IPA-producing repositories and their publication status](PIPELINE.md). Expiring CI artifacts are not disguised as permanent install links.
+
+## Web storefront
+
+The responsive storefront is generated as [`index.html`](index.html), with search, category filters, release details and full-size screenshot links. Download the HTML and open it in a browser, or serve this directory with a static web server. The GitHub file viewer displays HTML source rather than the live website; GitHub Pages is not yet enabled for this repository.
+
+Run `python scripts/storefront.py` from the repository root to regenerate it from the current verified `unified-source.json`. The hourly refresh writes both `APPS.md` and `index.html` and verifies that both match the inspected source. The visual template lives in `scripts/storefront.html`. No installer schema, app identity, release binary or signing requirement is changed by the storefront.
+
+The `Verify catalog storefront` workflow checks search, category filtering, empty states, screenshot loading and phone-width overflow, and uploads desktop/mobile review captures. App preview images remain the existing genuine simulator captures documented above; no desktop app-window capture is currently available in this catalog.

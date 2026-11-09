@@ -1,0 +1,38 @@
+name: Verify catalog storefront
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'catalog/**'
+      - 'scripts/storefront*'
+      - 'scripts/check_storefront_browser.py'
+      - 'scripts/test_storefront.py'
+      - 'scripts/unified_catalog.py'
+      - '.github/workflows/catalog-storefront.yml'
+permissions:
+  contents: read
+jobs:
+  browser-review:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test renderer and catalog safety rules
+        run: python -m unittest discover -s scripts
+      - name: Install browser test tools
+        run: |
+          pip install playwright==1.58.0
+          python -m playwright install --with-deps chromium
+      - name: Regenerate and verify responsive storefront
+        run: |
+          python scripts/storefront.py
+          git diff --exit-code -- catalog/index.html
+          python scripts/check_storefront_browser.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: storefront-preview
+          path: storefront-preview
