@@ -132,6 +132,14 @@ def remote_capabilities():
 
 class Handler(BaseHTTPRequestHandler):
     def do_GET(self):
+        if self.path == "/v1/projects":
+            if not KEY or not hmac.compare_digest(self.headers.get("Authorization", ""), "Bearer " + KEY):
+                self.reply(401, {"error": "Unauthorized"}); return
+            try:
+                from project_dashboard import build_report
+            except ImportError:
+                from server.project_dashboard import build_report
+            self.reply(200, build_report(ROOT), no_store=True); return
         if self.path.startswith("/v1/android/artifact?"):
             if not KEY or not hmac.compare_digest(self.headers.get("Authorization",""),"Bearer "+KEY):
                 self.reply(401,{"error":"Unauthorized"});return
@@ -207,9 +215,10 @@ class Handler(BaseHTTPRequestHandler):
                 result=agent(body["messages"],body.get("model") or MODEL)
             self.reply(200,{"choices":[{"message":{"role":"assistant","content":result},"finish_reason":"stop","index":0}]})
         except Exception as e:self.reply(400,{"error":str(e)[:300]})
-    def reply(self,status,data):
+    def reply(self,status,data,no_store=False):
         raw=json.dumps(data).encode()
         self.send_response(status);self.send_header("Content-Type","application/json")
+        if no_store:self.send_header("Cache-Control","no-store")
         self.send_header("Content-Length",str(len(raw)));self.end_headers();self.wfile.write(raw)
 
 if __name__=="__main__":
