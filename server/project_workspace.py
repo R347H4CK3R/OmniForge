@@ -115,27 +115,107 @@ def _validate_windows_acl(descriptor):
         raise WorkspaceError('Private state requires an explicit restricted DACL owned by this user, SYSTEM or Administrators') from exc
 
 
-_WINDOWS_ACL_SCRIPT = r"""
-$ErrorActionPreference = 'Stop'
-$a = Get-Acl -LiteralPath $env:OF_PRIVATE_CHECK_PATH
-$raw = [System.Security.AccessControl.RawSecurityDescriptor]::new($a.GetSecurityDescriptorBinaryForm(), 0)
-$aces = @()
-if ($null -ne $raw.DiscretionaryAcl) {
-    foreach ($ace in $raw.DiscretionaryAcl) {
-        if ($ace -is [System.Security.AccessControl.QualifiedAce]) {
-            $aces += @{qualifier=$ace.AceQualifier.ToString(); sid=$ace.SecurityIdentifier.Value}
-        } else { $aces += @{qualifier='Unknown'; sid=''} }
-    }
-}
-$result = @{
-    current_user=[System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
-    owner=$raw.Owner.Value
-    dacl_present=([int]$raw.ControlFlags -band 4) -ne 0
-    dacl_null=$null -eq $raw.DiscretionaryAcl
-    aces=$aces
-}
-ConvertTo-Json -InputObject $result -Depth 5 -Compress
-"""
+def _decode_windows_ace(data):
+    """Decode only ordinary allow/deny ACEs; unsupported ACE layouts deny access."""
+    import struct
+    if len(data) < 16:
+        raise WorkspaceError('Malformed Windows ACE')
+    kind, _flags, size, _mask = struct.unpack_from('<BBHI', data)
+    if kind not in (0, 1) or size != len(data):
+        raise WorkspaceError('Unsupported or malformed Windows ACE')
+    revision, count = data[8:10]
+    if revision != 1 or count > 15 or len(data) != 16 + count * 4:
+        raise WorkspaceError('Malformed Windows ACE SID')
+    authority = int.from_bytes(data[10:16], 'big')
+    subauthorities = struct.unpack_from('<' + 'I' * count, data, 16)
+    sid = 'S-1-' + str(authority) + ''.join('-' + str(value) for value in subauthorities)
+    return {'qualifier': 'AccessAllowed' if kind == 0 else 'AccessDenied', 'sid': sid}
+
+
+def _native_windows_acl(path):
+    """Read the real file descriptor and process identity without starting a shell.
+
+    All handles/memory are released, and every failed or unsupported native call
+    denies access. No API here sets ACLs, takes ownership, or enables privileges.
+    """
+    import ctypes
+    from ctypes import wintypes
+    if os.name != 'nt':
+        raise WorkspaceError('Windows ACL inspection requires Windows')
+    advapi = ctypes.WinDLL('advapi32', use_last_error=True)
+    kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+    pointer = ctypes.c_void_p
+    ppointer = ctypes.POINTER(pointer)
+    def bind(dll, name, args, result):
+        function = getattr(dll, name)
+        function.argtypes = args
+        function.restype = result
+        return function
+    get_security = bind(advapi, 'GetNamedSecurityInfoW', [wintypes.LPWSTR, ctypes.c_int, wintypes.DWORD,
+                        ppointer, ppointer, ppointer, ppointer, ppointer], wintypes.DWORD)
+    get_dacl = bind(advapi, 'GetSecurityDescriptorDacl', [pointer, ctypes.POINTER(wintypes.BOOL), ppointer,
+                    ctypes.POINTER(wintypes.BOOL)], wintypes.BOOL)
+    valid_acl = bind(advapi, 'IsValidAcl', [pointer], wintypes.BOOL)
+    get_ace = bind(advapi, 'GetAce', [pointer, wintypes.DWORD, ppointer], wintypes.BOOL)
+    convert_sid = bind(advapi, 'ConvertSidToStringSidW', [pointer, ctypes.POINTER(wintypes.LPWSTR)], wintypes.BOOL)
+    open_token = bind(advapi, 'OpenProcessToken', [wintypes.HANDLE, wintypes.DWORD, ctypes.POINTER(wintypes.HANDLE)], wintypes.BOOL)
+    get_token = bind(advapi, 'GetTokenInformation', [wintypes.HANDLE, ctypes.c_int, pointer, wintypes.DWORD,
+                     ctypes.POINTER(wintypes.DWORD)], wintypes.BOOL)
+    current_process = bind(kernel, 'GetCurrentProcess', [], wintypes.HANDLE)
+    close_handle = bind(kernel, 'CloseHandle', [wintypes.HANDLE], wintypes.BOOL)
+    local_free = bind(kernel, 'LocalFree', [pointer], pointer)
+
+    def require(success):
+        if not success:
+            raise WorkspaceError('Cannot verify Windows private-state ACL (Win32 error %d)' % ctypes.get_last_error())
+
+    def sid_text(sid):
+        require(sid)
+        text = wintypes.LPWSTR()
+        require(convert_sid(sid, ctypes.byref(text)))
+        try: return text.value
+        finally: local_free(ctypes.cast(text, pointer))
+
+    descriptor = pointer()
+    owner = pointer()
+    token = wintypes.HANDLE()
+    try:
+        error = get_security(str(path), 1, 0x1 | 0x4, ctypes.byref(owner), None, None, None, ctypes.byref(descriptor))
+        if error:
+            raise WorkspaceError('Cannot read Windows private-state ACL (Win32 error %d)' % error)
+        present, defaulted = wintypes.BOOL(), wintypes.BOOL()
+        dacl = pointer()
+        require(get_dacl(descriptor, ctypes.byref(present), ctypes.byref(dacl), ctypes.byref(defaulted)))
+        aces = []
+        if present.value and dacl.value:
+            require(valid_acl(dacl))
+            # ACL header: revision byte, reserved byte, size WORD, ACE count WORD.
+            import struct
+            _revision, _reserved, acl_size, count, _reserved2 = struct.unpack('<BBHHH', ctypes.string_at(dacl, 8))
+            if acl_size < 8: raise WorkspaceError('Malformed Windows ACL')
+            for index in range(count):
+                ace = pointer()
+                require(get_ace(dacl, index, ctypes.byref(ace)))
+                if not ace.value or not dacl.value + 8 <= ace.value <= dacl.value + acl_size - 4:
+                    raise WorkspaceError('Windows ACE lies outside ACL')
+                size = int.from_bytes(ctypes.string_at(ace.value + 2, 2), 'little')
+                if size < 4 or ace.value + size > dacl.value + acl_size:
+                    raise WorkspaceError('Malformed Windows ACE size')
+                aces.append(_decode_windows_ace(ctypes.string_at(ace, size)))
+        require(open_token(current_process(), 0x8, ctypes.byref(token)))  # TOKEN_QUERY only
+        needed = wintypes.DWORD()
+        if get_token(token, 1, None, 0, ctypes.byref(needed)) or ctypes.get_last_error() != 122:
+            raise WorkspaceError('Cannot size Windows identity token')
+        if not 0 < needed.value <= 65536:
+            raise WorkspaceError('Invalid Windows identity token size')
+        buffer = ctypes.create_string_buffer(needed.value)
+        require(get_token(token, 1, buffer, needed, ctypes.byref(needed)))
+        user_sid = ctypes.cast(buffer, ppointer).contents.value  # TOKEN_USER begins with SID_AND_ATTRIBUTES.
+        return {'current_user': sid_text(user_sid), 'owner': sid_text(owner),
+                'dacl_present': bool(present.value), 'dacl_null': not bool(dacl.value), 'aces': aces}
+    finally:
+        if token: close_handle(token)
+        if descriptor: local_free(descriptor)
 
 
 def _private(path):
@@ -145,18 +225,8 @@ def _private(path):
         if info.st_uid != os.getuid() or info.st_mode & 0o077:
             raise WorkspaceError('Private state must be owner-only (directory 0700; file 0600)')
         return
-    # chmod is not NTFS privacy. Inspect the real descriptor with a fixed script,
-    # then reject absent/null DACLs, unknown ACEs and broad allowed identities.
-    system = Path(os.environ.get('SystemRoot', r'C:\Windows'))
-    env = {'SystemRoot': str(system), 'OF_PRIVATE_CHECK_PATH': str(path)}
-    try:
-        result = subprocess.run([str(system / 'System32/WindowsPowerShell/v1.0/powershell.exe'), '-NoProfile', '-NonInteractive', '-Command', _WINDOWS_ACL_SCRIPT], env=env, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, timeout=10)
-        if result.returncode or len(result.stdout) > 65536:
-            raise WorkspaceError('Cannot verify Windows private-state ACL')
-        _validate_windows_acl(json.loads(result.stdout))
-    except (OSError, subprocess.TimeoutExpired, json.JSONDecodeError, UnicodeDecodeError) as exc:
-        raise WorkspaceError('Cannot verify Windows private-state ACL') from exc
-
+    # chmod is not NTFS privacy. Native read-only APIs inspect the actual DACL.
+    _validate_windows_acl(_native_windows_acl(path))
 
 @contextmanager
 def _lock(private):

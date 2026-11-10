@@ -14,8 +14,9 @@ On POSIX they must be owned by the current user and owner-only (0700/0600).
 On Windows the actual ACL must grant access only to the current user, SYSTEM,
 and Administrators. OWNER RIGHTS is accepted only when the resolved owner is
 one of those identities. Absent/null DACLs, unknown ACEs and inherited broad ACLs
-are rejected. Windows PowerShell's
-built-in `Get-Acl` validates this; failure to validate denies the operation.
+are rejected. Read-only native Win32 security APIs validate the actual descriptor and current
+process identity, without starting PowerShell or any other subprocess. Null or
+absent DACLs and unsupported ACE layouts fail closed; no ACL is modified.
 Do not store this registry in a repository or expose it through a web service.
 
 Example schema, **documentation only**, not an enabled registry:

@@ -128,6 +128,28 @@ class ProjectWorkspaceTests(unittest.TestCase):
                 _validate_windows_acl(dict(safe, **change))
         with self.assertRaises(self.Error): _validate_windows_acl({})
 
+    def test_native_windows_ace_parser_fails_closed(self):
+        import struct
+        from server.project_workspace import _decode_windows_ace
+        sid = bytes([1, 1]) + (5).to_bytes(6, 'big') + struct.pack('<I', 18)
+        ace = struct.pack('<BBHI', 0, 0, 8 + len(sid), 0x1f01ff) + sid
+        self.assertEqual(_decode_windows_ace(ace), {'qualifier': 'AccessAllowed', 'sid': 'S-1-5-18'})
+        self.assertEqual(_decode_windows_ace(bytes([1]) + ace[1:])['qualifier'], 'AccessDenied')
+        for invalid in [b'', ace[:-1], bytes([5]) + ace[1:], ace[:8] + bytes([2]) + ace[9:]]:
+            with self.subTest(invalid=invalid), self.assertRaises(self.Error):
+                _decode_windows_ace(invalid)
+
+    @unittest.skipUnless(os.name == 'nt', 'Native Windows ACL inspection')
+    def test_native_windows_acl_read_never_starts_subprocess(self):
+        from server.project_workspace import _private, _native_windows_acl
+        with patch('subprocess.run', side_effect=AssertionError('ACL inspection must not start a process')):
+            _private(self.registry)
+            facts = _native_windows_acl(self.registry)
+        self.assertTrue(facts['dacl_present'])
+        self.assertFalse(facts['dacl_null'])
+        self.assertTrue(facts['aces'])
+        with self.assertRaises(self.Error): _native_windows_acl(self.root / 'missing')
+
     def test_registry_private_and_strict(self):
         if os.name != 'nt':
             self.registry.chmod(0o644)
