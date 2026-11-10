@@ -1,5 +1,6 @@
 """Read-only project reporting must never mutate live work or claim a build passed."""
 import http.client
+from contextlib import closing
 import json
 import os
 from pathlib import Path
@@ -31,7 +32,7 @@ class ProjectDashboardTests(unittest.TestCase):
     def queue(self):
         path = self.root / ".omniforge-private/jobs.sqlite3"
         path.parent.mkdir()
-        with sqlite3.connect(path) as db:
+        with closing(sqlite3.connect(path)) as db, db:
             db.execute("CREATE TABLE jobs (id TEXT, status TEXT, created TEXT, updated TEXT, attempts INTEGER, prompt TEXT, result TEXT)")
             db.execute("INSERT INTO jobs VALUES ('job-1', 'running', '2026-11-10', '2026-11-10', 1, 'private prompt', 'private result')")
         return path
@@ -123,7 +124,7 @@ class ProjectDashboardTests(unittest.TestCase):
 
     def test_queue_list_is_bounded(self):
         path = self.queue()
-        with sqlite3.connect(path) as db:
+        with closing(sqlite3.connect(path)) as db, db:
             for i in range(35):
                 db.execute("INSERT INTO jobs VALUES (?, 'queued', ?, '', 0, '', '')", (str(i), str(i)))
         report = self.report()
@@ -176,7 +177,7 @@ class ProjectDashboardTests(unittest.TestCase):
 
     def test_blob_queue_metadata_returns_sanitized_blocker(self):
         path = self.queue()
-        with sqlite3.connect(path) as db:
+        with closing(sqlite3.connect(path)) as db, db:
             db.execute("UPDATE jobs SET id=?", (sqlite3.Binary(b"private bytes"),))
         report = self.report()
         self.assertEqual(report["queue"]["status"], "unavailable")

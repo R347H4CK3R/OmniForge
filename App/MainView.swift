@@ -331,6 +331,11 @@ struct MainView: View {
     private var rebuildTab: some View {
         NavigationStack {
                 List {
+                    Section("Host projects & builds") {
+                        NavigationLink("View host readiness", destination: ProjectReadinessView())
+                        Text("Inspect project prerequisites and stored queue status without starting a build.")
+                            .font(.footnote)
+                    }
                     Section("Editable source workspace") {
                         NavigationLink("Open Code Editor") { WorkspaceCodeEditor() }
                         Text("Edit recovered pseudocode and clean-room SwiftUI projects. This cannot magically recompile a decompiled IPA.")

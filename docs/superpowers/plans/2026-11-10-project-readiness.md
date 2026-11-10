@@ -47,3 +47,34 @@ Independent review identified four important defects: SQLite WAL sidecar creatio
 Final checks: 66 server tests and 46 script tests pass; the standalone installer bridge smoke check, shared-platform identity contract, compileall and diff whitespace check pass. CLI executed successfully on Linux and on GamingLaptop using existing JDK 17/Gradle 8.9/Android SDK 35. The laptop's existing AndroidHostSmoke `assembleDebug` also passed offline (31 tasks up to date, not a fresh compilation), producing the existing debug APK with SHA-256 `87eb94d31099e93c2f19ce7c263abf47be87526de0d935b9aa70f3218db745fc`.
 
 Delivery: source changes stay in this isolated branch; only the standalone read-only report is staged in a separate laptop preview directory. No host/worker service restarted or replaced. Native Android lint/unit/app build and iOS compile for this revision remain unrun, so this is not a verified mobile release. No remote Mac dispatcher, repository checkout execution or mobile UI is implemented yet.
+
+## Authorized continuation: native views and local workspace operations
+
+The following continuation supersedes the initial native-UI deferral. Extend both
+existing clients with manual, authenticated readiness views while preserving app
+identity and data. Keep editing/check execution separate and local-only until an
+explicit private project registry is configured. Do not replace live host services.
+
+- [x] Add iOS and Android project-readiness views with prefix-preserving HTTPS
+  endpoints, redirect denial, bounded response size/time and owned cancellation.
+- [x] Add pure Swift and JVM policy/lifecycle checks and Android unit fixtures.
+- [x] Independently review the mobile views and fix cancellation/navigation issues.
+- [x] Add local-only allowlisted source reads and hash-checked edits with private
+  backups; retain stale edits and deny symlinks, junctions and unknown projects.
+- [x] Add a fixed Python unittest recipe with bounded logs/time and descendant
+  cleanup, using a Windows Job Object before any project code runs.
+- [x] Review the workspace boundary and fix absent/null-DACL handling without
+  modifying actual ACLs. Accept OWNER RIGHTS only for an already-approved owner.
+- [ ] Complete the new revision's Linux, Windows, Android and iOS verification.
+- [ ] Publish the reviewed increment to the existing draft PR and inspect CI.
+
+Verification status for the continuation: Android standalone URL and request
+lifecycle checks passed with the laptop's existing JDK 17. Full native compilation
+of these new views is pending CI. All 33 new dashboard/workspace tests passed on
+the Windows laptop with Python 3.13.16, including process-tree cleanup, junction
+rejection, scoped edits and bounded tests. A reproduced stat/fstat timestamp
+semantics mismatch was fixed by comparing timestamps within each API while
+cross-checking device/inode/size. Linux verification passed 82 server tests (one
+Windows-only skip), 46 script tests, installer-bridge smoke, platform identity
+contract, compileall and whitespace checks. No live allowlist, app update,
+service restart or new persistent access is part of this continuation.
