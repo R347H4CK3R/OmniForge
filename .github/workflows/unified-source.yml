@@ -11,10 +11,13 @@ on:
       - 'scripts/storefront.py'
       - 'scripts/storefront.html'
       - 'scripts/test_storefront.py'
+      - 'scripts/request_pages_build.sh'
+      - 'scripts/test_request_pages_build.py'
       - 'catalog/registry.json'
       - '.github/workflows/unified-source.yml'
 permissions:
   contents: write
+  pages: write
 concurrency:
   group: unified-app-source
   cancel-in-progress: false
@@ -33,6 +36,7 @@ jobs:
         run: |
           python3 -m unittest discover -s scripts -p 'test_unified_catalog.py' -v
           python3 -m unittest discover -s scripts -p 'test_storefront.py' -v
+          python3 -m unittest discover -s scripts -p 'test_request_pages_build.py' -v
       - name: Inspect public release assets and refresh catalog
         id: refresh
         continue-on-error: true
@@ -66,6 +70,10 @@ jobs:
             git commit -m 'catalog: refresh verified app releases'
             git push origin HEAD:main
           fi
+      - name: Refresh the public storefront after publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/request_pages_build.sh
       - name: Save verification report
         if: always()
         uses: actions/upload-artifact@v4
