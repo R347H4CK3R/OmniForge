@@ -17,6 +17,10 @@ jobs:
     runs-on: macos-15-intel
     steps:
       - uses: actions/checkout@v4
+      - name: Verify project readiness URL and report policy
+        run: |
+          swiftc App/ProjectReadiness.swift scripts/client-tests/ios/main.swift -o "$RUNNER_TEMP/omniforge-readiness-test"
+          "$RUNNER_TEMP/omniforge-readiness-test"
       - run: brew install xcodegen
       - run: swift scripts/generate_icon.swift App/Assets.xcassets/AppIcon.appiconset/AppIcon.png
       - run: xcodegen generate

@@ -21,6 +21,7 @@ class MainActivity:Activity() {
     private lateinit var content:LinearLayout
     private lateinit var status:TextView
     private lateinit var chatLog:TextView
+    private var dashboard:ProjectDashboard? = null
     private var page="Chat"
     private var importKind="apk"
     private var busy=false
@@ -59,7 +60,7 @@ class MainActivity:Activity() {
         if(busy){status.text="Wait for the current task to finish";return};busy=true;status.text=title
         worker.execute{try{val r=task();runOnUiThread{if(!isDestroyed){busy=false;done(r)}}}catch(e:Exception){runOnUiThread{if(!isDestroyed){busy=false;failure(e)}}}catch(e:LinkageError){runOnUiThread{if(!isDestroyed){busy=false;status.text="Native runtime unavailable: ${e.message}"}}}}
     }
-    private fun showPage(){content.removeAllViews();when(page){"Projects"->projects();"Remote"->remote();"Settings"->settings();else->chat()}}
+    private fun showPage(){dashboard?.close();dashboard=null;content.removeAllViews();when(page){"Projects"->projects();"Remote"->remote();"Settings"->settings();else->chat()}}
     private fun chat(){
         val logScroll=ScrollView(this)
         chatLog=label(prefs.getString("chat","") ?: "",16).apply{setTextIsSelectable(true)}
@@ -75,7 +76,11 @@ class MainActivity:Activity() {
     }
     private fun appendChat(text:String){val existing=prefs.getString("chat","") ?: "";val value=(existing+text).takeLast(150000);prefs.edit().putString("chat",value).apply();chatLog.text=value}
     private fun projects(){
-        val col=scroll();col.addView(label("Android projects & APKs",22))
+        val col=scroll()
+        dashboard=ProjectDashboard(this,col,
+            {prefs.getString("hostBase","https://gaminglaptop-1.tail54e01b.ts.net/android-api") ?: ""},
+            {prefs.getString("token","") ?: ""})
+        col.addView(label("Android projects & APKs",22))
         col.addView(label("Inspect imported APKs locally. Edit source in your private workspace. Full SDK builds and decompilation use the laptop host; inspection does not recover original source.",14))
         col.addView(button("Import APK"){pick("apk")})
         col.addView(button("New Android source project"){
@@ -221,5 +226,6 @@ class MainActivity:Activity() {
         }){path->status.text="Imported ${File(path).name}";if(kind=="apk")inspect(File(path))else showPage()}
     }
     override fun onSaveInstanceState(outState:Bundle){outState.putString("page",page);outState.putString("importKind",importKind);super.onSaveInstanceState(outState)}
-    override fun onDestroy(){worker.shutdown();super.onDestroy()}
+    override fun onStop(){dashboard?.cancel();super.onStop()}
+    override fun onDestroy(){dashboard?.close();worker.shutdown();super.onDestroy()}
 }
