@@ -2,7 +2,7 @@
 
 ## Browse the app catalog
 
-**[Open Chris’s Apps storefront](catalog/APPS.md)** · [Add the combined iOS source](https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/unified-source.json) · [Live update logs](https://github.com/R347H4CK3R/OmniForge/actions/workflows/unified-source.yml)
+**[Open Chris’s Apps storefront](https://r347h4ck3r.github.io/OmniForge/catalog/)** · [Text catalog](catalog/APPS.md) · [Add the combined iOS source](https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/unified-source.json) · [Live update logs](https://github.com/R347H4CK3R/OmniForge/actions/workflows/unified-source.yml)
 
 One source for public IPA releases, with separate app pages, versions, requirements, release notes and honest prototype status. Existing app identifiers and data containers stay separate.
 
