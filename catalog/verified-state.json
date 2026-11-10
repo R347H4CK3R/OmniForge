@@ -96,19 +96,19 @@
       },
       "versions": [
         {
-          "date": "2026-11-09T13:23:46Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.5/VoiceMatrix-0.4.5.ipa",
-          "size": 731110554,
-          "version": "0.4.5",
+          "date": "2026-11-09T23:49:31Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.6/VoiceMatrix-0.4.6.ipa",
+          "size": 731114673,
+          "version": "0.4.6",
           "buildVersion": "1",
           "minOSVersion": "26.0",
-          "localizedDescription": "Long speech with a practical 30-minute raw-audio budget; saved/shared speed, pitch, volume and pause controls; explicitly public suggestion drafts. Imported data preserved, no bundled stock voices. Native and simulator checks passed; physical iPhone evaluation remains pending."
+          "localizedDescription": "Faster repeat offline speech through bounded model reuse. Hosted Mac median 9.9% saving with identical paired audio; iPhone speed and memory remain unverified. Explicit public suggestions and existing private voice storage preserved. No stock voices."
         }
       ],
-      "version": "0.4.5",
-      "versionDate": "2026-11-09T13:23:46Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.5/VoiceMatrix-0.4.5.ipa",
-      "size": 731110554,
+      "version": "0.4.6",
+      "versionDate": "2026-11-09T23:49:31Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.6/VoiceMatrix-0.4.6.ipa",
+      "size": 731114673,
       "subtitle": "Offline character speech and voice tools",
       "category": "entertainment",
       "screenshots": [
@@ -124,9 +124,9 @@
         }
       ],
       "_verification": {
-        "sha256": "377d7b9d1c09dcbd023e5f2ea3199f2d2bc96a0684180c4a9a0a66b08e0ab7b0",
-        "release": "https://github.com/R347H4CK3R/Ghostline/releases/tag/voicematrix-v0.4.5",
-        "assetId": 727575523,
+        "sha256": "27cc1a45d92529bf1acd5f3c1383f8e278fb990cd6114baa3df3b1bef0c17aef",
+        "release": "https://github.com/R347H4CK3R/Ghostline/releases/tag/voicematrix-v0.4.6",
+        "assetId": 729422684,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     },
@@ -402,32 +402,32 @@
       "name": "Prism Puzzle",
       "bundleIdentifier": "com.prismpuzzle.app",
       "developerName": "R347H4CK3R",
-      "subtitle": "Offline cube and logic playground",
-      "localizedDescription": "Offline touch-controlled 3\u00d73 cube, Lights Out and Slide Nine with unlimited free path-based hints and local progress saving. No accounts, ads or network service. Eleven engine tests, automated mobile-browser checks and iOS device compilation passed. Unsigned iPhone/iPad test build requires compatible signing or a configured container. Physical iPhone gameplay and Strata installation remain unverified. iOS 15+.",
-      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-icon.png",
+      "subtitle": "Seven puzzles. Always offline.",
+      "localizedDescription": "Seven offline puzzles: touch-controlled 3\u00d73 and 2\u00d72 cubes, original studded Block Assembly with three trays, Fifteen Tiles, Slide Nine, Tower and Lights Out. Rotate puzzles, move pieces and use unlimited free hints with local progress saving. No accounts, ads or network service. Native iPhone simulator cube touch, all-puzzle hint solves and relaunch persistence passed; Chromium cold offline load and Chromium/WebKit offline gameplay passed. Unsigned iPhone/iPad build requires compatible signing. Physical-device gameplay and Strata installation remain unverified. iOS 15+.",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.0-build3/Prism-Puzzle-icon.png",
       "category": "games",
       "appPermissions": {
         "privacy": {}
       },
       "versions": [
         {
-          "date": "2026-11-09T13:10:43Z",
-          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-unsigned.ipa",
-          "size": 46541,
-          "version": "1.0.0",
-          "buildVersion": "1",
+          "date": "2026-11-10T00:16:57Z",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.0-build3/Prism-Puzzle-unsigned.ipa",
+          "size": 59578,
+          "version": "1.1.0",
+          "buildVersion": "3",
           "minOSVersion": "15.0",
-          "localizedDescription": "# Prism Puzzle 1.0.0 (1)\r\n\r\nOffline 3\u00d73 touch cube, Lights Out and Slide Nine with unlimited free hints. Hints retrace the play path, not necessarily the shortest solution. No account, network service, ads or analytics. Progress stays local.\r\n\r\nUnsigned ARM64 iPhone/iPad IPA, minimum iOS 15. Requires a compatible signing tool or configured container. Native compilation, eleven engine tests and automated mobile-browser smoke tests passed. Archive metadata and SHA256 were independently checked. Physical iPhone gameplay and Strata installation have not been tested. This is a development/test release, not App Store-ready.\r\n\r\nThe IPA contains its required bundled game runtime and assets. No signing credentials, provisioning profiles, personal data or unrelated private repository files are included. The private source repository remains private.\r\n\r\nRead SHA256SUMS and verification.json. Preserve existing app data when updating.\r\n"
+          "localizedDescription": "Seven fully local puzzle games: Twist Cube, Pocket Cube, Block Assembly with original studded pieces and three trays, Fifteen Tiles, Slide Nine, Tower and Lights Out.\r\n\r\nTwist complete cube layers, rotate puzzles to inspect them, drag tiles and disks, and lift/rotate/snap assembly pieces. Hints are unlimited, free and computed on the device. Existing puzzle progress migrates without resetting valid saves; damaged saves are preserved before repair.\r\n\r\nRequires iOS 15 or later. iPhone and iPad supported. This IPA is unsigned and requires signing through a compatible installation method. It is not an App Store distribution build and has not been tested on a physical iPhone.\r\n\r\nVerification: 32 logic/application-handler tests; native iOS compilation and unsigned packaging; Android debug build and lint; Chromium touch interactions and cold offline file load; Chromium and WebKit seven-game offline hint solves with runtime network-request guards. WebKit offline checking is in-session, not a cold iPhone launch. Native iPhone simulator passed cube touch controls, hint solves for all seven games, extra hints and relaunch persistence. This does not establish physical-device or network-disabled iPhone testing.\r\n\r\nOriginal piece designs; not affiliated with LEGO or other puzzle brands. No ads, accounts, analytics, subscriptions or network services.\r\n\r\nIPA: 59578 bytes. SHA-256: ee380e71bbabe25f8ec456d344cbbfd1637f52150d97603860b53bca070b849a.\r\n\r\nAsset-only distribution. Prism-Puzzle source repository remains private. Automatic GitHub source archives refer to OmniForge, not Prism-Puzzle. See attached RELEASE-NOTES.md, SHA256SUMS and verification.json."
         }
       ],
-      "version": "1.0.0",
-      "versionDate": "2026-11-09T13:10:43Z",
-      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-unsigned.ipa",
-      "size": 46541,
+      "version": "1.1.0",
+      "versionDate": "2026-11-10T00:16:57Z",
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.0-build3/Prism-Puzzle-unsigned.ipa",
+      "size": 59578,
       "_verification": {
-        "sha256": "d657da9cd784ff79e9e4d9a354f327a3518e891708af574a58d5fc02036e2b97",
-        "release": "https://github.com/R347H4CK3R/OmniForge/releases/tag/prism-puzzle-1.0.0-build1",
-        "assetId": 727533532,
+        "sha256": "ee380e71bbabe25f8ec456d344cbbfd1637f52150d97603860b53bca070b849a",
+        "release": "https://github.com/R347H4CK3R/OmniForge/releases/tag/prism-puzzle-1.1.0-build3",
+        "assetId": 729493769,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     },

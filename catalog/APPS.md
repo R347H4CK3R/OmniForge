@@ -23,7 +23,7 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 | [BO2CS Tactical Prototype](#bo2cs-tactical-prototype) | Original SDL tactical-game prototype | iOS 16.0+ |
 | [COD4iOS Diagnostic](#cod4ios-diagnostic) | Experimental runtime diagnostic build | iOS 17.0+ |
 | [BO2 iOS CS Runtime](#bo2-ios-cs-runtime) | Experimental native startup/config runtime | iOS 17.0+ |
-| [Prism Puzzle](#prism-puzzle) | Offline cube and logic playground | iOS 15.0+ |
+| [Prism Puzzle](#prism-puzzle) | Seven puzzles. Always offline. | iOS 15.0+ |
 | [ScopePilot](#scopepilot) | Offline captured-traffic evidence review | iOS 16.0+ |
 | [Luma Preview](#luma-preview) | Offline tools and private iPhone AI | iOS 14.0+ |
 
@@ -82,14 +82,14 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <p><strong>Offline character speech and voice tools</strong></p>
 <p>Import your own character folders, create offline speech and convert recordings with local neural engines. No stock characters are bundled. Experimental character-test edition: native diagnostic speech and simulator conversion checks pass, but physical iPhone behavior and character likeness remain unverified. Requires iOS 26.</p>
 
-- Version: 0.4.5 · Build: 1
+- Version: 0.4.6 · Build: 1
 - Requires iOS 26.0 or later · Download: 731.11 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.5/VoiceMatrix-0.4.5.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.6/VoiceMatrix-0.4.6.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Long speech with a practical 30-minute raw-audio budget; saved/shared speed, pitch, volume and pause controls; explicitly public suggestion drafts. Imported data preserved, no bundled stock voices. Native and simulator checks passed; physical iPhone evaluation remains pending.</p>
+<p>Faster repeat offline speech through bounded model reuse. Hosted Mac median 9.9% saving with identical paired audio; iPhone speed and memory remain unverified. Explicit public suggestions and existing private voice storage preserved. No stock voices.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
@@ -297,28 +297,31 @@ Sign the unsigned IPA using a compatible sideloading tool. Preserve existing sav
 
 ## Prism Puzzle
 
-<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-icon.png" width="72" height="72" alt="Prism Puzzle catalog icon">
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.0-build3/Prism-Puzzle-icon.png" width="72" height="72" alt="Prism Puzzle catalog icon">
 
-<p><strong>Offline cube and logic playground</strong></p>
-<p>Offline touch-controlled 3×3 cube, Lights Out and Slide Nine with unlimited free path-based hints and local progress saving. No accounts, ads or network service. Eleven engine tests, automated mobile-browser checks and iOS device compilation passed. Unsigned iPhone/iPad test build requires compatible signing or a configured container. Physical iPhone gameplay and Strata installation remain unverified. iOS 15+.</p>
+<p><strong>Seven puzzles. Always offline.</strong></p>
+<p>Seven offline puzzles: touch-controlled 3×3 and 2×2 cubes, original studded Block Assembly with three trays, Fifteen Tiles, Slide Nine, Tower and Lights Out. Rotate puzzles, move pieces and use unlimited free hints with local progress saving. No accounts, ads or network service. Native iPhone simulator cube touch, all-puzzle hint solves and relaunch persistence passed; Chromium cold offline load and Chromium/WebKit offline gameplay passed. Unsigned iPhone/iPad build requires compatible signing. Physical-device gameplay and Strata installation remain unverified. iOS 15+.</p>
 
-- Version: 1.0.0 · Build: 1
-- Requires iOS 15.0 or later · Download: 0.05 MB
+- Version: 1.1.0 · Build: 3
+- Requires iOS 15.0 or later · Download: 0.06 MB
 - Bundle ID: com.prismpuzzle.app
 
-<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.0.0-build1/Prism-Puzzle-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.0-build3/Prism-Puzzle-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p># Prism Puzzle 1.0.0 (1)
+<p>Seven fully local puzzle games: Twist Cube, Pocket Cube, Block Assembly with original studded pieces and three trays, Fifteen Tiles, Slide Nine, Tower and Lights Out.
 
-Offline 3×3 touch cube, Lights Out and Slide Nine with unlimited free hints. Hints retrace the play path, not necessarily the shortest solution. No account, network service, ads or analytics. Progress stays local.
+Twist complete cube layers, rotate puzzles to inspect them, drag tiles and disks, and lift/rotate/snap assembly pieces. Hints are unlimited, free and computed on the device. Existing puzzle progress migrates without resetting valid saves; damaged saves are preserved before repair.
 
-Unsigned ARM64 iPhone/iPad IPA, minimum iOS 15. Requires a compatible signing tool or configured container. Native compilation, eleven engine tests and automated mobile-browser smoke tests passed. Archive metadata and SHA256 were independently checked. Physical iPhone gameplay and Strata installation have not been tested. This is a development/test release, not App Store-ready.
+Requires iOS 15 or later. iPhone and iPad supported. This IPA is unsigned and requires signing through a compatible installation method. It is not an App Store distribution build and has not been tested on a physical iPhone.
 
-The IPA contains its required bundled game runtime and assets. No signing credentials, provisioning profiles, personal data or unrelated private repository files are included. The private source repository remains private.
+Verification: 32 logic/application-handler tests; native iOS compilation and unsigned packaging; Android debug build and lint; Chromium touch interactions and cold offline file load; Chromium and WebKit seven-game offline hint solves with runtime network-request guards. WebKit offline checking is in-session, not a cold iPhone launch. Native iPhone simulator passed cube touch controls, hint solves for all seven games, extra hints and relaunch persistence. This does not establish physical-device or network-disabled iPhone testing.
 
-Read SHA256SUMS and verification.json. Preserve existing app data when updating.
-</p>
+Original piece designs; not affiliated with LEGO or other puzzle brands. No ads, accounts, analytics, subscriptions or network services.
+
+IPA: 59578 bytes. SHA-256: ee380e71bbabe25f8ec456d344cbbfd1637f52150d97603860b53bca070b849a.
+
+Asset-only distribution. Prism-Puzzle source repository remains private. Automatic GitHub source archives refer to OmniForge, not Prism-Puzzle. See attached RELEASE-NOTES.md, SHA256SUMS and verification.json.</p>
 </details>
 
 **Preview coming soon** · No reviewed screenshot available yet.
