@@ -55,7 +55,7 @@
       "developerName": "R347H4CK3R",
       "subtitle": "Offline AI developer workbench",
       "localizedDescription": "Import local GGUF models, inspect IPA files and work with development projects. Models are supplied separately. Unsigned iOS guest app for a configured LiveContainer or a supported signing method. Minimum iOS 17. Release packaging has been inspected; this catalog does not certify physical-device operation.",
-      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-156/OmniForgeIcon.png",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-159/OmniForgeIcon.png",
       "tintColor": "4065B5",
       "category": "developer",
       "appPermissions": {
@@ -63,23 +63,23 @@
       },
       "versions": [
         {
-          "date": "2026-11-03T16:18:28Z",
-          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-156/OmniForge-LiveContainer.ipa",
-          "size": 4380007,
-          "version": "1.1.56",
-          "buildVersion": "156",
+          "date": "2026-11-10T04:48:01Z",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-159/OmniForge-LiveContainer.ipa",
+          "size": 4435908,
+          "version": "1.1.59",
+          "buildVersion": "159",
           "minOSVersion": "17.0",
-          "localizedDescription": "LiveContainer update 156"
+          "localizedDescription": "LiveContainer update 159"
         }
       ],
-      "version": "1.1.56",
-      "versionDate": "2026-11-03T16:18:28Z",
-      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-156/OmniForge-LiveContainer.ipa",
-      "size": 4380007,
+      "version": "1.1.59",
+      "versionDate": "2026-11-10T04:48:01Z",
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/lc-159/OmniForge-LiveContainer.ipa",
+      "size": 4435908,
       "_verification": {
-        "sha256": "79a38405653f01b4311717585a833411675a9a6394e40c116c3669ae84ff38a5",
-        "release": "https://github.com/R347H4CK3R/OmniForge/releases/tag/lc-156",
-        "assetId": 706250727,
+        "sha256": "85c0f49bb77fd8d28e2192913ac85a754d4b9a4f51f723f13b2267c0cc004729",
+        "release": "https://github.com/R347H4CK3R/OmniForge/releases/tag/lc-159",
+        "assetId": 730141965,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     },
@@ -411,23 +411,23 @@
       },
       "versions": [
         {
-          "date": "2026-11-10T00:16:57Z",
-          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.0-build3/Prism-Puzzle-unsigned.ipa",
-          "size": 59578,
-          "version": "1.1.0",
-          "buildVersion": "3",
+          "date": "2026-11-10T05:43:45Z",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.1-build4/Prism-Puzzle-unsigned.ipa",
+          "size": 60122,
+          "version": "1.1.1",
+          "buildVersion": "4",
           "minOSVersion": "15.0",
-          "localizedDescription": "Seven fully local puzzle games: Twist Cube, Pocket Cube, Block Assembly with original studded pieces and three trays, Fifteen Tiles, Slide Nine, Tower and Lights Out.\r\n\r\nTwist complete cube layers, rotate puzzles to inspect them, drag tiles and disks, and lift/rotate/snap assembly pieces. Hints are unlimited, free and computed on the device. Existing puzzle progress migrates without resetting valid saves; damaged saves are preserved before repair.\r\n\r\nRequires iOS 15 or later. iPhone and iPad supported. This IPA is unsigned and requires signing through a compatible installation method. It is not an App Store distribution build and has not been tested on a physical iPhone.\r\n\r\nVerification: 32 logic/application-handler tests; native iOS compilation and unsigned packaging; Android debug build and lint; Chromium touch interactions and cold offline file load; Chromium and WebKit seven-game offline hint solves with runtime network-request guards. WebKit offline checking is in-session, not a cold iPhone launch. Native iPhone simulator passed cube touch controls, hint solves for all seven games, extra hints and relaunch persistence. This does not establish physical-device or network-disabled iPhone testing.\r\n\r\nOriginal piece designs; not affiliated with LEGO or other puzzle brands. No ads, accounts, analytics, subscriptions or network services.\r\n\r\nIPA: 59578 bytes. SHA-256: ee380e71bbabe25f8ec456d344cbbfd1637f52150d97603860b53bca070b849a.\r\n\r\nAsset-only distribution. Prism-Puzzle source repository remains private. Automatic GitHub source archives refer to OmniForge, not Prism-Puzzle. See attached RELEASE-NOTES.md, SHA256SUMS and verification.json."
+          "localizedDescription": "Protects saved progress from newer app formats. Unsupported save schemas are kept unchanged; play can continue for the current session without overwriting them. Supported older saves still migrate normally. Recovery copies and the confirmed reset flow are unchanged.\r\n\r\nVersion 1.1.1 build 4 keeps the existing com.prismpuzzle.app identity and advances from 1.1.0 build 3 without a save reset. Seven local games and unlimited on-device hints remain available.\r\n\r\nUnsigned iPhone/iPad prerelease preview, iOS 15 or later. Requires a compatible signing and installation method. Not an App Store or production-ready build. Physical-device installation, gameplay and signed upgrade continuity have not been tested.\r\n\r\nExact source e4d579d73672fa71bf163d2884cbdbdd686ed3bc passed 45 Node tests, generated-asset equality, Chromium browser/touch and WebKit mouse-pointer regressions, Android debug build/lint, both native iOS simulator UI tests, Release device compilation and IPA validation. Native tests exercised all seven games, extra hints and relaunch persistence. These checks do not certify physical-device behavior.\r\n\r\nIPA: 60,122 bytes. SHA-256: 5ca7a056b77c255b41512890a5ce73c7d059ca448e890e37545b8134e39583dc.\r\n\r\nAsset-only distribution. Prism-Puzzle source repository remains private. Automatic GitHub source archives refer to OmniForge, not Prism-Puzzle. See attached RELEASE-NOTES.md, SHA256SUMS and verification.json.\r\n"
         }
       ],
-      "version": "1.1.0",
-      "versionDate": "2026-11-10T00:16:57Z",
-      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.0-build3/Prism-Puzzle-unsigned.ipa",
-      "size": 59578,
+      "version": "1.1.1",
+      "versionDate": "2026-11-10T05:43:45Z",
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.1-build4/Prism-Puzzle-unsigned.ipa",
+      "size": 60122,
       "_verification": {
-        "sha256": "ee380e71bbabe25f8ec456d344cbbfd1637f52150d97603860b53bca070b849a",
-        "release": "https://github.com/R347H4CK3R/OmniForge/releases/tag/prism-puzzle-1.1.0-build3",
-        "assetId": 729493769,
+        "sha256": "5ca7a056b77c255b41512890a5ce73c7d059ca448e890e37545b8134e39583dc",
+        "release": "https://github.com/R347H4CK3R/OmniForge/releases/tag/prism-puzzle-1.1.1-build4",
+        "assetId": 730270019,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     },

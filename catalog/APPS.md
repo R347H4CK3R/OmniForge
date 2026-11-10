@@ -56,19 +56,19 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 
 ## OmniForge
 
-<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/lc-156/OmniForgeIcon.png" width="72" height="72" alt="OmniForge catalog icon">
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/lc-159/OmniForgeIcon.png" width="72" height="72" alt="OmniForge catalog icon">
 
 <p><strong>Offline AI developer workbench</strong></p>
 <p>Import local GGUF models, inspect IPA files and work with development projects. Models are supplied separately. Unsigned iOS guest app for a configured LiveContainer or a supported signing method. Minimum iOS 17. Release packaging has been inspected; this catalog does not certify physical-device operation.</p>
 
-- Version: 1.1.56 · Build: 156
-- Requires iOS 17.0 or later · Download: 4.38 MB
+- Version: 1.1.59 · Build: 159
+- Requires iOS 17.0 or later · Download: 4.44 MB
 - Bundle ID: com.r347h4ck3r.omniforge
 
-<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/lc-156/OmniForge-LiveContainer.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/lc-159/OmniForge-LiveContainer.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>LiveContainer update 156</p>
+<p>LiveContainer update 159</p>
 </details>
 
 **Preview coming soon** · No reviewed screenshot available yet.
@@ -302,26 +302,25 @@ Sign the unsigned IPA using a compatible sideloading tool. Preserve existing sav
 <p><strong>Seven puzzles. Always offline.</strong></p>
 <p>Seven offline puzzles: touch-controlled 3×3 and 2×2 cubes, original studded Block Assembly with three trays, Fifteen Tiles, Slide Nine, Tower and Lights Out. Rotate puzzles, move pieces and use unlimited free hints with local progress saving. No accounts, ads or network service. Native iPhone simulator cube touch, all-puzzle hint solves and relaunch persistence passed; Chromium cold offline load and Chromium/WebKit offline gameplay passed. Unsigned iPhone/iPad build requires compatible signing. Physical-device gameplay and Strata installation remain unverified. iOS 15+.</p>
 
-- Version: 1.1.0 · Build: 3
+- Version: 1.1.1 · Build: 4
 - Requires iOS 15.0 or later · Download: 0.06 MB
 - Bundle ID: com.prismpuzzle.app
 
-<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.0-build3/Prism-Puzzle-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.1-build4/Prism-Puzzle-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Seven fully local puzzle games: Twist Cube, Pocket Cube, Block Assembly with original studded pieces and three trays, Fifteen Tiles, Slide Nine, Tower and Lights Out.
+<p>Protects saved progress from newer app formats. Unsupported save schemas are kept unchanged; play can continue for the current session without overwriting them. Supported older saves still migrate normally. Recovery copies and the confirmed reset flow are unchanged.
 
-Twist complete cube layers, rotate puzzles to inspect them, drag tiles and disks, and lift/rotate/snap assembly pieces. Hints are unlimited, free and computed on the device. Existing puzzle progress migrates without resetting valid saves; damaged saves are preserved before repair.
+Version 1.1.1 build 4 keeps the existing com.prismpuzzle.app identity and advances from 1.1.0 build 3 without a save reset. Seven local games and unlimited on-device hints remain available.
 
-Requires iOS 15 or later. iPhone and iPad supported. This IPA is unsigned and requires signing through a compatible installation method. It is not an App Store distribution build and has not been tested on a physical iPhone.
+Unsigned iPhone/iPad prerelease preview, iOS 15 or later. Requires a compatible signing and installation method. Not an App Store or production-ready build. Physical-device installation, gameplay and signed upgrade continuity have not been tested.
 
-Verification: 32 logic/application-handler tests; native iOS compilation and unsigned packaging; Android debug build and lint; Chromium touch interactions and cold offline file load; Chromium and WebKit seven-game offline hint solves with runtime network-request guards. WebKit offline checking is in-session, not a cold iPhone launch. Native iPhone simulator passed cube touch controls, hint solves for all seven games, extra hints and relaunch persistence. This does not establish physical-device or network-disabled iPhone testing.
+Exact source e4d579d73672fa71bf163d2884cbdbdd686ed3bc passed 45 Node tests, generated-asset equality, Chromium browser/touch and WebKit mouse-pointer regressions, Android debug build/lint, both native iOS simulator UI tests, Release device compilation and IPA validation. Native tests exercised all seven games, extra hints and relaunch persistence. These checks do not certify physical-device behavior.
 
-Original piece designs; not affiliated with LEGO or other puzzle brands. No ads, accounts, analytics, subscriptions or network services.
+IPA: 60,122 bytes. SHA-256: 5ca7a056b77c255b41512890a5ce73c7d059ca448e890e37545b8134e39583dc.
 
-IPA: 59578 bytes. SHA-256: ee380e71bbabe25f8ec456d344cbbfd1637f52150d97603860b53bca070b849a.
-
-Asset-only distribution. Prism-Puzzle source repository remains private. Automatic GitHub source archives refer to OmniForge, not Prism-Puzzle. See attached RELEASE-NOTES.md, SHA256SUMS and verification.json.</p>
+Asset-only distribution. Prism-Puzzle source repository remains private. Automatic GitHub source archives refer to OmniForge, not Prism-Puzzle. See attached RELEASE-NOTES.md, SHA256SUMS and verification.json.
+</p>
 </details>
 
 **Preview coming soon** · No reviewed screenshot available yet.
