@@ -188,7 +188,7 @@
     "name": "Prism Puzzle",
     "developerName": "R347H4CK3R",
     "subtitle": "Seven puzzles. Always offline.",
-    "localizedDescription": "Seven offline puzzles: touch-controlled 3×3 and 2×2 cubes, original studded Block Assembly with three trays, Fifteen Tiles, Slide Nine, Tower and Lights Out. Rotate puzzles, move pieces and use unlimited free hints with local progress saving. No accounts, ads or network service. Native iPhone simulator cube touch, all-puzzle hint solves and relaunch persistence passed; Chromium cold offline load and Chromium/WebKit offline gameplay passed. Unsigned iPhone/iPad build requires compatible signing. Physical-device gameplay and Strata installation remain unverified. iOS 15+.",
+    "localizedDescription": "Seven offline puzzles, local progress and unlimited free hints. Includes an offline improvement-draft composer with review and manual-copy fallback to the explicitly named private repository; authorized GitHub access is required outside the app. No uploads, accounts, ads or network service in the app. Native simulator interaction, persistence and suggestion checks passed. Prerelease: intermittent cube-edge visual occlusion remains; desktop-WebKit screenshots flatten the cube. Unsigned iOS 15+ package needs compatible signing. Physical-device gameplay, signed upgrades and Strata installation remain unverified.",
     "category": "games",
     "tagPattern": "prism-puzzle-[0-9.]+-build[0-9]+",
     "assetPattern": "Prism-Puzzle-unsigned\\.ipa",

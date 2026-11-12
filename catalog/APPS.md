@@ -300,26 +300,35 @@ Sign the unsigned IPA using a compatible sideloading tool. Preserve existing sav
 <img src="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.0-build3/Prism-Puzzle-icon.png" width="72" height="72" alt="Prism Puzzle catalog icon">
 
 <p><strong>Seven puzzles. Always offline.</strong></p>
-<p>Seven offline puzzles: touch-controlled 3×3 and 2×2 cubes, original studded Block Assembly with three trays, Fifteen Tiles, Slide Nine, Tower and Lights Out. Rotate puzzles, move pieces and use unlimited free hints with local progress saving. No accounts, ads or network service. Native iPhone simulator cube touch, all-puzzle hint solves and relaunch persistence passed; Chromium cold offline load and Chromium/WebKit offline gameplay passed. Unsigned iPhone/iPad build requires compatible signing. Physical-device gameplay and Strata installation remain unverified. iOS 15+.</p>
+<p>Seven offline puzzles, local progress and unlimited free hints. Includes an offline improvement-draft composer with review and manual-copy fallback to the explicitly named private repository; authorized GitHub access is required outside the app. No uploads, accounts, ads or network service in the app. Native simulator interaction, persistence and suggestion checks passed. Prerelease: intermittent cube-edge visual occlusion remains; desktop-WebKit screenshots flatten the cube. Unsigned iOS 15+ package needs compatible signing. Physical-device gameplay, signed upgrades and Strata installation remain unverified.</p>
 
-- Version: 1.1.1 · Build: 4
+- Version: 1.1.2 · Build: 5
 - Requires iOS 15.0 or later · Download: 0.06 MB
 - Bundle ID: com.prismpuzzle.app
 
-<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.1-build4/Prism-Puzzle-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/prism-puzzle-1.1.2-build5/Prism-Puzzle-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Protects saved progress from newer app formats. Unsupported save schemas are kept unchanged; play can continue for the current session without overwriting them. Supported older saves still migrate normally. Recovery copies and the confirmed reset flow are unchanged.
+<p># Prism Puzzle 1.1.2 (build 5) prerelease
 
-Version 1.1.1 build 4 keeps the existing com.prismpuzzle.app identity and advances from 1.1.0 build 3 without a save reset. Seven local games and unlimited on-device hints remain available.
+Adds an offline suggestion composer for additions, removals and bug reports. Review the local draft, select it for manual copying, then submit outside the app using your own authorized GitHub account. The destination is explicitly the private R347H4CK3R/Prism-Puzzle repository. The app does not upload suggestions, open external pages, modify the OS clipboard, include puzzle saves, store credentials, or grant repository access.
 
-Unsigned iPhone/iPad prerelease preview, iOS 15 or later. Requires a compatible signing and installation method. Not an App Store or production-ready build. Physical-device installation, gameplay and signed upgrade continuity have not been tested.
+Seven offline games, local progress and unlimited hints remain available. Existing com.prismpuzzle.app identity is preserved.
 
-Exact source e4d579d73672fa71bf163d2884cbdbdd686ed3bc passed 45 Node tests, generated-asset equality, Chromium browser/touch and WebKit mouse-pointer regressions, Android debug build/lint, both native iOS simulator UI tests, Release device compilation and IPA validation. Native tests exercised all seven games, extra hints and relaunch persistence. These checks do not certify physical-device behavior.
+## Verification
+The exact candidate passed 60 Node tests, fail-closed IPA-validator regression, generated-asset equality, Chromium gameplay/real-touch/offline cold-load checks, WebKit gameplay/in-session offline checks, and feedback privacy, review, selection, save-preservation and narrow-layout checks. All three native iOS 26.2 simulator UI tests passed, including cube touch, every puzzle, hints, persistence and suggestion review/selection. Unsigned arm64 device compilation and independent IPA identity, platform and bundled-byte checks passed.
 
-IPA: 60,122 bytes. SHA-256: 5ca7a056b77c255b41512890a5ce73c7d059ca448e890e37545b8134e39583dc.
+Native diagnostic screenshots show a full 3D cube. One capture shows partial black occlusion along the cube&#x27;s right edge; two other captures have complete visible faces. This intermittent visual issue remains unresolved. Desktop-WebKit screenshots render the cube flat despite passing interaction checks.
 
-Asset-only distribution. Prism-Puzzle source repository remains private. Automatic GitHub source archives refer to OmniForge, not Prism-Puzzle. See attached RELEASE-NOTES.md, SHA256SUMS and verification.json.
+## Limits
+Unsigned iPhone/iPad prerelease, iOS 15+. Compatible signing is required. Physical iPhone installation/gameplay, signed upgrades, OS clipboard copy/paste and Strata installation remain untested. This is not a production-ready or App Store build. Preserve existing saves before changing installations.
+
+Autonomous suggestion evaluation, code changes and scheduled releases are not implemented by this local composer. Suggestions are untrusted input, not authority for sensitive or destructive operations or publication.
+
+Asset-only distribution. The Prism-Puzzle repository and source archive remain private; the IPA includes the web assets needed to run the app. Automatic GitHub source archives refer to OmniForge, not Prism-Puzzle. No private source archive, diagnostic logs, signing keys or personal data are included.
+
+IPA: 62,604 bytes
+SHA-256: 0e1dcffe60f4adab4923667baec64d6da254def8ae9b3da4df99d972f0ab2ae6
 </p>
 </details>
 
