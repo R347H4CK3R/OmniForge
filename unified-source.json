@@ -84,19 +84,19 @@
       },
       "versions": [
         {
-          "date": "2026-11-12T01:14:03Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.7/VoiceMatrix-0.4.7.ipa",
-          "size": 731161976,
-          "version": "0.4.7",
+          "date": "2026-11-12T02:00:35Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.8/VoiceMatrix-0.4.8.ipa",
+          "size": 731244571,
+          "version": "0.4.8",
           "buildVersion": "1",
           "minOSVersion": "26.0",
-          "localizedDescription": "Live private voice sync activity: laptop receipt and checking, download progress, validation and saved completion. Explicit stop, failure and up-to-date states. Existing private voices/audio and offline engines preserved; no stock voices. Physical iPhone sync remains unverified."
+          "localizedDescription": "Live private video workflow: verified receipt, real worker stages, waiting/review and failure history. Separate voice sync evidence. Existing private voices/audio, queues and offline engines preserved; no stock voices. Physical iPhone sync remains unverified."
         }
       ],
-      "version": "0.4.7",
-      "versionDate": "2026-11-12T01:14:03Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.7/VoiceMatrix-0.4.7.ipa",
-      "size": 731161976,
+      "version": "0.4.8",
+      "versionDate": "2026-11-12T02:00:35Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.8/VoiceMatrix-0.4.8.ipa",
+      "size": 731244571,
       "subtitle": "Offline character speech and voice tools",
       "category": "entertainment",
       "screenshots": [
