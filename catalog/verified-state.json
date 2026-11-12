@@ -496,6 +496,43 @@
         "assetId": 728011735,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
+    },
+    {
+      "name": "Orivyn",
+      "bundleIdentifier": "app.jarvisevo.ios",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Private local AI with free model downloads",
+      "localizedDescription": "Independent local-first iPhone assistant with nine downloadable model choices, chat history, documents and image text recognition, voice, projects and response preferences. No subscriptions or paid app tiers. Optional remote endpoints are off by default and their providers may charge separately. Unsigned iOS26 preview; SideStore must sign it. Models download separately. Build4 native and UI tests passed, including real default-model download and inference. This catalog does not certify physical-device installation/refresh, voice, offline use, large-model memory or thermal performance. Cross-app text staging, local reminders and external account integrations are not in this build. Not an OpenAI product.",
+      "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Orivyn-Distribution/069f1c7cbeea69c13833d0def5e38d04e2900a9c/icon.png",
+      "category": "productivity",
+      "appPermissions": {
+        "privacy": {
+          "NSCameraUsageDescription": "Take a photo to attach and recognize its text on this iPhone.",
+          "NSMicrophoneUsageDescription": "Orivyn uses the microphone only when you start dictation or a voice conversation.",
+          "NSSpeechRecognitionUsageDescription": "Orivyn transcribes your speech on this iPhone when you start dictation or voice conversation."
+        }
+      },
+      "versions": [
+        {
+          "date": "2026-11-12T17:23:55Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.0-build4/Orivyn-0.1.0-build4-distribution-unsigned.ipa",
+          "size": 4192466,
+          "version": "0.1.0",
+          "buildVersion": "4",
+          "minOSVersion": "26.0",
+          "localizedDescription": "Build4 development preview. 288 native and27 UI tests passed for the original application payload, including actual default-model download, answer and relaunch. Distribution copy adds only the bundled llama.cpp MIT notice; every original payload entry is byte-identical. Physical-device acceptance remains incomplete. Incoming-text sharing, local reminders and external account integrations are not included."
+        }
+      ],
+      "version": "0.1.0",
+      "versionDate": "2026-11-12T17:23:55Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.0-build4/Orivyn-0.1.0-build4-distribution-unsigned.ipa",
+      "size": 4192466,
+      "_verification": {
+        "sha256": "196091d0989f39a01787491efcfb7d1461bbca3a2f9d26f4d82b5bc7fa12ee7d",
+        "release": "https://github.com/R347H4CK3R/Orivyn-Distribution/releases/tag/orivyn-v0.1.0-build4",
+        "assetId": 740383668,
+        "level": "IPA structure and published release metadata; physical device behavior not certified"
+      }
     }
   ],
   "news": [],

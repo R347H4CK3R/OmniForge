@@ -26,6 +26,7 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 | [Prism Puzzle](#prism-puzzle) | Seven puzzles. Always offline. | iOS 15.0+ |
 | [ScopePilot](#scopepilot) | Offline captured-traffic evidence review | iOS 16.0+ |
 | [Luma Preview](#luma-preview) | Offline tools and private iPhone AI | iOS 14.0+ |
+| [Orivyn](#orivyn) | Private local AI with free model downloads | iOS 26.0+ |
 
 ## Screenshots
 
@@ -413,6 +414,27 @@ Physical iPhone installation, real model inference, Files picker/share behavior 
 
 Third-party notices are bundled and supplied alongside the release. No credentials, user data or private source code are included.
 </p>
+</details>
+
+**Preview coming soon** · No reviewed screenshot available yet.
+
+---
+
+## Orivyn
+
+<img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn-Distribution/069f1c7cbeea69c13833d0def5e38d04e2900a9c/icon.png" width="72" height="72" alt="Orivyn catalog icon">
+
+<p><strong>Private local AI with free model downloads</strong></p>
+<p>Independent local-first iPhone assistant with nine downloadable model choices, chat history, documents and image text recognition, voice, projects and response preferences. No subscriptions or paid app tiers. Optional remote endpoints are off by default and their providers may charge separately. Unsigned iOS26 preview; SideStore must sign it. Models download separately. Build4 native and UI tests passed, including real default-model download and inference. This catalog does not certify physical-device installation/refresh, voice, offline use, large-model memory or thermal performance. Cross-app text staging, local reminders and external account integrations are not in this build. Not an OpenAI product.</p>
+
+- Version: 0.1.0 · Build: 4
+- Requires iOS 26.0 or later · Download: 4.19 MB
+- Bundle ID: app.jarvisevo.ios
+
+<a href="https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.0-build4/Orivyn-0.1.0-build4-distribution-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>Build4 development preview. 288 native and27 UI tests passed for the original application payload, including actual default-model download, answer and relaunch. Distribution copy adds only the bundled llama.cpp MIT notice; every original payload entry is byte-identical. Physical-device acceptance remains incomplete. Incoming-text sharing, local reminders and external account integrations are not included.</p>
 </details>
 
 **Preview coming soon** · No reviewed screenshot available yet.
