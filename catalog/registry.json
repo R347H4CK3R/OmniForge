@@ -41,7 +41,7 @@
     ],
     "name": "VoiceMatrix",
     "subtitle": "Offline character speech and voice tools",
-    "localizedDescription": "Standalone local-studio test: bundled speaker analysis, transcription, reference-conditioned previews, automatic reference-profile import and retained live logs. No laptop required for this path. Actual Apple Silicon pipeline and iOS simulator tests passed; physical iPhone behavior, character identity/likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and sources retained. Requires iOS 26.",
+    "localizedDescription": "Build 3 corrects reference/preview pairing and keeps word-check-failed previews out of the current result while preserving diagnostic audio. Standalone local-studio test: bundled speaker analysis, transcription, reference-conditioned previews, automatic reference-profile import and retained live logs. No laptop required for this path. Actual Apple Silicon pipeline and iOS simulator tests passed; physical iPhone behavior, character identity/likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and sources retained. Requires iOS 26.",
     "category": "entertainment",
     "evidencePolicy": "character",
     "screenshots": [
