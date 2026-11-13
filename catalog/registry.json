@@ -32,7 +32,7 @@
     "repository": "R347H4CK3R/Ghostline",
     "bundleIdentifier": "com.voicematrix.app",
     "sourceURL": "https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/strata-source.json",
-    "tagPattern": "voicematrix-v[0-9.]+(?:-character-test-[0-9]+|-build2)?",
+    "tagPattern": "voicematrix-v[0-9.]+(?:-character-test-[0-9]+|-build[23])?",
     "allowPrerelease": true,
     "requiredEvidenceAssets": [
       "character-release-verification.json",
