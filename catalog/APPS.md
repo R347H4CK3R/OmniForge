@@ -81,16 +81,16 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="VoiceMatrix catalog icon">
 
 <p><strong>Offline character speech and voice tools</strong></p>
-<p>Standalone local-studio test: bundled speaker analysis, transcription, reference-conditioned previews, automatic reference-profile import and retained live logs. No laptop required for this path. Actual Apple Silicon pipeline and iOS simulator tests passed; physical iPhone behavior, character identity/likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and sources retained. Requires iOS 26.</p>
+<p>Build 3 corrects reference/preview pairing and keeps word-check-failed previews out of the current result while preserving diagnostic audio. Standalone local-studio test: bundled speaker analysis, transcription, reference-conditioned previews, automatic reference-profile import and retained live logs. No laptop required for this path. Actual Apple Silicon pipeline and iOS simulator tests passed; physical iPhone behavior, character identity/likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and sources retained. Requires iOS 26.</p>
 
-- Version: 0.4.9 · Build: 2
+- Version: 0.4.9 · Build: 3
 - Requires iOS 26.0 or later · Download: 1305.72 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9-build2/VoiceMatrix-0.4.9-build2.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9-build3/VoiceMatrix-0.4.9-build3.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Standalone local-studio test: bundled speaker analysis, transcription, reference preview, automatic import and retained live logs. No laptop required for this path. Tested with synthetic neutral speech on Apple Silicon and iOS simulator; physical iPhone behavior, character likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and source media retained.</p>
+<p>Preview/reference pairing correction; failed word-check previews stay unpublished. Standalone local-studio test: bundled speaker analysis, transcription, reference preview, automatic import and retained live logs. No laptop required for this path. Tested with synthetic neutral speech on Apple Silicon and iOS simulator; physical iPhone behavior, character likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and source media retained.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
