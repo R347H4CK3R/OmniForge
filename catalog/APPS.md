@@ -81,16 +81,16 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="VoiceMatrix catalog icon">
 
 <p><strong>Offline character speech and voice tools</strong></p>
-<p>Import your own character folders, create offline speech and convert recordings with local neural engines. No stock characters are bundled. Experimental character-test edition: native diagnostic speech and simulator conversion checks pass, but physical iPhone behavior and character likeness remain unverified. Requires iOS 26.</p>
+<p>Standalone local-studio test: bundled speaker analysis, transcription, reference-conditioned previews, automatic reference-profile import and retained live logs. No laptop required for this path. Actual Apple Silicon pipeline and iOS simulator tests passed; physical iPhone behavior, character identity/likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and sources retained. Requires iOS 26.</p>
 
-- Version: 0.4.9 · Build: 1
-- Requires iOS 26.0 or later · Download: 731.34 MB
+- Version: 0.4.9 · Build: 2
+- Requires iOS 26.0 or later · Download: 1305.72 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9/VoiceMatrix-0.4.9.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9-build2/VoiceMatrix-0.4.9-build2.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Live private video workflow: verified receipt, real worker stages, waiting/review and failure history. Separate voice sync evidence. Existing private voices/audio, queues and offline engines preserved; no stock voices. Physical iPhone sync remains unverified.</p>
+<p>Standalone local-studio test: bundled speaker analysis, transcription, reference preview, automatic import and retained live logs. No laptop required for this path. Tested with synthetic neutral speech on Apple Silicon and iOS simulator; physical iPhone behavior, character likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and source media retained.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
