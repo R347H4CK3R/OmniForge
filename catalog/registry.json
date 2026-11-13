@@ -41,7 +41,7 @@
     ],
     "name": "VoiceMatrix",
     "subtitle": "Offline character speech and voice tools",
-    "localizedDescription": "Import your own character folders, create offline speech and convert recordings with local neural engines. No stock characters are bundled. Experimental character-test edition: native diagnostic speech and simulator conversion checks pass, but physical iPhone behavior and character likeness remain unverified. Requires iOS 26.",
+    "localizedDescription": "Standalone local-studio test: bundled speaker analysis, transcription, reference-conditioned previews, automatic reference-profile import and retained live logs. No laptop required for this path. Actual Apple Silicon pipeline and iOS simulator tests passed; physical iPhone behavior, character identity/likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and sources retained. Requires iOS 26.",
     "category": "entertainment",
     "evidencePolicy": "character",
     "screenshots": [
