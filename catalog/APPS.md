@@ -421,16 +421,27 @@ Third-party notices are bundled and supplied alongside the release. No credentia
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn-Distribution/069f1c7cbeea69c13833d0def5e38d04e2900a9c/icon.png" width="72" height="72" alt="Orivyn catalog icon">
 
 <p><strong>Private local AI with free model downloads</strong></p>
-<p>Independent local-first iPhone assistant with nine downloadable model choices, chat history, documents and image text recognition, voice, projects and response preferences. No subscriptions or paid app tiers. Optional remote endpoints are off by default and their providers may charge separately. Unsigned iOS26 preview; SideStore must sign it. Models download separately. Build4 native and UI tests passed, including real default-model download and inference. This catalog does not certify physical-device installation/refresh, voice, offline use, large-model memory or thermal performance. Cross-app text staging, local reminders and external account integrations are not in this build. Not an OpenAI product.</p>
+<p>Independent local-first iPhone assistant with downloadable models, chat history, documents and image text recognition, voice, projects and response preferences. Build 6 adds stricter remote-stream validation and reviewed source-patch export. No subscriptions or paid app tiers; optional remote providers may charge. Unsigned iOS26 development preview; SideStore must sign it. Models download separately. Portable checks, native device compilation and IPA inspection passed. Exact-build native unit/UI tests and physical-device installation/refresh, voice, memory/thermal behavior and Files export remain unverified. General autonomous tool orchestration, broad vision and automatic cross-device sync remain unfinished. Not completed 1.0.0 or an OpenAI product.</p>
 
-- Version: 0.1.0 · Build: 4
-- Requires iOS 26.0 or later · Download: 4.19 MB
+- Version: 0.1.1 · Build: 6
+- Requires iOS 26.0 or later · Download: 35.04 MB
 - Bundle ID: app.jarvisevo.ios
 
-<a href="https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.0-build4/Orivyn-0.1.0-build4-distribution-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.1-build6/Orivyn-0.1.1-build6-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Build4 development preview. 288 native and27 UI tests passed for the original application payload, including actual default-model download, answer and relaunch. Distribution copy adds only the bundled llama.cpp MIT notice; every original payload entry is byte-identical. Physical-device acceptance remains incomplete. Incoming-text sharing, local reminders and external account integrations are not included.</p>
+<p>Unsigned ARM64 iPhone development preview for iOS 26+. SideStore must sign it for your account/device. This is not completed 1.0.0.
+
+Includes the current local-assistant development candidate, with stricter remote-stream choice validation and reviewed source-patch export. Exported patches are drafts: they are not applied or tested automatically, and the base commit/blob must be checked before use. Models download separately; optional remote providers may charge.
+
+Verified for this source: 400 Foundation Swift tests, 104 JavaScript agent tests, 39 VM component tests, and 158 Python tests passed (one existing tokenizer test skipped). Native iOS Release compilation and IPA structure/resource checks passed on Xcode 26.4.1. Native unit/UI tests were not run for this exact build. Physical iPhone installation/refresh, runtime, voice, memory/thermal behavior and Files export remain unverified. General autonomous tool orchestration, broad vision and automatic cross-device sync remain unfinished.
+
+Source commit: 319d6aed0a4e7543d23f96bb2de882cf68616348. CircleCI packaging pipeline 21, job 28.
+IPA: Orivyn-0.1.1-build6-unsigned.ipa
+Size: 35,042,297 bytes
+SHA-256: 86adf180469d44b927cfc078adb5fcf315c5a4da9a1078f613788771640db79e
+
+Required llama.cpp and KaTeX notices are bundled. No private source archive, signing keys, model weights or personal conversations are included. Application source remains private; automatic source archives refer only to this distribution repository. Preserve existing app data and signing identity when updating. Not an OpenAI product.</p>
 </details>
 
 **Preview coming soon** · No reviewed screenshot available yet.
