@@ -8,6 +8,7 @@ on:
     paths:
       - 'scripts/unified_catalog.py'
       - 'scripts/test_unified_catalog.py'
+      - 'scripts/test_preview_catalog.py'
       - 'scripts/storefront.py'
       - 'scripts/storefront.html'
       - 'scripts/test_storefront.py'
@@ -35,6 +36,7 @@ jobs:
       - name: Test catalog safety rules
         run: |
           python3 -m unittest discover -s scripts -p 'test_unified_catalog.py' -v
+          python3 -m unittest discover -s scripts -p 'test_preview_catalog.py' -v
           python3 -m unittest discover -s scripts -p 'test_storefront.py' -v
           python3 -m unittest discover -s scripts -p 'test_request_pages_build.py' -v
       - name: Inspect public release assets and refresh catalog

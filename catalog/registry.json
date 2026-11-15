@@ -32,18 +32,20 @@
     "repository": "R347H4CK3R/Ghostline",
     "bundleIdentifier": "com.voicematrix.app",
     "sourceURL": "https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/strata-source.json",
-    "tagPattern": "voicematrix-v[0-9.]+(?:-character-test-[0-9]+|-build[23])?",
+    "tagPattern": "voicematrix-v0\\.4\\.9-build8",
     "allowPrerelease": true,
     "requiredEvidenceAssets": [
-      "character-release-verification.json",
-      "speech-evidence.json",
-      "conversion-result.json"
+      "character-inspection.json",
+      "packaging-status.json",
+      "release-metadata.json",
+      "source-proof.json",
+      "dependency-notices.json"
     ],
     "name": "VoiceMatrix",
     "subtitle": "Offline character speech and voice tools",
-    "localizedDescription": "Build 3 corrects reference/preview pairing and keeps word-check-failed previews out of the current result while preserving diagnostic audio. Standalone local-studio test: bundled speaker analysis, transcription, reference-conditioned previews, automatic reference-profile import and retained live logs. No laptop required for this path. Actual Apple Silicon pipeline and iOS simulator tests passed; physical iPhone behavior, character identity/likeness, broad video-site support and RVC training remain unverified. Not finished 1.0.0. Existing voices and sources retained. Requires iOS 26.",
+    "localizedDescription": "Unfinished 0.4.9 build 8 preview with MP3/AIFF import, retained-source integrity checks, transcription and screening repairs. This catalog verifies the exact published IPA identity, packaging and recorded source evidence, not full character-voice behavior. Physical iPhone operation and character likeness remain unverified. Experimental RVC requires compatible imported packs; music separation and reliable overlapping-speaker extraction remain incomplete. Existing voices retained. Requires compatible signing and iOS 26. Not finished 1.0.0.",
     "category": "entertainment",
-    "evidencePolicy": "character",
+    "evidencePolicy": "packaging-preview-v1",
     "screenshots": [
       {
         "imageURL": "https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png",
@@ -55,7 +57,15 @@
         "width": 1206,
         "height": 2622
       }
-    ]
+    ],
+    "previewApproval": {
+      "tag": "voicematrix-v0.4.9-build8",
+      "version": "0.4.9",
+      "buildVersion": "8",
+      "sha256": "c9fb738468f9fb7e0497c6735440416753a81273a1bfa4309985df06a4869284",
+      "size": 1314419227,
+      "sourceCommit": "9bab67df2040cb64532e3db1502e3f1bfd587d3c"
+    }
   },
   {
     "repository": "R347H4CK3R/NativeZombies-IOS",

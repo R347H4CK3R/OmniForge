@@ -163,6 +163,31 @@ def verify_character_evidence(proof, bid, actual, sha, size):
         raise ValueError('character release evidence did not verify this IPA')
 
 
+def verify_packaging_preview(entry, tag, proofs, actual, sha, size):
+    """Exact, explicitly approved unfinished IPA; never substitute for character QA."""
+    pin = entry.get('previewApproval', {})
+    metadata = proofs.get('release-metadata.json', {})
+    inspection = proofs.get('character-inspection.json', {})
+    packaging = proofs.get('packaging-status.json', {})
+    source = proofs.get('source-proof.json', {})
+    identity = dict(version=actual['version'], buildVersion=actual['buildVersion'], sha256=sha, size=size)
+    if (pin.get('tag') != tag or not re.fullmatch(r'[0-9a-f]{40}', str(pin.get('sourceCommit', '')))
+        or not re.fullmatch(r'[0-9a-f]{64}', sha)
+        or any(pin.get(k) != v or metadata.get(k) != v for k, v in identity.items())
+        or any(proof.get('sourceCommit') != pin.get('sourceCommit') for proof in (metadata, packaging, source))
+        or metadata.get('unfinishedPreview') is not True
+        or any(proof.get(k) is not False for proof, k in (
+            (metadata, 'physicalDeviceVerified'), (metadata, 'likenessVerified'),
+            (inspection, 'physicalIPhoneVerified'), (inspection, 'characterLikenessVerified'),
+            (packaging, 'physicalDeviceVerified'), (packaging, 'likenessVerified'), (packaging, 'nativeTestsRun')))
+        or packaging.get('hostExtractionTestsPassed') is not True
+        or inspection.get('archive') != 'passed'
+        or inspection.get('bundleIdentifier') != entry['bundleIdentifier']
+        or any(str(proof.get('version')) != actual['version'] or str(proof.get('build')) != actual['buildVersion']
+               for proof in (inspection, packaging))):
+        raise ValueError('unfinished preview evidence did not verify this exact approved IPA')
+
+
 def public_app_metadata(source, repo):
     allowed=('name','bundleIdentifier','developerName','subtitle','localizedDescription','iconURL','tintColor','category')
     app={key:copy.deepcopy(source[key]) for key in allowed if key in source}
@@ -229,6 +254,14 @@ def load_app(entry):
     if entry.get('evidencePolicy')=='character':
         proof=public_json(names['character-release-verification.json']['browser_download_url'])
         verify_character_evidence(proof,bid,actual,sha,asset['size'])
+    elif entry.get('evidencePolicy') == 'packaging-preview-v1':
+        proof_names = ('release-metadata.json', 'character-inspection.json', 'packaging-status.json', 'source-proof.json')
+        if any(name not in names or names[name].get('state') != 'uploaded' for name in proof_names):
+            raise ValueError('required unfinished preview evidence missing')
+        proofs = {name: public_json(names[name]['browser_download_url']) for name in proof_names}
+        verify_packaging_preview(entry,tag,proofs,actual,sha,asset['size'])
+    elif entry.get('evidencePolicy') is not None:
+        raise ValueError('unknown release evidence policy')
     current={'date':release['published_at'],'downloadURL':url,'size':asset['size'],**actual}
     current['localizedDescription']=entry.get('releaseNotes') or candidate.get('localizedDescription',app.get('localizedDescription',''))
     # Only the newly inspected version is emitted. Do not copy uninspected historical entries.
