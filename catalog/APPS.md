@@ -421,32 +421,32 @@ Third-party notices are bundled and supplied alongside the release. No credentia
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="Orivyn catalog icon">
 
 <p><strong>Private local AI with free model downloads</strong></p>
-<p>Unfinished local-first iPhone assistant with downloadable models, chat history, voice and experimental native tools/vision. No paid app tiers; optional remote providers may charge. Unsigned iOS 26+ preview requires compatible signing. Backup replacement adds a separate confirmation; preserve-local remains the default. Build 12 adds conservative orphan model-snapshot cleanup with active leases; host filesystem/process tests passed, not actual iPhone inference or memory-map lifetime. Host component checks and iOS compilation do not verify actual selected-file UI, external file-provider grants or physical-device behavior. General autonomy, broad vision and automatic live sync remain unfinished; live sync is disabled. Models download separately. Not completed 1.0.0 or an OpenAI product.</p>
+<p>Unfinished local-first iPhone assistant with downloadable models, chat history, voice and experimental native tools/vision. No paid app tiers; optional remote providers may charge. Unsigned iOS 26+ preview requires compatible signing. Backup replacement adds a separate confirmation; preserve-local remains the default. Build 12 added conservative orphan model-snapshot cleanup with active leases. Build 13 preserves unexpected model-recovery staging data instead of recursively deleting it. Host filesystem/process tests passed, not actual iPhone inference or memory-map lifetime. Host component checks and iOS compilation do not verify actual selected-file UI, external file-provider grants or physical-device behavior. General autonomy, broad vision and automatic live sync remain unfinished; live sync is disabled. Models download separately. Not completed 1.0.0 or an OpenAI product.</p>
 
-- Version: 0.1.1 · Build: 12
+- Version: 0.1.1 · Build: 13
 - Requires iOS 26.0 or later · Download: 37.17 MB
 - Bundle ID: app.jarvisevo.ios
 
-<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build12/Orivyn-0.1.1-build12-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build13/Orivyn-0.1.1-build13-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Orivyn 0.1.1 build 12 — unfinished unsigned iOS 26+ preview.
+<p>Orivyn 0.1.1 build 13 — unfinished unsigned iOS 26+ preview.
 
-Adds conservative recovery of orphaned private model snapshots on the next native model load that creates a new private snapshot. A process-lifetime lease protects active snapshots, and the loader keeps that lease until native context/model teardown. Cleanup only touches recognized app-owned versioned directories with matching ownership metadata and expected files. Installed model downloads, unmarked legacy directories, active copies, symlinks, hardlinks and directories with unexpected contents are preserved. Cleanup is bounded to 128 candidates per pass with a rotating cursor; directory enumeration itself is not bounded.
+Protects unexpected data in model-installation recovery staging. Recovery now blocks before changing live model/manifest files if an unfamiliar staging name is present. Cleanup validates all remaining entries before removing known regular files and the empty directory; it no longer recursively deletes arbitrary staging contents. Valid installation/removal rollback and hard-linked recovery copies remain supported. An unexpected temporary filename left by an interrupted atomic write can now require inspection rather than automatic cleanup. This deliberately favors preservation over silently deleting data.
 
-The earlier backup-replacement confirmation change is retained. Preserve-local remains the default. Existing native tools, experimental vision and transcript features remain enabled.
+Retains build12&#x27;s conservative orphan model-snapshot recovery and active leases, and build11&#x27;s explicit confirmation before replacing conversation history. Preserve-local remains the backup default. Existing native tools, experimental vision and transcript features remain enabled.
 
-Verification scope: 10 host-native filesystem tests passed with zero failures or skips; synthetic process-lifetime checks passed; Release iOS device compilation and unsigned IPA structure/resource verification. These are not actual iPhone inference, memory-mapped model lifetime or device acceptance tests. A synthetic host subprocess test checks that another cleanup process preserves a live lease and can recover its owned test copy after that subprocess is killed. It does not run the inference engine. Physical-iPhone behavior, selected-file confirmation UI and external file-provider grants remain unverified.
+Verification: 19 synthetic Darwin filesystem tests of the exact production recovery component passed with zero failures or skips; combined native-runtime compilation, Release iOS device compilation and unsigned IPA structure/resource checks. These do not verify actual iPhone inference, memory-mapped model lifetime, selected-file confirmation UI, external file-provider grants, hostile concurrent writers or sudden power-loss durability. No physical-device acceptance is claimed.
 
-Known limits: general autonomous requests can still answer before completing requested reads. Vision is experimental with an earlier mixed-shape counting failure. Automatic live sync remains disabled. Models download separately; no weights are bundled. Optional remote providers may charge. Existing unmarked orphan snapshots are intentionally not deleted. This is not completed 1.0.0 and is not an OpenAI product.
+Known limits: general autonomous requests can still answer before completing requested reads. Vision is experimental with an earlier mixed-shape counting failure. Automatic live sync remains disabled. Models download separately; no weights are bundled. Optional remote providers may charge. Existing unmarked orphan snapshots remain untouched. This is not completed 1.0.0 and is not an OpenAI product.
 
 SideStore or another compatible installer must sign this unsigned IPA. Preserve existing app data and signing identity when updating. Required third-party notices and model license terms remain bundled.
 
-Exact package source: 3cc225959b9f78865a21aef18adfb7a603ab6932
-Successful gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43729015018
-File: Orivyn-0.1.1-build12-unsigned.ipa
-Size: 37168551 bytes
-SHA-256: 9e873964337b24b03c5018158d1518f20b7d6eda892324f20aaad7c3b4f62352
+Exact package source: 10bb4038d23389fb215c08c34428abe0a3ecb027
+Successful gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43732749341
+File: Orivyn-0.1.1-build13-unsigned.ipa
+Size: 37169284 bytes
+SHA-256: 90952536433c54f5b2850aeed9da3c01d5738fbf32a9798056f93647152f9cbb
 </p>
 </details>
 
