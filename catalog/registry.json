@@ -255,7 +255,7 @@
     "name": "Orivyn",
     "developerName": "R347H4CK3R",
     "subtitle": "Private local AI with free model downloads",
-    "localizedDescription": "Unfinished local-first iPhone assistant with downloadable models, chat history, voice and experimental native tools/vision. No paid app tiers; optional remote providers may charge. Unsigned iOS 26+ preview requires compatible signing. Backup replacement adds a separate confirmation; preserve-local remains the default. Host component checks and iOS compilation do not verify actual selected-file UI, external file-provider grants or physical-device behavior. General autonomy, broad vision and automatic live sync remain unfinished; live sync is disabled. Models download separately. Not completed 1.0.0 or an OpenAI product.",
+    "localizedDescription": "Unfinished local-first iPhone assistant with downloadable models, chat history, voice and experimental native tools/vision. No paid app tiers; optional remote providers may charge. Unsigned iOS 26+ preview requires compatible signing. Backup replacement adds a separate confirmation; preserve-local remains the default. Build 12 adds conservative orphan model-snapshot cleanup with active leases; host filesystem/process tests passed, not actual iPhone inference or memory-map lifetime. Host component checks and iOS compilation do not verify actual selected-file UI, external file-provider grants or physical-device behavior. General autonomy, broad vision and automatic live sync remain unfinished; live sync is disabled. Models download separately. Not completed 1.0.0 or an OpenAI product.",
     "category": "productivity",
     "tagPattern": "orivyn-v[0-9.]+-build[0-9]+",
     "assetPattern": "Orivyn-[0-9.]+-build[0-9]+(?:-distribution)?-unsigned\\.ipa",
