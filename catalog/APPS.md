@@ -418,30 +418,39 @@ Third-party notices are bundled and supplied alongside the release. No credentia
 
 ## Orivyn
 
-<img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn-Distribution/069f1c7cbeea69c13833d0def5e38d04e2900a9c/icon.png" width="72" height="72" alt="Orivyn catalog icon">
+<img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="Orivyn catalog icon">
 
 <p><strong>Private local AI with free model downloads</strong></p>
-<p>Independent local-first iPhone assistant with downloadable models, chat history, documents and image text recognition, voice, projects and response preferences. Build 6 adds stricter remote-stream validation and reviewed source-patch export. No subscriptions or paid app tiers; optional remote providers may charge. Unsigned iOS26 development preview; SideStore must sign it. Models download separately. Portable checks, native device compilation and IPA inspection passed. Exact-build native unit/UI tests and physical-device installation/refresh, voice, memory/thermal behavior and Files export remain unverified. General autonomous tool orchestration, broad vision and automatic cross-device sync remain unfinished. Not completed 1.0.0 or an OpenAI product.</p>
+<p>Unfinished local-first iPhone assistant with downloadable models, chat history, voice and experimental native tools/vision. No paid app tiers; optional remote providers may charge. Unsigned iOS 26+ preview requires compatible signing. Backup replacement adds a separate confirmation; preserve-local remains the default. Host component checks and iOS compilation do not verify actual selected-file UI, external file-provider grants or physical-device behavior. General autonomy, broad vision and automatic live sync remain unfinished; live sync is disabled. Models download separately. Not completed 1.0.0 or an OpenAI product.</p>
 
-- Version: 0.1.1 · Build: 6
-- Requires iOS 26.0 or later · Download: 35.04 MB
+- Version: 0.1.1 · Build: 11
+- Requires iOS 26.0 or later · Download: 37.16 MB
 - Bundle ID: app.jarvisevo.ios
 
-<a href="https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.1-build6/Orivyn-0.1.1-build6-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build11/Orivyn-0.1.1-build11-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Unsigned ARM64 iPhone development preview for iOS 26+. SideStore must sign it for your account/device. This is not completed 1.0.0.
+<p>Orivyn 0.1.1 build 11 — unfinished unsigned iOS 26+ preview.
 
-Includes the current local-assistant development candidate, with stricter remote-stream choice validation and reviewed source-patch export. Exported patches are drafts: they are not applied or tested automatically, and the base commit/blob must be checked before use. Models download separately; optional remote providers may charge.
+Adds a separate confirmation before replacing conversation history from a backup. Preserve-local remains the default. Canceling a pending replacement leaves stored history unchanged; stale picker callbacks after navigation are rejected, and a confirmed replacement is consumed once. Existing native tools, vision and transcript features are retained.
 
-Verified for this source: 400 Foundation Swift tests, 104 JavaScript agent tests, 39 VM component tests, and 158 Python tests passed (one existing tokenizer test skipped). Native iOS Release compilation and IPA structure/resource checks passed on Xcode 26.4.1. Native unit/UI tests were not run for this exact build. Physical iPhone installation/refresh, runtime, voice, memory/thermal behavior and Files export remain unverified. General autonomous tool orchestration, broad vision and automatic cross-device sync remain unfinished.
+Verification of integrated source 5c5ca7fbfe812386fb6afb8bc20778c374e0f525: 152 macOS host XCTest cases passed with no failures or skips, including synthetic local-file fixtures exercising the production confirmation state → coordinated file reader → SQLite chain (not AppModel or Files UI) for replacement, cancellation/preservation and corrupt input. iOS build-for-testing passed, which compiles but does not execute the iOS tests. Portable Foundation and source-contract checks passed separately. A prior controlled simulator comparison verified Files presentation and cancel/navigation only, not selected-file replacement. Actual selected-file confirmation UI, external file-provider access grants and physical-iPhone behavior remain unverified.
 
-Source commit: 319d6aed0a4e7543d23f96bb2de882cf68616348. CircleCI packaging pipeline 21, job 28.
-IPA: Orivyn-0.1.1-build6-unsigned.ipa
-Size: 35,042,297 bytes
-SHA-256: 86adf180469d44b927cfc078adb5fcf315c5a4da9a1078f613788771640db79e
+Package source 3f96a41b363e3b663f69497fef4bd698fb1fa514 changes only the build number and packaging tooling from that tested integration. The prior build 10 simulator/native-route evidence belongs to its older source and was not rerun for this preview; it is not full verification of build 11.
 
-Required llama.cpp and KaTeX notices are bundled. No private source archive, signing keys, model weights or personal conversations are included. Application source remains private; automatic source archives refer only to this distribution repository. Preserve existing app data and signing identity when updating. Not an OpenAI product.</p>
+Known limits: generic autonomous requests can still respond before completing requested reads. Vision remains experimental, with a known mixed-shape counting failure in the earlier frozen evaluation. Automatic live sync remains disabled. Models download separately; no weights are bundled. Optional remote providers may charge. Process termination can leave a temporary model snapshot using additional storage. Device installation/signing refresh, voice and memory/thermal performance are unverified. This is not completed 1.0.0 and is not an OpenAI product.
+
+Integrated host and iOS compile evidence: https://github.com/R347H4CK3R/Orivyn/actions/runs/43722288003
+Package gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43723555076
+
+The pinned combined runtime rebuilt successfully, portable package/graph checks passed, and the Release device build and independent unsigned IPA inspection passed.
+
+File: Orivyn-0.1.1-build11-unsigned.ipa
+Size: 37,156,968 bytes
+SHA-256: 499a0a1a2c335fab62b23a0b33be5ef1407278655de5f65bf43d5c22917ab7e9
+
+SideStore or another compatible installer must sign this unsigned IPA. Preserve existing app data and signing identity when updating. Required third-party notices and model license terms remain bundled.
+</p>
 </details>
 
 **Preview coming soon** · No reviewed screenshot available yet.
