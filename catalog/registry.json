@@ -240,16 +240,20 @@
     ]
   },
   {
-    "repository": "R347H4CK3R/Orivyn-Distribution",
+    "repository": "R347H4CK3R/Orivyn",
     "bundleIdentifier": "app.jarvisevo.ios",
     "name": "Orivyn",
     "developerName": "R347H4CK3R",
     "subtitle": "Private local AI with free model downloads",
-    "localizedDescription": "Independent local-first iPhone assistant with downloadable models, chat history, documents and image text recognition, voice, projects and response preferences. Build 6 adds stricter remote-stream validation and reviewed source-patch export. No subscriptions or paid app tiers; optional remote providers may charge. Unsigned iOS26 development preview; SideStore must sign it. Models download separately. Portable checks, native device compilation and IPA inspection passed. Exact-build native unit/UI tests and physical-device installation/refresh, voice, memory/thermal behavior and Files export remain unverified. General autonomous tool orchestration, broad vision and automatic cross-device sync remain unfinished. Not completed 1.0.0 or an OpenAI product.",
+    "localizedDescription": "Unfinished local-first iPhone assistant with downloadable models, chat history, voice and experimental native tools/vision. No paid app tiers; optional remote providers may charge. Unsigned iOS 26+ preview requires compatible signing. Backup replacement adds a separate confirmation; preserve-local remains the default. Host component checks and iOS compilation do not verify actual selected-file UI, external file-provider grants or physical-device behavior. General autonomy, broad vision and automatic live sync remain unfinished; live sync is disabled. Models download separately. Not completed 1.0.0 or an OpenAI product.",
     "category": "productivity",
     "tagPattern": "orivyn-v[0-9.]+-build[0-9]+",
     "assetPattern": "Orivyn-[0-9.]+-build[0-9]+(?:-distribution)?-unsigned\\.ipa",
     "allowPrerelease": true,
-    "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Orivyn-Distribution/069f1c7cbeea69c13833d0def5e38d04e2900a9c/icon.png"
+    "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+    "requiredEvidenceAssets": [
+      "SHA256SUMS",
+      "verified-ipa.json"
+    ]
   }
 ]
