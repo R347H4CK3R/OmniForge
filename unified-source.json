@@ -418,7 +418,7 @@
       "bundleIdentifier": "app.jarvisevo.ios",
       "developerName": "R347H4CK3R",
       "subtitle": "Private local AI with free model downloads",
-      "localizedDescription": "Independent local-first iPhone assistant with downloadable models, chat history, documents and image text recognition, voice, projects and response preferences. Build 6 adds stricter remote-stream validation and reviewed source-patch export. No subscriptions or paid app tiers; optional remote providers may charge. Unsigned iOS26 development preview; SideStore must sign it. Models download separately. Portable checks, native device compilation and IPA inspection passed. Exact-build native unit/UI tests and physical-device installation/refresh, voice, memory/thermal behavior and Files export remain unverified. General autonomous tool orchestration, broad vision and automatic cross-device sync remain unfinished. Not completed 1.0.0 or an OpenAI product.",
+      "localizedDescription": "Independent local-first iPhone assistant with downloadable models, chat history, voice, documents, projects, native tools and local image analysis. Build 8 adds reviewed read-workflow fixes and the native vision/tools runtime. Models download separately. Unsigned iOS 26+ prerelease; SideStore signs it. Package compilation, structure and hash checks passed. Known UI bugs remain; exact-build unit/UI tests and physical-device installation/runtime are unverified. General autonomy, broad vision reliability and automatic cross-device sync remain unfinished; live sync is disabled. Not completed 1.0.0. No paid app tiers; optional remote providers may charge. Not an OpenAI product.",
       "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Orivyn-Distribution/069f1c7cbeea69c13833d0def5e38d04e2900a9c/icon.png",
       "category": "productivity",
       "appPermissions": {
@@ -432,6 +432,15 @@
       },
       "versions": [
         {
+          "version": "0.1.1",
+          "buildVersion": "8",
+          "date": "2026-11-15T03:12:33Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build8/Orivyn-0.1.1-build8-unsigned.ipa",
+          "size": 37072679,
+          "minOSVersion": "26.0",
+          "localizedDescription": "Orivyn 0.1.1 build 8 — development preview\n\nUnsigned ARM64 IPA for iOS 26 or later; SideStore signs it for your account and device. Preserve the existing app data and signing identity when updating. Models download separately.\n\nIncludes the current local assistant, reviewed read-workflow fixes, native tools/vision runtime, and durable text-sync storage. Live automatic sync is not enabled. General unreviewed autonomy and broad vision reliability remain unfinished. A UI test found that New conversation did not clear the previous response after a real model reply. Physical-device installation, signing refresh, memory/thermal behavior and runtime acceptance remain unverified. This is not completed 1.0.0.\n\nThis package passed unsigned device compilation, runtime archive validation, IPA structure/resource checks and independent identity/hash inspection. Native unit/UI tests were not run for this exact package. Parent implementation fb146910 separately passed 1,014 native tests (5 skipped, zero failures), all 129 portable persistence tests and six reviewed-read real-model cases; its general-agent and one UI test failed. Vision's frozen synthetic baseline matched 8/10 cases. None of these results certifies general autonomy, reliable broad vision, automatic sync or physical-device readiness.\n\nSource: a6c696a89a2e5a6224e220b6772b62614d30b4df\nBuild: https://github.com/R347H4CK3R/Orivyn/actions/runs/43660234783\nFile: Orivyn-0.1.1-build8-unsigned.ipa\nSize: 37,072,679 bytes\nSHA-256: 04c2bd77eb6f807eb17c24bce6ff0a8cf88cae5d74e0e43955cba9230d01723d\n\nRequired llama.cpp and KaTeX notices are bundled. Test fixtures, model weights, signing keys and personal conversations are not included. Application source is public. Not an OpenAI product.\n"
+        },
+        {
           "date": "2026-11-14T17:19:48Z",
           "downloadURL": "https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.1-build6/Orivyn-0.1.1-build6-unsigned.ipa",
           "size": 35042297,
@@ -442,9 +451,9 @@
         }
       ],
       "version": "0.1.1",
-      "versionDate": "2026-11-14T17:19:48Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.1-build6/Orivyn-0.1.1-build6-unsigned.ipa",
-      "size": 35042297
+      "versionDate": "2026-11-15T03:12:33Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build8/Orivyn-0.1.1-build8-unsigned.ipa",
+      "size": 37072679
     }
   ],
   "news": [],
