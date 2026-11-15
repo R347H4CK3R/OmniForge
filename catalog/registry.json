@@ -32,7 +32,7 @@
     "repository": "R347H4CK3R/Ghostline",
     "bundleIdentifier": "com.voicematrix.app",
     "sourceURL": "https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/strata-source.json",
-    "tagPattern": "voicematrix-v0\\.4\\.9-build8",
+    "tagPattern": "voicematrix-v0\\.4\\.9-build9",
     "allowPrerelease": true,
     "requiredEvidenceAssets": [
       "character-inspection.json",
@@ -43,7 +43,7 @@
     ],
     "name": "VoiceMatrix",
     "subtitle": "Offline character speech and voice tools",
-    "localizedDescription": "Unfinished 0.4.9 build 8 preview with MP3/AIFF import, retained-source integrity checks, transcription and screening repairs. This catalog verifies the exact published IPA identity, packaging and recorded source evidence, not full character-voice behavior. Physical iPhone operation and character likeness remain unverified. Experimental RVC requires compatible imported packs; music separation and reliable overlapping-speaker extraction remain incomplete. Existing voices retained. Requires compatible signing and iOS 26. Not finished 1.0.0.",
+    "localizedDescription": "Unfinished 0.4.9 build 9 preview with bounded reference screening and source-vendored end-of-file diarization repair. Two complete known recordings passed the local macOS pipeline with word-checked new speech; simulator checks passed. This catalog verifies exact published IPA identity, packaging and recorded source evidence, not general voice quality. Physical iPhone operation and character likeness remain unverified. Music separation, reliable overlapping-speaker extraction and full RVC training remain incomplete. Existing voices retained. Requires compatible signing and iOS 26. Not finished 1.0.0.",
     "category": "entertainment",
     "evidencePolicy": "packaging-preview-v1",
     "screenshots": [
@@ -59,12 +59,12 @@
       }
     ],
     "previewApproval": {
-      "tag": "voicematrix-v0.4.9-build8",
+      "tag": "voicematrix-v0.4.9-build9",
       "version": "0.4.9",
-      "buildVersion": "8",
-      "sha256": "c9fb738468f9fb7e0497c6735440416753a81273a1bfa4309985df06a4869284",
-      "size": 1314419227,
-      "sourceCommit": "9bab67df2040cb64532e3db1502e3f1bfd587d3c"
+      "buildVersion": "9",
+      "sha256": "b32850e21695e4d88d8d61a3009cf81b1beb370d75d55a4b70dfc7eca029a0ca",
+      "size": 1314535068,
+      "sourceCommit": "9c3407118de70e8e0b7352c1d590beb6525de464"
     }
   },
   {
