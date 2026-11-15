@@ -418,7 +418,7 @@
       "bundleIdentifier": "app.jarvisevo.ios",
       "developerName": "R347H4CK3R",
       "subtitle": "Private local AI with free model downloads",
-      "localizedDescription": "Unfinished Orivyn 0.1.1 build 10 for iOS 26+. Includes the verified reviewed native read workflow, local LFM vision and history-import presentation fix. General autonomy remains unreliable; vision still fails a counting case. Automatic live sync is disabled. Models download separately; the installer must sign this unsigned IPA. Simulator checks passed for the unchanged application source; physical-device behavior remains unverified. Not completed 1.0.0.",
+      "localizedDescription": "Independent local-first iPhone assistant with downloadable models, chat history, documents and image text recognition, voice, projects and response preferences. Build 6 adds stricter remote-stream validation and reviewed source-patch export. No subscriptions or paid app tiers; optional remote providers may charge. Unsigned iOS26 development preview; SideStore must sign it. Models download separately. Portable checks, native device compilation and IPA inspection passed. Exact-build native unit/UI tests and physical-device installation/refresh, voice, memory/thermal behavior and Files export remain unverified. General autonomous tool orchestration, broad vision and automatic cross-device sync remain unfinished. Not completed 1.0.0 or an OpenAI product.",
       "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Orivyn-Distribution/069f1c7cbeea69c13833d0def5e38d04e2900a9c/icon.png",
       "category": "productivity",
       "appPermissions": {
@@ -432,33 +432,6 @@
       },
       "versions": [
         {
-          "version": "0.1.1",
-          "buildVersion": "10",
-          "date": "2026-11-15T06:57:07Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build10/Orivyn-0.1.1-build10-unsigned.ipa",
-          "size": 37141596,
-          "minOSVersion": "26.0",
-          "localizedDescription": "Orivyn 0.1.1 build 10 — unfinished unsigned iOS 26+ preview.\n\nIncludes the reviewed native read route, the LFM2.5-VL-1.6B vision option, and the history-import presentation fix. Automatic live sync remains disabled while pairing and scheduling integration are tested.\n\nTo use the reviewed native route, explicitly download/select Qwen3 · 1.7B · Q4_K_M, create a Read messages plan for one exact quoted conversation title and one message index, review the scope, approve, then Run. Other tasks/models use their existing routes. Vision requires an explicit model download and review of the displayed model license; no model weights are included in this IPA.\n\nKnown limits: generic autonomous tasks may still answer before completing requested reads. Vision remains experimental: the frozen synthetic evaluation scored 9/10, with mixed-shape counting still failing; one app-level simulator smoke does not establish broad image understanding. This candidate does not provide automatic live sync. A process termination can leave a temporary model snapshot using additional storage. Physical-device installation, signing refresh, voice, memory/thermal behavior and device runtime are unverified.\n\nVerified application source 03b9c5cc0f96e0dce332e0e3c36460a9346ff304: 1,040 native core tests, 1,035 passed, five explicit skips, zero failures. Separately, the actual reviewed Q4 workflow passed with three native decisions and a fresh verification marker; the LFM simulator smoke passed with cleanup acknowledged. These ran on an ARM64 iPhone 16 Plus simulator with iOS 26.0.1. Generic agent and standalone suggestion gates were not run for this candidate. Selected UI fixes passed earlier scoped tests; the full combined UI suite was not rerun.\n\nThe first package attempt stopped at its dirty-source guard. Tooling-only corrections produced final package source 40844c2d96441b8183f231fb27e8a52faa1db80c; all app and app-test files are unchanged from the tested source. The clean Release device build, unsigned IPA validation, exact bundled LFM license check and runtime provenance checks passed. Native tests were not repeated on that tooling-only packaging commit.\n\nApp verification: https://github.com/R347H4CK3R/Orivyn/actions/runs/43685204421\nFinal package verification: https://github.com/R347H4CK3R/Orivyn/actions/runs/43687359101\nPreserved evidence: https://github.com/R347H4CK3R/Orivyn/tree/2ced666db0a8be6e438a355bdf84c68e03f6eec5/docs/evidence\n\nFile: Orivyn-0.1.1-build10-unsigned.ipa\nSize: 37,141,596 bytes\nSHA-256: 65ca3580cbba4ea8513a4dcb0bc97e2fe67933ba13aea1ad38f039f75b282bf8\n\nThis is not completed 1.0.0. SideStore or another installer must sign the IPA. Preserve existing app data and signing identity when updating. Required third-party notices and LFM license terms are bundled. No signing keys or personal conversations are included."
-        },
-        {
-          "version": "0.1.1",
-          "buildVersion": "9",
-          "date": "2026-11-15T05:40:48Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build9/Orivyn-0.1.1-build9-unsigned.ipa",
-          "size": 41853828,
-          "minOSVersion": "26.0",
-          "localizedDescription": "Orivyn 0.1.1 build 9 — unfinished development preview\n\nUnsigned ARM64 IPA for iOS 26 or later. Your installer must sign it for your account/device. Preserve existing app data and signing identity when updating. Models download separately.\n\nIncludes the current local assistant, reviewed read workflows, native tools and local image analysis, and new history receive/recovery protections. Automatic live sync is still disabled. New experimental engine, vision model, pairing and scheduler improvements are NOT included.\n\nExact-source verification: 1,032 native core tests executed, 5 skipped, zero failures; unsigned device build and IPA structure/resource checks passed. UI-0 passed. UI-2 failed waiting for a hittable Files Cancel control after Photos cancellation; general production autonomy failed the required search/read grounded-answer test. Other UI/model results are separate, not full acceptance.\n\nGeneral autonomy and broad vision remain unreliable. Intermittent Files UI issues remain. Physical-device installation, signing refresh, voice, memory/thermal behavior and runtime remain unverified. This is not completed 1.0.0.\n\nSource: 32ddf39174ce7afe0b026f26380b5b0d6ad66a04\nVerification: https://github.com/R347H4CK3R/Orivyn/actions/runs/43679464506\nFile: Orivyn-0.1.1-build9-unsigned.ipa\nSize: 41,853,828 bytes\nSHA-256: 0b4baf9761ea721959c97f0948b0e0aacd1f64f469d543fae36fe2c745d1fc45\n\nRequired third-party notices are bundled. No model weights, signing keys or personal conversations are included. Application source is public. Orivyn is independent software, not an OpenAI product.\n"
-        },
-        {
-          "version": "0.1.1",
-          "buildVersion": "8",
-          "date": "2026-11-15T03:12:33Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build8/Orivyn-0.1.1-build8-unsigned.ipa",
-          "size": 37072679,
-          "minOSVersion": "26.0",
-          "localizedDescription": "Orivyn 0.1.1 build 8 — development preview\n\nUnsigned ARM64 IPA for iOS 26 or later; SideStore signs it for your account and device. Preserve the existing app data and signing identity when updating. Models download separately.\n\nIncludes the current local assistant, reviewed read-workflow fixes, native tools/vision runtime, and durable text-sync storage. Live automatic sync is not enabled. General unreviewed autonomy and broad vision reliability remain unfinished. A UI test found that New conversation did not clear the previous response after a real model reply. Physical-device installation, signing refresh, memory/thermal behavior and runtime acceptance remain unverified. This is not completed 1.0.0.\n\nThis package passed unsigned device compilation, runtime archive validation, IPA structure/resource checks and independent identity/hash inspection. Native unit/UI tests were not run for this exact package. Parent implementation fb146910 separately passed 1,014 native tests (5 skipped, zero failures), all 129 portable persistence tests and six reviewed-read real-model cases; its general-agent and one UI test failed. Vision's frozen synthetic baseline matched 8/10 cases. None of these results certifies general autonomy, reliable broad vision, automatic sync or physical-device readiness.\n\nSource: a6c696a89a2e5a6224e220b6772b62614d30b4df\nBuild: https://github.com/R347H4CK3R/Orivyn/actions/runs/43660234783\nFile: Orivyn-0.1.1-build8-unsigned.ipa\nSize: 37,072,679 bytes\nSHA-256: 04c2bd77eb6f807eb17c24bce6ff0a8cf88cae5d74e0e43955cba9230d01723d\n\nRequired llama.cpp and KaTeX notices are bundled. Test fixtures, model weights, signing keys and personal conversations are not included. Application source is public. Not an OpenAI product.\n"
-        },
-        {
           "date": "2026-11-14T17:19:48Z",
           "downloadURL": "https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.1-build6/Orivyn-0.1.1-build6-unsigned.ipa",
           "size": 35042297,
@@ -469,9 +442,9 @@
         }
       ],
       "version": "0.1.1",
-      "versionDate": "2026-11-15T06:57:07Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build10/Orivyn-0.1.1-build10-unsigned.ipa",
-      "size": 37141596
+      "versionDate": "2026-11-14T17:19:48Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Orivyn-Distribution/releases/download/orivyn-v0.1.1-build6/Orivyn-0.1.1-build6-unsigned.ipa",
+      "size": 35042297
     }
   ],
   "news": [],
