@@ -502,7 +502,7 @@
       "bundleIdentifier": "app.jarvisevo.ios",
       "developerName": "R347H4CK3R",
       "subtitle": "Private local AI with free model downloads",
-      "localizedDescription": "Unfinished local-first iPhone assistant with downloadable models, chat history, voice and experimental native tools/vision. No paid app tiers; optional remote providers may charge. Unsigned iOS 26+ preview requires compatible signing. Backup replacement adds a separate confirmation; preserve-local remains the default. Host component checks and iOS compilation do not verify actual selected-file UI, external file-provider grants or physical-device behavior. General autonomy, broad vision and automatic live sync remain unfinished; live sync is disabled. Models download separately. Not completed 1.0.0 or an OpenAI product.",
+      "localizedDescription": "Unfinished local-first iPhone assistant with downloadable models, chat history, voice and experimental native tools/vision. No paid app tiers; optional remote providers may charge. Unsigned iOS 26+ preview requires compatible signing. Backup replacement adds a separate confirmation; preserve-local remains the default. Build 12 adds conservative orphan model-snapshot cleanup with active leases; host filesystem/process tests passed, not actual iPhone inference or memory-map lifetime. Host component checks and iOS compilation do not verify actual selected-file UI, external file-provider grants or physical-device behavior. General autonomy, broad vision and automatic live sync remain unfinished; live sync is disabled. Models download separately. Not completed 1.0.0 or an OpenAI product.",
       "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
       "category": "productivity",
       "appPermissions": {
@@ -516,23 +516,23 @@
       },
       "versions": [
         {
-          "date": "2026-11-15T14:39:01Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build11/Orivyn-0.1.1-build11-unsigned.ipa",
-          "size": 37156968,
+          "date": "2026-11-15T15:40:36Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build12/Orivyn-0.1.1-build12-unsigned.ipa",
+          "size": 37168551,
           "version": "0.1.1",
-          "buildVersion": "11",
+          "buildVersion": "12",
           "minOSVersion": "26.0",
-          "localizedDescription": "Orivyn 0.1.1 build 11 \u2014 unfinished unsigned iOS 26+ preview.\n\nAdds a separate confirmation before replacing conversation history from a backup. Preserve-local remains the default. Canceling a pending replacement leaves stored history unchanged; stale picker callbacks after navigation are rejected, and a confirmed replacement is consumed once. Existing native tools, vision and transcript features are retained.\n\nVerification of integrated source 5c5ca7fbfe812386fb6afb8bc20778c374e0f525: 152 macOS host XCTest cases passed with no failures or skips, including synthetic local-file fixtures exercising the production confirmation state \u2192 coordinated file reader \u2192 SQLite chain (not AppModel or Files UI) for replacement, cancellation/preservation and corrupt input. iOS build-for-testing passed, which compiles but does not execute the iOS tests. Portable Foundation and source-contract checks passed separately. A prior controlled simulator comparison verified Files presentation and cancel/navigation only, not selected-file replacement. Actual selected-file confirmation UI, external file-provider access grants and physical-iPhone behavior remain unverified.\n\nPackage source 3f96a41b363e3b663f69497fef4bd698fb1fa514 changes only the build number and packaging tooling from that tested integration. The prior build 10 simulator/native-route evidence belongs to its older source and was not rerun for this preview; it is not full verification of build 11.\n\nKnown limits: generic autonomous requests can still respond before completing requested reads. Vision remains experimental, with a known mixed-shape counting failure in the earlier frozen evaluation. Automatic live sync remains disabled. Models download separately; no weights are bundled. Optional remote providers may charge. Process termination can leave a temporary model snapshot using additional storage. Device installation/signing refresh, voice and memory/thermal performance are unverified. This is not completed 1.0.0 and is not an OpenAI product.\n\nIntegrated host and iOS compile evidence: https://github.com/R347H4CK3R/Orivyn/actions/runs/43722288003\nPackage gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43723555076\n\nThe pinned combined runtime rebuilt successfully, portable package/graph checks passed, and the Release device build and independent unsigned IPA inspection passed.\n\nFile: Orivyn-0.1.1-build11-unsigned.ipa\nSize: 37,156,968 bytes\nSHA-256: 499a0a1a2c335fab62b23a0b33be5ef1407278655de5f65bf43d5c22917ab7e9\n\nSideStore or another compatible installer must sign this unsigned IPA. Preserve existing app data and signing identity when updating. Required third-party notices and model license terms remain bundled.\n"
+          "localizedDescription": "Orivyn 0.1.1 build 12 \u2014 unfinished unsigned iOS 26+ preview.\n\nAdds conservative recovery of orphaned private model snapshots on the next native model load that creates a new private snapshot. A process-lifetime lease protects active snapshots, and the loader keeps that lease until native context/model teardown. Cleanup only touches recognized app-owned versioned directories with matching ownership metadata and expected files. Installed model downloads, unmarked legacy directories, active copies, symlinks, hardlinks and directories with unexpected contents are preserved. Cleanup is bounded to 128 candidates per pass with a rotating cursor; directory enumeration itself is not bounded.\n\nThe earlier backup-replacement confirmation change is retained. Preserve-local remains the default. Existing native tools, experimental vision and transcript features remain enabled.\n\nVerification scope: 10 host-native filesystem tests passed with zero failures or skips; synthetic process-lifetime checks passed; Release iOS device compilation and unsigned IPA structure/resource verification. These are not actual iPhone inference, memory-mapped model lifetime or device acceptance tests. A synthetic host subprocess test checks that another cleanup process preserves a live lease and can recover its owned test copy after that subprocess is killed. It does not run the inference engine. Physical-iPhone behavior, selected-file confirmation UI and external file-provider grants remain unverified.\n\nKnown limits: general autonomous requests can still answer before completing requested reads. Vision is experimental with an earlier mixed-shape counting failure. Automatic live sync remains disabled. Models download separately; no weights are bundled. Optional remote providers may charge. Existing unmarked orphan snapshots are intentionally not deleted. This is not completed 1.0.0 and is not an OpenAI product.\n\nSideStore or another compatible installer must sign this unsigned IPA. Preserve existing app data and signing identity when updating. Required third-party notices and model license terms remain bundled.\n\nExact package source: 3cc225959b9f78865a21aef18adfb7a603ab6932\nSuccessful gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43729015018\nFile: Orivyn-0.1.1-build12-unsigned.ipa\nSize: 37168551 bytes\nSHA-256: 9e873964337b24b03c5018158d1518f20b7d6eda892324f20aaad7c3b4f62352\n"
         }
       ],
       "version": "0.1.1",
-      "versionDate": "2026-11-15T14:39:01Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build11/Orivyn-0.1.1-build11-unsigned.ipa",
-      "size": 37156968,
+      "versionDate": "2026-11-15T15:40:36Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build12/Orivyn-0.1.1-build12-unsigned.ipa",
+      "size": 37168551,
       "_verification": {
-        "sha256": "499a0a1a2c335fab62b23a0b33be5ef1407278655de5f65bf43d5c22917ab7e9",
-        "release": "https://github.com/R347H4CK3R/Orivyn/releases/tag/orivyn-v0.1.1-build11",
-        "assetId": 751287898,
+        "sha256": "9e873964337b24b03c5018158d1518f20b7d6eda892324f20aaad7c3b4f62352",
+        "release": "https://github.com/R347H4CK3R/Orivyn/releases/tag/orivyn-v0.1.1-build12",
+        "assetId": 751458556,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     }
