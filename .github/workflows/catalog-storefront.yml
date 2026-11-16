@@ -8,6 +8,7 @@ on:
       - 'scripts/storefront*'
       - 'scripts/check_storefront_browser.py'
       - 'scripts/test_storefront.py'
+      - 'scripts/test_preview_catalog.py'
       - 'scripts/unified_catalog.py'
       - '.github/workflows/catalog-storefront.yml'
 permissions:
