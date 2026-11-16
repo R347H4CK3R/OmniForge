@@ -32,7 +32,7 @@
     "repository": "R347H4CK3R/Ghostline",
     "bundleIdentifier": "com.voicematrix.app",
     "sourceURL": "https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/strata-source.json",
-    "tagPattern": "voicematrix-v0\\.4\\.9-build11",
+    "tagPattern": "voicematrix-v0\\.4\\.9-build12",
     "allowPrerelease": true,
     "requiredEvidenceAssets": [
       "character-inspection.json",
@@ -43,7 +43,7 @@
     ],
     "name": "VoiceMatrix",
     "subtitle": "Offline character speech and voice tools",
-    "localizedDescription": "Unfinished 0.4.9 build 11 preview with reference-only recognition context and bounded complete audio reads; original reference files preserved. Controlled native, simulator and four-human holdout checks passed; final-speech verification is unchanged. This catalog verifies exact published IPA identity, packaging and source evidence, not general voice quality. Physical iPhone operation and character likeness remain unverified. Music separation, reliable overlapping-speaker extraction and full RVC training remain incomplete. Existing voices retained. Requires compatible signing and iOS 26. Not finished 1.0.0.",
+    "localizedDescription": "Unfinished 0.4.9 build 12 preview with conservative raw-overlap screening and source-bound reference analysis. Existing library voices and original source files preserved. Exact-source native, simulator, human-holdout and controlled-overlap checks passed. Screening is not speaker separation and can miss quiet competing speech; passing does not prove clean single-speaker audio. Physical iPhone operation and character likeness remain unverified. Music separation, reliable overlapping-speaker extraction and full RVC training remain incomplete. Requires compatible signing and iOS 26. Not finished 1.0.0.",
     "category": "entertainment",
     "evidencePolicy": "packaging-preview-v1",
     "screenshots": [
@@ -59,12 +59,12 @@
       }
     ],
     "previewApproval": {
-      "tag": "voicematrix-v0.4.9-build11",
+      "tag": "voicematrix-v0.4.9-build12",
       "version": "0.4.9",
-      "buildVersion": "11",
-      "sha256": "e2d7d26ce2c7d8fa1ae92c389deead7cb0be83572bd64224b3b7a8fc91fe41d2",
-      "size": 1314598007,
-      "sourceCommit": "3b976fe84b6f34b2fd7668baf45533e5b7a377a5"
+      "buildVersion": "12",
+      "sha256": "c4dd8a0424af6459e432322e483115524319b05c463a3a646c7a6690c128c2dd",
+      "size": 1314609660,
+      "sourceCommit": "bffea881caea28cbfcd20e9cfbf8dd5da0075a8b"
     }
   },
   {
@@ -255,7 +255,7 @@
     "name": "Orivyn",
     "developerName": "R347H4CK3R",
     "subtitle": "Private local AI with free model downloads",
-    "localizedDescription": "Unfinished Orivyn 0.1.1 build 15, unsigned iOS 26+ preview. Adds an explicit manually reviewed read-only checklist for bundled app information, installed-model listing and an exact saved-memory search. Review and approval do not execute work; Run is separate. This is not general autonomous planning. Generic tasks remain experimental and may answer before completing requested reads. Broad vision and automatic live sync remain unfinished; live sync is disabled. Physical-device acceptance is unverified. Models download separately; compatible signing is required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.",
+    "localizedDescription": "Unfinished Orivyn 0.1.1 build 16, unsigned iOS 26+ preview. Adds synthetic-tested ChatGPT ZIP restoration, improved conversation and coding responses, bounded local reads and calculation, and connected-tool suggestions requiring exact user review before execution. Exact-source simulator gate passed 209 selected tests with zero failures/skips; Release IPA compilation and structure checks passed. This is not general autonomous planning or completed ChatGPT parity. Full private-backup attachment mapping, physical-device acceptance and broader capabilities remain unverified or unfinished. Models download separately; compatible signing is required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.",
     "category": "productivity",
     "tagPattern": "orivyn-v[0-9.]+-build[0-9]+",
     "assetPattern": "Orivyn-[0-9.]+-build[0-9]+(?:-distribution)?-unsigned\\.ipa",
