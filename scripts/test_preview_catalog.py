@@ -41,10 +41,22 @@ class PreviewEvidenceTests(unittest.TestCase):
         registry=json.loads((Path(__file__).resolve().parents[1]/'catalog/registry.json').read_text())
         e=next(x for x in registry if x['bundleIdentifier']=='com.voicematrix.app')
         self.assertEqual(e['evidencePolicy'],'packaging-preview-v1')
-        current=dict(tag='voicematrix-v0.4.9-build11',version='0.4.9',buildVersion='11',sha256='e2d7d26ce2c7d8fa1ae92c389deead7cb0be83572bd64224b3b7a8fc91fe41d2',size=1314598007,sourceCommit='3b976fe84b6f34b2fd7668baf45533e5b7a377a5')
+        current=dict(tag='voicematrix-v0.4.9-build12',version='0.4.9',buildVersion='12',sha256='c4dd8a0424af6459e432322e483115524319b05c463a3a646c7a6690c128c2dd',size=1314609660,sourceCommit='bffea881caea28cbfcd20e9cfbf8dd5da0075a8b')
         self.assertEqual(e['previewApproval'],current)
         self.assertTrue(re.fullmatch(e['tagPattern'],current['tag']))
-        for bad in ['voicematrix-v0.4.9-build10','voicematrix-v0.4.9-build12','voicematrix-v1.0.0-build11','voicematrix-v0x4x9-build11']:
+        for bad in ['voicematrix-v0.4.9-build11','voicematrix-v0.4.9-build13','voicematrix-v1.0.0-build12','voicematrix-v0x4x9-build12']:
             self.assertIsNone(re.fullmatch(e['tagPattern'],bad))
         self.assertTrue(set(self.proofs).issubset(e['requiredEvidenceAssets']))
         self.assertIn('unfinished',e['localizedDescription'].lower())
+
+    def test_failed_refresh_retains_verified_orivyn16(self):
+        root=Path(__file__).resolve().parents[1]
+        state=json.loads((root/'catalog/verified-state.json').read_text())
+        registry=json.loads((root/'catalog/registry.json').read_text())
+        def unavailable(_):raise ValueError('synthetic unavailable release')
+        result,errors=c.refresh(state,registry,loader=unavailable)
+        self.assertEqual(result['apps'],state['apps'])
+        app=next(a for a in result['apps'] if a['bundleIdentifier']=='app.jarvisevo.ios')
+        self.assertEqual(app['versions'][0]['buildVersion'],'16')
+        self.assertEqual(app['_verification']['sha256'],'9dc7b951254eef2cd64bf7c318dff95df36722f393645d392869097df0eb876f')
+        self.assertEqual(app['downloadURL'],'https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build16/Orivyn-0.1.1-build16-unsigned.ipa')
