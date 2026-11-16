@@ -81,16 +81,16 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="VoiceMatrix catalog icon">
 
 <p><strong>Offline character speech and voice tools</strong></p>
-<p>Unfinished 0.4.9 build 10 preview with locally word-checked catalog speech and retained speech history, explicit review, separate save/share and confirmed generated-result deletion. Controlled native and simulator checks passed. This catalog verifies exact published IPA identity, packaging and recorded source evidence, not general voice quality. Physical iPhone operation and character likeness remain unverified. Music separation, reliable overlapping-speaker extraction and full RVC training remain incomplete. Existing voices retained. Requires compatible signing and iOS 26. Not finished 1.0.0.</p>
+<p>Unfinished 0.4.9 build 11 preview with reference-only recognition context and bounded complete audio reads; original reference files preserved. Controlled native, simulator and four-human holdout checks passed; final-speech verification is unchanged. This catalog verifies exact published IPA identity, packaging and source evidence, not general voice quality. Physical iPhone operation and character likeness remain unverified. Music separation, reliable overlapping-speaker extraction and full RVC training remain incomplete. Existing voices retained. Requires compatible signing and iOS 26. Not finished 1.0.0.</p>
 
-- Version: 0.4.9 · Build: 10
+- Version: 0.4.9 · Build: 11
 - Requires iOS 26.0 or later · Download: 1314.60 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9-build10/VoiceMatrix-0.4.9-build10.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9-build11/VoiceMatrix-0.4.9-build11.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Unfinished preview: locally word-checked catalog speech and retained speech history with explicit review, save/share and confirmed deletion. Controlled simulator and native pipeline checks passed. Physical-iPhone behavior and likeness unverified; overlapping-speaker extraction, music separation and full RVC training incomplete. Not finished 1.0.0.</p>
+<p>Unfinished preview: reference-only recognition context, original audio preserved, unchanged final-speech verification. Physical-iPhone behavior and likeness unverified; overlapping-speaker extraction, music separation and full RVC training incomplete. Not finished 1.0.0.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
