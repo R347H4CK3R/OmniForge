@@ -4,13 +4,13 @@ import unified_catalog as c
 
 class PreviewEvidenceTests(unittest.TestCase):
     def setUp(self):
-        self.pin=dict(tag='voicematrix-v0.4.9-build9',version='0.4.9',buildVersion='9',sha256='b32850e21695e4d88d8d61a3009cf81b1beb370d75d55a4b70dfc7eca029a0ca',size=1314535068,sourceCommit='9c3407118de70e8e0b7352c1d590beb6525de464')
+        self.pin=dict(tag='voicematrix-v0.4.9-build10',version='0.4.9',buildVersion='10',sha256='8adee1c45510ac22557b77ed0bbb7d32346cbc39a11efaf9bcea16f9e43622fd',size=1314595724,sourceCommit='e7023843438a2ed82ef95a7ee96df12ea56d68e9')
         self.entry={'bundleIdentifier':'com.voicematrix.app','previewApproval':self.pin}
-        self.actual={'version':'0.4.9','buildVersion':'9'}
+        self.actual={'version':'0.4.9','buildVersion':'10'}
         self.proofs={
           'release-metadata.json':dict(self.pin,unfinishedPreview=True,physicalDeviceVerified=False,likenessVerified=False),
-          'character-inspection.json':dict(archive='passed',bundleIdentifier='com.voicematrix.app',version='0.4.9',build='9',physicalIPhoneVerified=False,characterLikenessVerified=False),
-          'packaging-status.json':dict(sourceCommit=self.pin['sourceCommit'],version='0.4.9',build='9',nativeTestsRun=False,hostExtractionTestsPassed=True,physicalDeviceVerified=False,likenessVerified=False),
+          'character-inspection.json':dict(archive='passed',bundleIdentifier='com.voicematrix.app',version='0.4.9',build='10',physicalIPhoneVerified=False,characterLikenessVerified=False),
+          'packaging-status.json':dict(sourceCommit=self.pin['sourceCommit'],version='0.4.9',build='10',nativeTestsRun=False,hostExtractionTestsPassed=True,physicalDeviceVerified=False,likenessVerified=False),
           'source-proof.json':dict(sourceCommit=self.pin['sourceCommit'])}
     def check(self):
         c.verify_packaging_preview(self.entry,self.pin['tag'],self.proofs,self.actual,self.pin['sha256'],self.pin['size'])
@@ -24,14 +24,14 @@ class PreviewEvidenceTests(unittest.TestCase):
                 with self.assertRaises(ValueError):self.check()
                 self.proofs[name]=saved
     def test_changed_identity_or_completion_claim_rejected(self):
-        mutations=[('release-metadata.json','sha256','0'*64),('release-metadata.json','size',1),('release-metadata.json','unfinishedPreview',False),('release-metadata.json','physicalDeviceVerified',True),('release-metadata.json','likenessVerified',True),('release-metadata.json','sourceCommit','0'*40),('character-inspection.json','bundleIdentifier','wrong'),('character-inspection.json','archive','failed'),('character-inspection.json','build','10'),('character-inspection.json','characterLikenessVerified',True),('packaging-status.json','nativeTestsRun',True),('packaging-status.json','hostExtractionTestsPassed',False),('packaging-status.json','sourceCommit','0'*40),('source-proof.json','sourceCommit','0'*40)]
+        mutations=[('release-metadata.json','sha256','0'*64),('release-metadata.json','size',1),('release-metadata.json','unfinishedPreview',False),('release-metadata.json','physicalDeviceVerified',True),('release-metadata.json','likenessVerified',True),('release-metadata.json','sourceCommit','0'*40),('character-inspection.json','bundleIdentifier','wrong'),('character-inspection.json','archive','failed'),('character-inspection.json','build','11'),('character-inspection.json','characterLikenessVerified',True),('packaging-status.json','nativeTestsRun',True),('packaging-status.json','hostExtractionTestsPassed',False),('packaging-status.json','sourceCommit','0'*40),('source-proof.json','sourceCommit','0'*40)]
         for name,key,value in mutations:
             with self.subTest(name=name,key=key):
                 old=self.proofs[name][key];self.proofs[name][key]=value
                 with self.assertRaises(ValueError):self.check()
                 self.proofs[name][key]=old
     def test_other_tag_ipa_or_invalid_pin_rejected(self):
-        for tag,sha,size,actual in [('voicematrix-v0.4.9-build10',self.pin['sha256'],self.pin['size'],self.actual),(self.pin['tag'],'0'*64,self.pin['size'],self.actual),(self.pin['tag'],self.pin['sha256'],1,self.actual),(self.pin['tag'],self.pin['sha256'],self.pin['size'],dict(version='1.0.0',buildVersion='9'))]:
+        for tag,sha,size,actual in [('voicematrix-v0.4.9-build11',self.pin['sha256'],self.pin['size'],self.actual),(self.pin['tag'],'0'*64,self.pin['size'],self.actual),(self.pin['tag'],self.pin['sha256'],1,self.actual),(self.pin['tag'],self.pin['sha256'],self.pin['size'],dict(version='1.0.0',buildVersion='10'))]:
             with self.assertRaises(ValueError): c.verify_packaging_preview(self.entry,tag,self.proofs,actual,sha,size)
         self.entry.pop('previewApproval')
         with self.assertRaises(ValueError):self.check()
@@ -43,7 +43,7 @@ class PreviewEvidenceTests(unittest.TestCase):
         self.assertEqual(e['evidencePolicy'],'packaging-preview-v1')
         self.assertEqual(e['previewApproval'],self.pin)
         self.assertTrue(re.fullmatch(e['tagPattern'],self.pin['tag']))
-        for bad in ['voicematrix-v0.4.9-build10','voicematrix-v1.0.0-build9','voicematrix-v0x4x9-build9']:
+        for bad in ['voicematrix-v0.4.9-build11','voicematrix-v1.0.0-build10','voicematrix-v0x4x9-build10']:
             self.assertIsNone(re.fullmatch(e['tagPattern'],bad))
         self.assertTrue(set(self.proofs).issubset(e['requiredEvidenceAssets']))
         self.assertIn('unfinished',e['localizedDescription'].lower())
