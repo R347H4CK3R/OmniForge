@@ -81,16 +81,16 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="VoiceMatrix catalog icon">
 
 <p><strong>Offline character speech and voice tools</strong></p>
-<p>Unfinished 0.4.9 build 11 preview with reference-only recognition context and bounded complete audio reads; original reference files preserved. Controlled native, simulator and four-human holdout checks passed; final-speech verification is unchanged. This catalog verifies exact published IPA identity, packaging and source evidence, not general voice quality. Physical iPhone operation and character likeness remain unverified. Music separation, reliable overlapping-speaker extraction and full RVC training remain incomplete. Existing voices retained. Requires compatible signing and iOS 26. Not finished 1.0.0.</p>
+<p>Unfinished 0.4.9 build 12 preview with conservative raw-overlap screening and source-bound reference analysis. Existing library voices and original source files preserved. Exact-source native, simulator, human-holdout and controlled-overlap checks passed. Screening is not speaker separation and can miss quiet competing speech; passing does not prove clean single-speaker audio. Physical iPhone operation and character likeness remain unverified. Music separation, reliable overlapping-speaker extraction and full RVC training remain incomplete. Requires compatible signing and iOS 26. Not finished 1.0.0.</p>
 
-- Version: 0.4.9 · Build: 11
-- Requires iOS 26.0 or later · Download: 1314.60 MB
+- Version: 0.4.9 · Build: 12
+- Requires iOS 26.0 or later · Download: 1314.61 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9-build11/VoiceMatrix-0.4.9-build11.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9-build12/VoiceMatrix-0.4.9-build12.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Unfinished preview: reference-only recognition context, original audio preserved, unchanged final-speech verification. Physical-iPhone behavior and likeness unverified; overlapping-speaker extraction, music separation and full RVC training incomplete. Not finished 1.0.0.</p>
+<p>Unfinished preview: conservative overlap screening rejects affected reference clips and validates retained analysis before reuse. Existing library voices and source files preserved. Passing screening does not prove clean single-speaker audio. Physical-iPhone behavior and likeness unverified; music separation and full RVC training incomplete. Not finished 1.0.0.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
@@ -421,34 +421,30 @@ Third-party notices are bundled and supplied alongside the release. No credentia
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="Orivyn catalog icon">
 
 <p><strong>Private local AI with free model downloads</strong></p>
-<p>Unfinished Orivyn 0.1.1 build 15, unsigned iOS 26+ preview. Adds an explicit manually reviewed read-only checklist for bundled app information, installed-model listing and an exact saved-memory search. Review and approval do not execute work; Run is separate. This is not general autonomous planning. Generic tasks remain experimental and may answer before completing requested reads. Broad vision and automatic live sync remain unfinished; live sync is disabled. Physical-device acceptance is unverified. Models download separately; compatible signing is required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.</p>
+<p>Unfinished Orivyn 0.1.1 build 16, unsigned iOS 26+ preview. Adds synthetic-tested ChatGPT ZIP restoration, improved conversation and coding responses, bounded local reads and calculation, and connected-tool suggestions requiring exact user review before execution. Exact-source simulator gate passed 209 selected tests with zero failures/skips; Release IPA compilation and structure checks passed. This is not general autonomous planning or completed ChatGPT parity. Full private-backup attachment mapping, physical-device acceptance and broader capabilities remain unverified or unfinished. Models download separately; compatible signing is required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.</p>
 
-- Version: 0.1.1 · Build: 15
-- Requires iOS 26.0 or later · Download: 37.23 MB
+- Version: 0.1.1 · Build: 16
+- Requires iOS 26.0 or later · Download: 37.84 MB
 - Bundle ID: app.jarvisevo.ios
 
-<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build15/Orivyn-0.1.1-build15-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build16/Orivyn-0.1.1-build16-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Orivyn 0.1.1 build 15 — unfinished unsigned iOS 26+ preview.
+<p>Orivyn 0.1.1 build 16 — unfinished unsigned iOS 26+ preview.
 
-Adds an explicit manually reviewed read-only checklist for bundled app information, installed-model listing and exact saved-memory search. The user reviews the concrete scope, approves it, then separately presses Run. Review and approval alone do not dispatch tools. This is a bounded checklist, not general autonomous planning.
+Changes: ChatGPT ZIP selection and transactional restoration with retained originals and persistent history; improved coding responses and visible-answer filtering; bounded on-device app-information, installed-model and memory reads in conversation; bounded arithmetic; connected-tool suggestions that require review before execution; repaired task controls and stricter ambiguous-tool-catalog rejection.
 
-Exact-source evidence (simulator execution separate from Release IPA compilation): Release iOS device compilation and unsigned IPA/resource checks; combined runtime compilation; 19 synthetic Darwin recovery tests; scoped portable regressions. Two actual iPhone16Plus/iOS26.1 Simulator UI tests verified manual review/discard/approval, retained ready state on relaunch and no automatic execution. A separate actual Qwen3 Q4 model test used programmatic review/approval and explicit Run, performed app-info then the exact memory search and answered with an unpredictable stored marker. The UI test did not press Run; the model test did not automate UI approval. Together these are separate scoped checks, not a single full physical-device end-to-end test.
+Verification: exact-source iPhone 16 Plus / iOS 26.1 Simulator gate passed all 209 selected tests with zero failures/skips, including synthetic ZIP restore, task UI, review invalidation and pinned local-model conversation, memory, arithmetic and connected-tool proposal probes. The actual model selected the exact unpredictable notes-search phrase without executing a plugin. Combined runtime verification and separate Release device compilation/IPA structure checks passed on the same source. Packaging SCOPE lists native tests as not_run for that packaging step; the preceding simulator step ran separately. This is scoped evidence, not a full physical-device end-to-end pass.
 
-The package-only SCOPE records native/UI tests as not_run for that packaging step; the separate acceptance step above executed the simulator tests on the exact same source. The newly requested folder-import feature is not included in build15.
+Limits remain: the user&#x27;s full private backup and its attachment associations have not been accepted end to end. Unsupported data must remain explicitly reported; synthetic ZIP tests do not establish every exported asset can be restored. This is not general ChatGPT parity or unrestricted autonomous execution. Plugin suggestions do not execute automatically. Physical iPhone installation, signing refresh, thermal/resource behavior, voice and broad app acceptance remain unverified. Some broader vision and live-sync capabilities remain unfinished. Models download separately; no weights are bundled. Optional remote providers may charge.
 
-Acceptance and package evidence: https://github.com/R347H4CK3R/Orivyn/actions/runs/43774891616. Earlier failed attempts remain evidence, not passes. Existing aggregate Python failures remain disclosed; only the named scoped gates are claimed passing.
+Preserve existing app data and signing identity when updating. SideStore or another compatible installer must sign this unsigned IPA. Earlier builds remain available. Not completed 1.0.0 and not an OpenAI product.
 
-Retains backup replacement confirmation, preserve-local default and conservative model recovery. General autonomous requests can still answer prematurely. Broad vision remains experimental; automatic live sync remains disabled. Physical-device installation, signing refresh, resource/thermal behavior and broad app acceptance are unverified. No model weights are bundled. Optional remote providers may charge. This is not completed 1.0.0 and is not an OpenAI product.
-
-SideStore or another compatible installer must sign the IPA. Preserve existing app data and signing identity. Required third-party notices remain bundled. This workflow creates a DRAFT prerelease only. Keep build14 catalog entries live until the verified draft is explicitly published and anonymously downloadable.
-
-Exact package source: 595330ac155fa7dbaec7e61d5c673a69b07056bd
-Successful gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43774891616
-File: Orivyn-0.1.1-build15-unsigned.ipa
-Size: 37233593 bytes
-SHA-256: 984b3e015a490e7843c969c486f8ab7861623c3eafacc61d7a01929905a43dd0
+Exact source: c6eada3ab3175793fe6c816e87dd1c2c3fabc462
+Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43878331273
+IPA: Orivyn-0.1.1-build16-unsigned.ipa
+Bytes: 37840905
+SHA-256: 9dc7b951254eef2cd64bf7c318dff95df36722f393645d392869097df0eb876f
 </p>
 </details>
 
