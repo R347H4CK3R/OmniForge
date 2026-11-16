@@ -423,28 +423,28 @@ Third-party notices are bundled and supplied alongside the release. No credentia
 <p><strong>Private local AI with free model downloads</strong></p>
 <p>Unfinished Orivyn 0.1.1 build 16, unsigned iOS 26+ preview. Adds synthetic-tested ChatGPT ZIP restoration, improved conversation and coding responses, bounded local reads and calculation, and connected-tool suggestions requiring exact user review before execution. Exact-source simulator gate passed 209 selected tests with zero failures/skips; Release IPA compilation and structure checks passed. This is not general autonomous planning or completed ChatGPT parity. Full private-backup attachment mapping, physical-device acceptance and broader capabilities remain unverified or unfinished. Models download separately; compatible signing is required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.</p>
 
-- Version: 0.1.1 · Build: 16
+- Version: 0.1.1 · Build: 17
 - Requires iOS 26.0 or later · Download: 37.84 MB
 - Bundle ID: app.jarvisevo.ios
 
-<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build16/Orivyn-0.1.1-build16-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build17/Orivyn-0.1.1-build17-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Orivyn 0.1.1 build 16 — unfinished unsigned iOS 26+ preview.
+<p>Orivyn 0.1.1 build 17: unfinished unsigned iOS 26+ preview.
 
-Changes: ChatGPT ZIP selection and transactional restoration with retained originals and persistent history; improved coding responses and visible-answer filtering; bounded on-device app-information, installed-model and memory reads in conversation; bounded arithmetic; connected-tool suggestions that require review before execution; repaired task controls and stricter ambiguous-tool-catalog rejection.
+Fixes restoration of visible assistant replies whose optional channel or recipient fields are JSON null. Missing, null and explicit final/all routing now agree; internal/private messages, tool recipients and malformed routing remain excluded. Existing imports are not automatically rewritten. All build 16 functionality is retained.
 
-Verification: exact-source iPhone 16 Plus / iOS 26.1 Simulator gate passed all 209 selected tests with zero failures/skips, including synthetic ZIP restore, task UI, review invalidation and pinned local-model conversation, memory, arithmetic and connected-tool proposal probes. The actual model selected the exact unpredictable notes-search phrase without executing a plugin. Combined runtime verification and separate Release device compilation/IPA structure checks passed on the same source. Packaging SCOPE lists native tests as not_run for that packaging step; the preceding simulator step ran separately. This is scoped evidence, not a full physical-device end-to-end pass.
+Exact-source verification: 214 selected tests passed, zero failures/skips, on ARM64 iPhone 16 Plus / iOS 26.1 Simulator, including synthetic ZIP restoration, null-routing privacy controls, task UI, review invalidation and pinned local-model probes. Combined runtime verification and separate Release device compilation/IPA structure checks passed on the same source. Packaging SCOPE lists native tests not_run for that packaging step; the preceding simulator step ran separately.
 
-Limits remain: the user&#x27;s full private backup and its attachment associations have not been accepted end to end. Unsupported data must remain explicitly reported; synthetic ZIP tests do not establish every exported asset can be restored. This is not general ChatGPT parity or unrestricted autonomous execution. Plugin suggestions do not execute automatically. Physical iPhone installation, signing refresh, thermal/resource behavior, voice and broad app acceptance remain unverified. Some broader vision and live-sync capabilities remain unfinished. Models download separately; no weights are bundled. Optional remote providers may charge.
+The initial candidate passed 211 of 212 tests, with one failure because a conservative lexical oracle did not recognize a reversed exact-review denial. A test-only oracle correction with contradictory-permission negative controls was independently reviewed; production enforcement and prompts were unchanged. The subsequent 214/214 run passed. This does not prove generalized conversational reliability or unrestricted autonomy.
 
-Preserve existing app data and signing identity when updating. SideStore or another compatible installer must sign this unsigned IPA. Earlier builds remain available. Not completed 1.0.0 and not an OpenAI product.
+Full private-backup/media mapping, physical-iPhone installation/signing refresh, thermal/resource/battery/voice/HDMI behavior remain unverified. Broad vision and automatic synchronization remain unfinished. Models download separately; optional remote providers may charge. Preserve app data and signing identity when updating; compatible signing is required. Older releases remain available. Not completed 1.0.0 or an OpenAI product.
 
-Exact source: c6eada3ab3175793fe6c816e87dd1c2c3fabc462
-Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43878331273
-IPA: Orivyn-0.1.1-build16-unsigned.ipa
-Bytes: 37840905
-SHA-256: 9dc7b951254eef2cd64bf7c318dff95df36722f393645d392869097df0eb876f
+Source: c1b9e4c753e7255fa14fa074a5cb3e0a77d87634
+Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43922369819
+IPA: Orivyn-0.1.1-build17-unsigned.ipa
+Bytes: 37840675
+SHA-256: 1c7374009cafda8849788735019118e04cc073c397c69636a0acf7fc9520de96
 </p>
 </details>
 
