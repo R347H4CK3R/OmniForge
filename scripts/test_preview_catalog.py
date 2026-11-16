@@ -41,9 +41,10 @@ class PreviewEvidenceTests(unittest.TestCase):
         registry=json.loads((Path(__file__).resolve().parents[1]/'catalog/registry.json').read_text())
         e=next(x for x in registry if x['bundleIdentifier']=='com.voicematrix.app')
         self.assertEqual(e['evidencePolicy'],'packaging-preview-v1')
-        self.assertEqual(e['previewApproval'],self.pin)
-        self.assertTrue(re.fullmatch(e['tagPattern'],self.pin['tag']))
-        for bad in ['voicematrix-v0.4.9-build11','voicematrix-v1.0.0-build10','voicematrix-v0x4x9-build10']:
+        current=dict(tag='voicematrix-v0.4.9-build11',version='0.4.9',buildVersion='11',sha256='e2d7d26ce2c7d8fa1ae92c389deead7cb0be83572bd64224b3b7a8fc91fe41d2',size=1314598007,sourceCommit='3b976fe84b6f34b2fd7668baf45533e5b7a377a5')
+        self.assertEqual(e['previewApproval'],current)
+        self.assertTrue(re.fullmatch(e['tagPattern'],current['tag']))
+        for bad in ['voicematrix-v0.4.9-build10','voicematrix-v0.4.9-build12','voicematrix-v1.0.0-build11','voicematrix-v0x4x9-build11']:
             self.assertIsNone(re.fullmatch(e['tagPattern'],bad))
         self.assertTrue(set(self.proofs).issubset(e['requiredEvidenceAssets']))
         self.assertIn('unfinished',e['localizedDescription'].lower())
