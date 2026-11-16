@@ -255,7 +255,7 @@
     "name": "Orivyn",
     "developerName": "R347H4CK3R",
     "subtitle": "Private local AI with free model downloads",
-    "localizedDescription": "Unfinished Orivyn 0.1.1 build 14 for iOS 26+. Makes reviewed conversation plans the recommended path and clearly labels generic tasks that can answer before required reads. Preserves saved tasks and prior recovery protections. Targeted simulator UI and reviewed-model inference passed on the application-source lineage; exact Release device compilation and IPA checks passed. General autonomy, broad vision and automatic live sync remain unfinished; live sync is disabled. Physical-device acceptance is unverified. Models download separately. Requires compatible signing. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.",
+    "localizedDescription": "Unfinished Orivyn 0.1.1 build 15, unsigned iOS 26+ preview. Adds an explicit manually reviewed read-only checklist for bundled app information, installed-model listing and an exact saved-memory search. Review and approval do not execute work; Run is separate. This is not general autonomous planning. Generic tasks remain experimental and may answer before completing requested reads. Broad vision and automatic live sync remain unfinished; live sync is disabled. Physical-device acceptance is unverified. Models download separately; compatible signing is required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.",
     "category": "productivity",
     "tagPattern": "orivyn-v[0-9.]+-build[0-9]+",
     "assetPattern": "Orivyn-[0-9.]+-build[0-9]+(?:-distribution)?-unsigned\\.ipa",
