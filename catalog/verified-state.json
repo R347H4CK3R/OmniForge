@@ -103,15 +103,6 @@
           "buildVersion": "16",
           "minOSVersion": "26.0",
           "localizedDescription": "Unfinished preview: explicit per-speaker actions select the exact saved voice by ID and reference hash, then open speech or voice-changing controls without starting generation. Missing, changed or ambiguous voices leave selection and retained files unchanged. Retains confirmed fresh download recovery and embedded on-device yt-dlp; some sources remain unsupported. No new download support, inference engine, training or likeness claim. Physical-iPhone behavior remains unverified."
-        },
-        {
-          "date": "2026-11-17T07:13:02Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.12-build15/VoiceMatrix-0.4.12-build15.ipa",
-          "size": 1330399855,
-          "version": "0.4.12",
-          "buildVersion": "15",
-          "minOSVersion": "26.0",
-          "localizedDescription": "Unfinished preview: adds an explicitly confirmed fresh download attempt that re-requests the admitted original source in a new job, preserving earlier attempts. Resume still reuses its retained plan. This may help expired links but does not guarantee download success. embedded on-device yt-dlp for supported public YouTube sources; clearer on-device voice tools, optional manual laptop queue, source-bound recording consent and actionable video-import diagnostics. YouTube pages without downloadable media remain unsupported; import a local video instead. Existing voices/files preserved. Physical-iPhone behavior and likeness unverified; full RVC training and music separation incomplete."
         }
       ],
       "version": "0.4.13",
