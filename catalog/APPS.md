@@ -421,30 +421,30 @@ Third-party notices are bundled and supplied alongside the release. No credentia
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="Orivyn catalog icon">
 
 <p><strong>Private local AI with free model downloads</strong></p>
-<p>Unfinished Orivyn 0.1.5 build 21, unsigned iOS 26+ preview. Restores supported structured-code export messages as inert text and adds read-only per-message retained-reference inventory, including completed imports. Counts cover supported visible messages only; media stays unlinked, and unknown formats/branches remain in the original archive. Exact-source 275-test simulator gate, 28 host preservation/inventory tests, large-archive memory probes and Release IPA validation passed. One unchanged rerun passed after a blank system Files picker on the first attempt. Existing originals and local history are preserved. Physical-device/private-backup acceptance remains unverified. No video downloading or broader autonomy. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.</p>
+<p>Unfinished Orivyn 0.1.6 build 22, unsigned iOS 26+ preview. Adds reviewed manual attachment restoration for eligible completed imports: choose a retained supported image, PDF or text file up to 10 MiB, independently choose a message, review and confirm. This is a user-selected association, not automatic or exporter-verified mapping. Exact hashes, current-message checks and transactional receipts protect edits and prevent replay. Original archives, unsupported files and unresolved counts remain preserved. Mixed imports that retained existing conversations are ineligible. Exact-source 301-test simulator gate, 38 host tests, large-archive resource probes and Release IPA checks passed. Physical-device/private-backup acceptance remains unverified. No video downloading or broader autonomy. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.</p>
 
-- Version: 0.1.5 · Build: 21
-- Requires iOS 26.0 or later · Download: 37.95 MB
+- Version: 0.1.6 · Build: 22
+- Requires iOS 26.0 or later · Download: 38.10 MB
 - Bundle ID: app.jarvisevo.ios
 
-<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.5-build21/Orivyn-0.1.5-build21-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.6-build22/Orivyn-0.1.6-build22-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Orivyn 0.1.5 build 21 — unfinished unsigned iOS 26+ preview.
+<p>Orivyn 0.1.6 build 22 — unfinished unsigned iOS 26+ preview.
 
-Changes: supported structured-code export messages restore as inert text under the existing privacy, visibility and routing checks. A read-only per-message inventory shows retained unlinked reference counts from verified preparations, including completed imports, in pages of at most 50 messages. Counts cover supported visible messages only, not all missing media. No media files are linked, opened or executed, and inspection never restores conversations. Existing originals, local edits and history are preserved. Version and in-app release information are updated together.
+Changes: eligible completed archive imports now offer an explicitly reviewed manual attachment path. Choose a retained supported file, independently choose the target imported-plan message, review that exact association and confirm. Supported images, PDFs and text files up to 10 MiB use the existing importer and previews. This is your manual association, not an exporter-verified mapping. Exact hashes, original archive evidence, current message snapshots and one-time transactional receipts protect against changed files, stale edits and duplicate replay. Original ZIPs, unsupported files, existing edits and unresolved-reference counts remain preserved. Version and in-app release information are updated together.
 
-Verification: exact-source iPhone 16 Plus / iOS 26.1 Simulator gate passed all 275 selected tests with zero failures/skips, including actual ZIP selection, reviewed transactional commit, cancellation/reopen, preservation across relaunch, and read-only inventory before and after commit. All 28 macOS preservation/service tests passed, including a near-limit synthetic inventory plan under a 256 MiB process-memory ceiling. Previous large-archive native resource probes passed again. Combined runtime and Release device build/IPA structure checks passed on the same source. The first attempt stalled presenting the system Files picker; one unchanged full rerun passed. Failed evidence is retained; this is not a claimed repair of every system-picker failure. Packaging SCOPE marks tests not_run for that separate packaging step; the preceding simulator step ran independently.
+Verification: exact-source iPhone 16 Plus / iOS 26.1 Simulator gate passed all 301 selected tests with zero failures/skips, including actual ZIP selection, manual file/message review, cancellation, QuickLook preview, persistence across relaunch, replay protection and plugin execution-review boundaries. All 38 macOS preservation/service tests passed, including a near-limit synthetic inventory plan under a 256 MiB process-memory ceiling. Large-archive native resource probes passed again. Combined runtime and Release device build/IPA structure checks passed on the same source. Two earlier gated attempts were held for plugin-approval explanation checks; the production requirement was clarified and a separately reviewed lexical oracle correction recognizes exact user approval without requiring the literal word review. Failed evidence is retained. Packaging SCOPE marks tests not_run for that separate packaging step; the preceding simulator step ran independently.
 
-Limits remain: no end-to-end acceptance of the user&#x27;s private backup or physical iPhone has occurred. Unsupported media, alternative branches and unknown formats remain retained rather than activated; this release does not restore working attachment associations, download videos, grant broader autonomy or establish ChatGPT parity. Inventory pagination bounds displayed rows but still decodes the bounded retained plan. Plugin suggestions require reviewed execution. Signing refresh, device thermal/resource behavior, voice, broad vision and live-sync acceptance remain unverified or unfinished. Models download separately; no weights are bundled. Optional remote providers may charge.
+Limits remain: no end-to-end acceptance of the user&#x27;s private backup or physical iPhone has occurred. This is not automatic attachment restoration or verified legacy/current export mapping. Mixed imports that preserved preexisting conversations cannot prove message ownership and are ineligible for supplemental attachment changes. Unsupported media, alternative branches and unknown formats remain retained rather than activated; counts are not a total missing-media census. No video downloading, broader autonomy or ChatGPT parity is claimed. Inventory pages bound displayed rows but still decode a bounded retained plan. Plugin execution requires exact-call user review. Signing refresh, device thermal/resource behavior, voice, broad vision and live-sync acceptance remain unverified or unfinished. Models download separately; no weights are bundled. Optional remote providers may charge.
 
 Preserve existing app data and signing identity when updating. SideStore or another compatible installer must sign this unsigned IPA. Earlier builds remain available. Not completed 1.0.0 and not an OpenAI product.
 
-Exact source: 0f0247763936c13f9a8bb4392dbc4388217041ab
-Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/44042260672
-IPA: Orivyn-0.1.5-build21-unsigned.ipa
-Bytes: 37949131
-SHA-256: a70bed64f5d9f646c6cd40ef3a93fbf4fde1bb74a21c430af75736408126f63f
+Exact source: c60c6b94b0223d41f435268ea7d41838f9dff136
+Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/44081221328
+IPA: Orivyn-0.1.6-build22-unsigned.ipa
+Bytes: 38104220
+SHA-256: c8b0bf8f4179303ac9e0d5371bfeb0c9bffeb3825a959e53c8ae6add54bc795d
 </p>
 </details>
 
