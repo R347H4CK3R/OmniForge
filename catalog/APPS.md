@@ -421,28 +421,30 @@ Third-party notices are bundled and supplied alongside the release. No credentia
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="Orivyn catalog icon">
 
 <p><strong>Private local AI with free model downloads</strong></p>
-<p>Unfinished Orivyn 0.1.2 build 18, unsigned iOS 26+ preview. Advances the app version for SideStore update detection; Settings shows installed version, build and release notes. Retains build 17 restoration fixes. Exact-source 216-test simulator gate and Release IPA validation passed. Physical-device and full private-backup acceptance remain unverified. Broader autonomy, vision and sync remain unfinished. Models download separately; compatible signing required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.</p>
+<p>Unfinished Orivyn 0.1.3 build 19, unsigned iOS 26+ preview. Repairs normal local code answers and contextual follow-ups, preserves requested read evidence, displays exact app capability statuses, and rejects oversized context without replay. Exact-source 245-test simulator gate and Release IPA validation passed with pinned-model fixtures. Physical-device and general multi-model acceptance remain unverified. No video downloading, broader autonomy, vision or sync added. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.</p>
 
-- Version: 0.1.2 · Build: 18
-- Requires iOS 26.0 or later · Download: 37.84 MB
+- Version: 0.1.3 · Build: 19
+- Requires iOS 26.0 or later · Download: 37.88 MB
 - Bundle ID: app.jarvisevo.ios
 
-<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.2-build18/Orivyn-0.1.2-build18-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.3-build19/Orivyn-0.1.3-build19-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Orivyn 0.1.2 build 18: unfinished unsigned iOS 26+ preview.
+<p>Orivyn 0.1.3 build 19 — unfinished unsigned iOS 26+ preview.
 
-Advances the app&#x27;s marketing version so SideStore can detect an update even when it ignores separate build-number changes. Settings displays installed version, build and release notes from bundled metadata. Packaging now rejects reused marketing versions/build numbers and mismatched package metadata. Retains build 17&#x27;s handling of restored visible assistant replies with null optional routing fields. No broader autonomy, sync or unrelated changes are included.
+Changes: normal code-drafting answers are separated from tool decisions; relevant conversation context is retained without repeating failed/current turns. Supported explicit calculator/memory/app-info requests require recorded reads. App-info statuses and omissions are rendered from the exact receipt rather than relabeled by a model. Tokenizer fitting preserves the current request and recorded results, with explicit overflow failure and no replay. Improved reasoning-marker filtering preserves Markdown code. No video downloading, broader autonomy, vision or sync is added.
 
-Exact-source verification: 216 selected ARM64 iPhone 16 Plus / iOS 26.1 simulator tests passed with zero failures/skips, including ZIP restore, review invalidation, privacy controls and pinned local-model probes. Combined native runtime and separate Release device compilation passed. Independent IPA structure, identity, version/build and release-note equality checks passed. The initial candidate passed 213 of 214 tests: a test-only lexical oracle rejected a correct third-person denial of plugin execution without exact user review. A narrowly scoped oracle correction with eight negative controls was independently reviewed, then the full 216-test gate passed; production enforcement and prompts were unchanged. These are scoped checks, not generalized conversational or physical-device acceptance.
+Verification: exact-source iPhone 16 Plus / iOS 26.1 Simulator gate passed all 245 selected tests with zero failures/skips. Actual pinned Qwen3-1.7B tests produced Python code for fresh, refusal-polluted and long-history requests, preserved an Explain follow-up topic, correctly reported calculator and unpredictable saved-memory results with receipts, and retained exact app-info statuses/omissions. Separate actual-tokenizer overflow stress rejected oversized goal/evidence without replay. Combined runtime verification and Release device compilation/IPA structure checks passed on the same source. Packaging SCOPE says native tests not_run for that separate packaging step; the preceding simulator step ran independently. These are scoped fixtures, not general model parity or physical-device acceptance.
 
-Physical iPhone installation, signing, full private-backup/media mapping and broader device acceptance remain unverified. Existing imported data is not automatically rewritten. Preserve app data and signing identity when updating. Models download separately; optional remote providers may charge. Prior releases remain available. Not completed 1.0.0 or an OpenAI product.
+Limits remain: the user&#x27;s full private backup and its attachment associations have not been accepted end to end. Unsupported data must remain explicitly reported; synthetic ZIP tests do not establish every exported asset can be restored. This is not general ChatGPT parity or unrestricted autonomous execution. Plugin suggestions do not execute automatically. Physical iPhone installation, signing refresh, thermal/resource behavior, voice and broad app acceptance remain unverified. Some broader vision and live-sync capabilities remain unfinished. Models download separately; no weights are bundled. Optional remote providers may charge.
 
-Source: c33cf144bbdd90965516054f41cc27d259c8592e
-Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43983589258
-IPA: Orivyn-0.1.2-build18-unsigned.ipa
-Bytes: 37841843
-SHA-256: 684b14fdb8b989d849a1abac83d96bca98152589c2c3e47c6ddd67354ac0820a
+Preserve existing app data and signing identity when updating. SideStore or another compatible installer must sign this unsigned IPA. Earlier builds remain available. Not completed 1.0.0 and not an OpenAI product.
+
+Exact source: 41f5608f503d17a085af474bd91f4de1b2cec591
+Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/44009590220
+IPA: Orivyn-0.1.3-build19-unsigned.ipa
+Bytes: 37876178
+SHA-256: 68c1e23e59c53a53830983599bc046857fc762cc8e0e045381a71c69ecb29b2d
 </p>
 </details>
 
