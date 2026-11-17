@@ -255,7 +255,7 @@
     "name": "Orivyn",
     "developerName": "R347H4CK3R",
     "subtitle": "Private local AI with free model downloads",
-    "localizedDescription": "Unfinished Orivyn 0.1.3 build 19, unsigned iOS 26+ preview. Repairs normal local code answers and contextual follow-ups, preserves requested read evidence, displays exact app capability statuses, and rejects oversized context without replay. Exact-source 245-test simulator gate and Release IPA validation passed with pinned-model fixtures. Physical-device and general multi-model acceptance remain unverified. No video downloading, broader autonomy, vision or sync added. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.",
+    "localizedDescription": "Unfinished Orivyn 0.1.4 build 20, unsigned iOS 26+ preview. Reduces large ZIP copy/verification memory, bounds display progress, skips unused export metadata without building its full object graph, and explains low-storage/processing limits. Exact-source 265-test simulator gate, native 2.2 GB preservation and dense/long-stream resource probes, and Release IPA validation passed. Existing originals and history are preserved. Physical-device/private-archive acceptance and the cause of every app exit remain unverified. No video downloading, broader autonomy, vision or sync added. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.",
     "category": "productivity",
     "tagPattern": "orivyn-v[0-9.]+-build[0-9]+",
     "assetPattern": "Orivyn-[0-9.]+-build[0-9]+(?:-distribution)?-unsigned\\.ipa",
