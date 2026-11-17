@@ -255,7 +255,7 @@
     "name": "Orivyn",
     "developerName": "R347H4CK3R",
     "subtitle": "Private local AI with free model downloads",
-    "localizedDescription": "Unfinished Orivyn 0.1.1 build 16, unsigned iOS 26+ preview. Adds synthetic-tested ChatGPT ZIP restoration, improved conversation and coding responses, bounded local reads and calculation, and connected-tool suggestions requiring exact user review before execution. Exact-source simulator gate passed 209 selected tests with zero failures/skips; Release IPA compilation and structure checks passed. This is not general autonomous planning or completed ChatGPT parity. Full private-backup attachment mapping, physical-device acceptance and broader capabilities remain unverified or unfinished. Models download separately; compatible signing is required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.",
+    "localizedDescription": "Unfinished Orivyn 0.1.2 build 18, unsigned iOS 26+ preview. Advances the app version for SideStore update detection; Settings shows installed version, build and release notes. Retains build 17 restoration fixes. Exact-source 216-test simulator gate and Release IPA validation passed. Physical-device and full private-backup acceptance remain unverified. Broader autonomy, vision and sync remain unfinished. Models download separately; compatible signing required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.",
     "category": "productivity",
     "tagPattern": "orivyn-v[0-9.]+-build[0-9]+",
     "assetPattern": "Orivyn-[0-9.]+-build[0-9]+(?:-distribution)?-unsigned\\.ipa",

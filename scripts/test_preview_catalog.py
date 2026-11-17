@@ -49,7 +49,7 @@ class PreviewEvidenceTests(unittest.TestCase):
         self.assertTrue(set(self.proofs).issubset(e['requiredEvidenceAssets']))
         self.assertIn('unfinished',e['localizedDescription'].lower())
 
-    def test_failed_refresh_retains_verified_orivyn16(self):
+    def test_failed_refresh_retains_current_verified_orivyn(self):
         root=Path(__file__).resolve().parents[1]
         state=json.loads((root/'catalog/verified-state.json').read_text())
         registry=json.loads((root/'catalog/registry.json').read_text())
@@ -57,6 +57,7 @@ class PreviewEvidenceTests(unittest.TestCase):
         result,errors=c.refresh(state,registry,loader=unavailable)
         self.assertEqual(result['apps'],state['apps'])
         app=next(a for a in result['apps'] if a['bundleIdentifier']=='app.jarvisevo.ios')
-        self.assertEqual(app['versions'][0]['buildVersion'],'16')
-        self.assertEqual(app['_verification']['sha256'],'9dc7b951254eef2cd64bf7c318dff95df36722f393645d392869097df0eb876f')
-        self.assertEqual(app['downloadURL'],'https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build16/Orivyn-0.1.1-build16-unsigned.ipa')
+        original=next(a for a in state['apps'] if a['bundleIdentifier']=='app.jarvisevo.ios')
+        self.assertEqual(app,original)
+        self.assertTrue(app['_verification']['sha256'])
+        self.assertEqual(app['downloadURL'],app['versions'][0]['downloadURL'])

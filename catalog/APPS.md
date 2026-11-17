@@ -421,30 +421,28 @@ Third-party notices are bundled and supplied alongside the release. No credentia
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="Orivyn catalog icon">
 
 <p><strong>Private local AI with free model downloads</strong></p>
-<p>Unfinished Orivyn 0.1.1 build 16, unsigned iOS 26+ preview. Adds synthetic-tested ChatGPT ZIP restoration, improved conversation and coding responses, bounded local reads and calculation, and connected-tool suggestions requiring exact user review before execution. Exact-source simulator gate passed 209 selected tests with zero failures/skips; Release IPA compilation and structure checks passed. This is not general autonomous planning or completed ChatGPT parity. Full private-backup attachment mapping, physical-device acceptance and broader capabilities remain unverified or unfinished. Models download separately; compatible signing is required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.</p>
+<p>Unfinished Orivyn 0.1.2 build 18, unsigned iOS 26+ preview. Advances the app version for SideStore update detection; Settings shows installed version, build and release notes. Retains build 17 restoration fixes. Exact-source 216-test simulator gate and Release IPA validation passed. Physical-device and full private-backup acceptance remain unverified. Broader autonomy, vision and sync remain unfinished. Models download separately; compatible signing required. Optional remote providers may charge. Not completed 1.0.0 or an OpenAI product.</p>
 
-- Version: 0.1.1 · Build: 17
+- Version: 0.1.2 · Build: 18
 - Requires iOS 26.0 or later · Download: 37.84 MB
 - Bundle ID: app.jarvisevo.ios
 
-<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.1-build17/Orivyn-0.1.1-build17-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.2-build18/Orivyn-0.1.2-build18-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Orivyn 0.1.1 build 17: unfinished unsigned iOS 26+ preview.
+<p>Orivyn 0.1.2 build 18: unfinished unsigned iOS 26+ preview.
 
-Fixes restoration of visible assistant replies whose optional channel or recipient fields are JSON null. Missing, null and explicit final/all routing now agree; internal/private messages, tool recipients and malformed routing remain excluded. Existing imports are not automatically rewritten. All build 16 functionality is retained.
+Advances the app&#x27;s marketing version so SideStore can detect an update even when it ignores separate build-number changes. Settings displays installed version, build and release notes from bundled metadata. Packaging now rejects reused marketing versions/build numbers and mismatched package metadata. Retains build 17&#x27;s handling of restored visible assistant replies with null optional routing fields. No broader autonomy, sync or unrelated changes are included.
 
-Exact-source verification: 214 selected tests passed, zero failures/skips, on ARM64 iPhone 16 Plus / iOS 26.1 Simulator, including synthetic ZIP restoration, null-routing privacy controls, task UI, review invalidation and pinned local-model probes. Combined runtime verification and separate Release device compilation/IPA structure checks passed on the same source. Packaging SCOPE lists native tests not_run for that packaging step; the preceding simulator step ran separately.
+Exact-source verification: 216 selected ARM64 iPhone 16 Plus / iOS 26.1 simulator tests passed with zero failures/skips, including ZIP restore, review invalidation, privacy controls and pinned local-model probes. Combined native runtime and separate Release device compilation passed. Independent IPA structure, identity, version/build and release-note equality checks passed. The initial candidate passed 213 of 214 tests: a test-only lexical oracle rejected a correct third-person denial of plugin execution without exact user review. A narrowly scoped oracle correction with eight negative controls was independently reviewed, then the full 216-test gate passed; production enforcement and prompts were unchanged. These are scoped checks, not generalized conversational or physical-device acceptance.
 
-The initial candidate passed 211 of 212 tests, with one failure because a conservative lexical oracle did not recognize a reversed exact-review denial. A test-only oracle correction with contradictory-permission negative controls was independently reviewed; production enforcement and prompts were unchanged. The subsequent 214/214 run passed. This does not prove generalized conversational reliability or unrestricted autonomy.
+Physical iPhone installation, signing, full private-backup/media mapping and broader device acceptance remain unverified. Existing imported data is not automatically rewritten. Preserve app data and signing identity when updating. Models download separately; optional remote providers may charge. Prior releases remain available. Not completed 1.0.0 or an OpenAI product.
 
-Full private-backup/media mapping, physical-iPhone installation/signing refresh, thermal/resource/battery/voice/HDMI behavior remain unverified. Broad vision and automatic synchronization remain unfinished. Models download separately; optional remote providers may charge. Preserve app data and signing identity when updating; compatible signing is required. Older releases remain available. Not completed 1.0.0 or an OpenAI product.
-
-Source: c1b9e4c753e7255fa14fa074a5cb3e0a77d87634
-Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43922369819
-IPA: Orivyn-0.1.1-build17-unsigned.ipa
-Bytes: 37840675
-SHA-256: 1c7374009cafda8849788735019118e04cc073c397c69636a0acf7fc9520de96
+Source: c33cf144bbdd90965516054f41cc27d259c8592e
+Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/43983589258
+IPA: Orivyn-0.1.2-build18-unsigned.ipa
+Bytes: 37841843
+SHA-256: 684b14fdb8b989d849a1abac83d96bca98152589c2c3e47c6ddd67354ac0820a
 </p>
 </details>
 
