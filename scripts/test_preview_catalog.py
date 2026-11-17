@@ -41,7 +41,7 @@ class PreviewEvidenceTests(unittest.TestCase):
         registry=json.loads((Path(__file__).resolve().parents[1]/'catalog/registry.json').read_text())
         e=next(x for x in registry if x['bundleIdentifier']=='com.voicematrix.app')
         self.assertEqual(e['evidencePolicy'],'packaging-preview-v1')
-        current=dict(tag='voicematrix-v0.4.12-build15',version='0.4.12',buildVersion='15',sha256='26cce412c92c6b025443d9ebf5cc62a9d57829f32bd7ba87c302886be34eaf30',size=1330399855,sourceCommit='e5c239aaab933f855356d4a69bbcaeabd9817645')
+        current=dict(tag='voicematrix-v0.4.13-build16',version='0.4.13',buildVersion='16',sha256='04d199d356a5fde59101d3909a35abf05e8dd1129141e0add66e1e45006c5d11',size=1330407101,sourceCommit='bb4b6e2137566008143f6b17c8610880828f0750')
         self.assertEqual(e['previewApproval'],current)
         self.assertTrue(re.fullmatch(e['tagPattern'],current['tag']))
         for bad in ['voicematrix-v0.4.9-build12','voicematrix-v0.4.10-build13','voicematrix-v1.0.0-build14','voicematrix-v0x4x11-build14']:

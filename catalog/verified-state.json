@@ -87,7 +87,7 @@
       "name": "VoiceMatrix",
       "bundleIdentifier": "com.voicematrix.app",
       "developerName": "VoiceMatrix",
-      "localizedDescription": "Unfinished 0.4.12 build 15 preview. Adds an explicitly confirmed fresh download from the admitted original source in a separate job, keeping prior receipts and tracks. Resume continues the retained plan. Fresh acquisition may still fail. Includes embedded on-device yt-dlp for supported public YouTube sources, with local WebKit challenge handling. Some sources still fail; no guarantee every link works. Clearer on-device speech and text-to-speech routes; optional laptop queue sends only on explicit request; recording consent resets when the source changes. Actionable video-import diagnostics and local-file fallback. YouTube pages without usable media downloads remain unsupported. Existing voices, source files and older releases preserved. Conservative overlap screening can miss quiet or partial overlap and does not prove clean single-speaker audio. Physical-iPhone operation and likeness unverified. Music separation and full RVC training incomplete. Requires compatible signing and iOS 26. Not finished 1.0.0.",
+      "localizedDescription": "Unfinished 0.4.13 build 16. Unfinished preview: explicit per-speaker actions select the exact saved voice by ID and reference hash, then open speech or voice-changing controls without starting generation. Missing, changed or ambiguous voices leave selection and retained files unchanged. Retains confirmed fresh download recovery and embedded on-device yt-dlp; some sources remain unsupported. No new download support, inference engine, training or likeness claim. Physical-iPhone behavior remains unverified. Existing library refresh may contact an already-paired laptop for metadata. Requires compatible signing and iOS26. Not finished1.0.0.",
       "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
       "appPermissions": {
         "privacy": {
@@ -95,6 +95,15 @@
         }
       },
       "versions": [
+        {
+          "date": "2026-11-17T15:11:20Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.13-build16/VoiceMatrix-0.4.13-build16.ipa",
+          "size": 1330407101,
+          "version": "0.4.13",
+          "buildVersion": "16",
+          "minOSVersion": "26.0",
+          "localizedDescription": "Unfinished preview: explicit per-speaker actions select the exact saved voice by ID and reference hash, then open speech or voice-changing controls without starting generation. Missing, changed or ambiguous voices leave selection and retained files unchanged. Retains confirmed fresh download recovery and embedded on-device yt-dlp; some sources remain unsupported. No new download support, inference engine, training or likeness claim. Physical-iPhone behavior remains unverified."
+        },
         {
           "date": "2026-11-17T07:13:02Z",
           "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.12-build15/VoiceMatrix-0.4.12-build15.ipa",
@@ -105,10 +114,10 @@
           "localizedDescription": "Unfinished preview: adds an explicitly confirmed fresh download attempt that re-requests the admitted original source in a new job, preserving earlier attempts. Resume still reuses its retained plan. This may help expired links but does not guarantee download success. embedded on-device yt-dlp for supported public YouTube sources; clearer on-device voice tools, optional manual laptop queue, source-bound recording consent and actionable video-import diagnostics. YouTube pages without downloadable media remain unsupported; import a local video instead. Existing voices/files preserved. Physical-iPhone behavior and likeness unverified; full RVC training and music separation incomplete."
         }
       ],
-      "version": "0.4.12",
-      "versionDate": "2026-11-17T07:13:02Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.12-build15/VoiceMatrix-0.4.12-build15.ipa",
-      "size": 1330399855,
+      "version": "0.4.13",
+      "versionDate": "2026-11-17T15:11:20Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.13-build16/VoiceMatrix-0.4.13-build16.ipa",
+      "size": 1330407101,
       "subtitle": "Offline character speech and voice tools",
       "category": "entertainment",
       "screenshots": [
@@ -124,9 +133,9 @@
         }
       ],
       "_verification": {
-        "sha256": "26cce412c92c6b025443d9ebf5cc62a9d57829f32bd7ba87c302886be34eaf30",
-        "release": "https://github.com/R347H4CK3R/Ghostline/releases/tag/voicematrix-v0.4.12-build15",
-        "assetId": 758031437,
+        "sha256": "04d199d356a5fde59101d3909a35abf05e8dd1129141e0add66e1e45006c5d11",
+        "release": "https://github.com/R347H4CK3R/Ghostline/releases/tag/voicematrix-v0.4.13-build16",
+        "assetId": 759519990,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     },
