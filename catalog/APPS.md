@@ -81,16 +81,16 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="VoiceMatrix catalog icon">
 
 <p><strong>Offline character speech and voice tools</strong></p>
-<p>Unfinished 0.4.9 build 12 preview with conservative raw-overlap screening and source-bound reference analysis. Existing library voices and original source files preserved. Exact-source native, simulator, human-holdout and controlled-overlap checks passed. Screening is not speaker separation and can miss quiet competing speech; passing does not prove clean single-speaker audio. Physical iPhone operation and character likeness remain unverified. Music separation, reliable overlapping-speaker extraction and full RVC training remain incomplete. Requires compatible signing and iOS 26. Not finished 1.0.0.</p>
+<p>Unfinished 0.4.11 build 14 preview. Includes embedded on-device yt-dlp for supported public YouTube sources, with local WebKit challenge handling. Some sources still fail; no guarantee every link works. Clearer on-device speech and text-to-speech routes; optional laptop queue sends only on explicit request; recording consent resets when the source changes. Actionable video-import diagnostics and local-file fallback. YouTube pages without usable media downloads remain unsupported. Existing voices, source files and older releases preserved. Conservative overlap screening can miss quiet or partial overlap and does not prove clean single-speaker audio. Physical-iPhone operation and likeness unverified. Music separation and full RVC training incomplete. Requires compatible signing and iOS 26. Not finished 1.0.0.</p>
 
-- Version: 0.4.9 · Build: 12
-- Requires iOS 26.0 or later · Download: 1314.61 MB
+- Version: 0.4.11 · Build: 14
+- Requires iOS 26.0 or later · Download: 1330.39 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9-build12/VoiceMatrix-0.4.9-build12.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.11-build14/VoiceMatrix-0.4.11-build14.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Unfinished preview: conservative overlap screening rejects affected reference clips and validates retained analysis before reuse. Existing library voices and source files preserved. Passing screening does not prove clean single-speaker audio. Physical-iPhone behavior and likeness unverified; music separation and full RVC training incomplete. Not finished 1.0.0.</p>
+<p>Unfinished preview: embedded on-device yt-dlp for supported public YouTube sources; clearer on-device voice tools, optional manual laptop queue, source-bound recording consent and actionable video-import diagnostics. YouTube pages without downloadable media remain unsupported; import a local video instead. Existing voices/files preserved. Physical-iPhone behavior and likeness unverified; full RVC training and music separation incomplete.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
