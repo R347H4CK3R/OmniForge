@@ -103,15 +103,6 @@
           "buildVersion": "14",
           "minOSVersion": "26.0",
           "localizedDescription": "Unfinished preview: embedded on-device yt-dlp for supported public YouTube sources; clearer on-device voice tools, optional manual laptop queue, source-bound recording consent and actionable video-import diagnostics. YouTube pages without downloadable media remain unsupported; import a local video instead. Existing voices/files preserved. Physical-iPhone behavior and likeness unverified; full RVC training and music separation incomplete."
-        },
-        {
-          "date": "2026-11-16T17:00:34Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.9-build12/VoiceMatrix-0.4.9-build12.ipa",
-          "size": 1314609660,
-          "version": "0.4.9",
-          "buildVersion": "12",
-          "minOSVersion": "26.0",
-          "localizedDescription": "Unfinished preview: conservative overlap screening rejects affected reference clips and validates retained analysis before reuse. Existing library voices and source files preserved. Passing screening does not prove clean single-speaker audio. Physical-iPhone behavior and likeness unverified; music separation and full RVC training incomplete. Not finished 1.0.0."
         }
       ],
       "version": "0.4.11",
@@ -511,7 +502,7 @@
       "bundleIdentifier": "app.jarvisevo.ios",
       "developerName": "R347H4CK3R",
       "subtitle": "Private local AI with free model downloads",
-      "localizedDescription": "Unfinished Orivyn 0.1.3 build 19, unsigned iOS 26+ preview. Repairs normal local code answers and contextual follow-ups, preserves requested read evidence, displays exact app capability statuses, and rejects oversized context without replay. Exact-source 245-test simulator gate and Release IPA validation passed with pinned-model fixtures. Physical-device and general multi-model acceptance remain unverified. No video downloading, broader autonomy, vision or sync added. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.",
+      "localizedDescription": "Unfinished Orivyn 0.1.4 build 20, unsigned iOS 26+ preview. Reduces large ZIP copy/verification memory, bounds display progress, skips unused export metadata without building its full object graph, and explains low-storage/processing limits. Exact-source 265-test simulator gate, native 2.2 GB preservation and dense/long-stream resource probes, and Release IPA validation passed. Existing originals and history are preserved. Physical-device/private-archive acceptance and the cause of every app exit remain unverified. No video downloading, broader autonomy, vision or sync added. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.",
       "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
       "category": "productivity",
       "appPermissions": {
@@ -525,23 +516,23 @@
       },
       "versions": [
         {
-          "date": "2026-11-17T03:53:40Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.3-build19/Orivyn-0.1.3-build19-unsigned.ipa",
-          "size": 37876178,
-          "version": "0.1.3",
-          "buildVersion": "19",
+          "date": "2026-11-17T05:37:00Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.4-build20/Orivyn-0.1.4-build20-unsigned.ipa",
+          "size": 37901272,
+          "version": "0.1.4",
+          "buildVersion": "20",
           "minOSVersion": "26.0",
-          "localizedDescription": "Orivyn 0.1.3 build 19 \u2014 unfinished unsigned iOS 26+ preview.\n\nChanges: normal code-drafting answers are separated from tool decisions; relevant conversation context is retained without repeating failed/current turns. Supported explicit calculator/memory/app-info requests require recorded reads. App-info statuses and omissions are rendered from the exact receipt rather than relabeled by a model. Tokenizer fitting preserves the current request and recorded results, with explicit overflow failure and no replay. Improved reasoning-marker filtering preserves Markdown code. No video downloading, broader autonomy, vision or sync is added.\n\nVerification: exact-source iPhone 16 Plus / iOS 26.1 Simulator gate passed all 245 selected tests with zero failures/skips. Actual pinned Qwen3-1.7B tests produced Python code for fresh, refusal-polluted and long-history requests, preserved an Explain follow-up topic, correctly reported calculator and unpredictable saved-memory results with receipts, and retained exact app-info statuses/omissions. Separate actual-tokenizer overflow stress rejected oversized goal/evidence without replay. Combined runtime verification and Release device compilation/IPA structure checks passed on the same source. Packaging SCOPE says native tests not_run for that separate packaging step; the preceding simulator step ran independently. These are scoped fixtures, not general model parity or physical-device acceptance.\n\nLimits remain: the user's full private backup and its attachment associations have not been accepted end to end. Unsupported data must remain explicitly reported; synthetic ZIP tests do not establish every exported asset can be restored. This is not general ChatGPT parity or unrestricted autonomous execution. Plugin suggestions do not execute automatically. Physical iPhone installation, signing refresh, thermal/resource behavior, voice and broad app acceptance remain unverified. Some broader vision and live-sync capabilities remain unfinished. Models download separately; no weights are bundled. Optional remote providers may charge.\n\nPreserve existing app data and signing identity when updating. SideStore or another compatible installer must sign this unsigned IPA. Earlier builds remain available. Not completed 1.0.0 and not an OpenAI product.\n\nExact source: 41f5608f503d17a085af474bd91f4de1b2cec591\nGate: https://github.com/R347H4CK3R/Orivyn/actions/runs/44009590220\nIPA: Orivyn-0.1.3-build19-unsigned.ipa\nBytes: 37876178\nSHA-256: 68c1e23e59c53a53830983599bc046857fc762cc8e0e045381a71c69ecb29b2d\n"
+          "localizedDescription": "Orivyn 0.1.4 build 20 \u2014 unfinished unsigned iOS 26+ preview.\n\nChanges: large ZIP copy/verification and record streaming release Foundation read temporaries per chunk. Display progress uses one bounded mailbox instead of a task per callback. Selected-field JSON projection validates but skips unused metadata without constructing its full object graph, preserving privacy/visibility rules and reviewed restore semantics. Low-storage and processing-limit errors explain recovery. Existing originals and history are preserved. No video downloading, broader autonomy, vision or sync is added.\n\nVerification: exact-source iPhone 16 Plus / iOS 26.1 Simulator gate passed all 265 selected tests with zero failures/skips, including dense synthetic ZIP preservation, review and transactional commit with existing-history retention, malformed archive rejection and existing actual-model chat regressions. Fresh macOS probes verified 2.2 GB copy/revalidation at 4,571,136 bytes peak RSS, dense 15.9 MB unused metadata at 45,268,992 bytes, and approximately 503 MB record streaming at 5,357,568 bytes. Cancellation retains the partial archive without treating it as verified. Combined runtime and Release device build/IPA structure checks passed on the same source. Packaging SCOPE says native tests not_run for that separate packaging step; the preceding simulator step ran independently. These synthetic resource defects are reproduced and mitigated, not a confirmed diagnosis of every app exit or a physical-device memory guarantee.\n\nLimits remain: the user's full private backup and its attachment associations have not been accepted end to end. Unsupported data must remain explicitly reported; synthetic ZIP tests do not establish every exported asset can be restored. This is not general ChatGPT parity or unrestricted autonomous execution. Plugin suggestions do not execute automatically. Physical iPhone installation, signing refresh, thermal/resource behavior, voice and broad app acceptance remain unverified. Some broader vision and live-sync capabilities remain unfinished. Models download separately; no weights are bundled. Optional remote providers may charge.\n\nPreserve existing app data and signing identity when updating. SideStore or another compatible installer must sign this unsigned IPA. Earlier builds remain available. Not completed 1.0.0 and not an OpenAI product.\n\nExact source: a5888697d79c9d3ca2264ec2e0a4f051cef3c0e2\nGate: https://github.com/R347H4CK3R/Orivyn/actions/runs/44020819713\nIPA: Orivyn-0.1.4-build20-unsigned.ipa\nBytes: 37901272\nSHA-256: 6424d9d4e8acadf8e131285e0165f82359f472364e35094fe1ae3464d53f85a0\n"
         }
       ],
-      "version": "0.1.3",
-      "versionDate": "2026-11-17T03:53:40Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.3-build19/Orivyn-0.1.3-build19-unsigned.ipa",
-      "size": 37876178,
+      "version": "0.1.4",
+      "versionDate": "2026-11-17T05:37:00Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.4-build20/Orivyn-0.1.4-build20-unsigned.ipa",
+      "size": 37901272,
       "_verification": {
-        "sha256": "68c1e23e59c53a53830983599bc046857fc762cc8e0e045381a71c69ecb29b2d",
-        "release": "https://github.com/R347H4CK3R/Orivyn/releases/tag/orivyn-v0.1.3-build19",
-        "assetId": 757527089,
+        "sha256": "6424d9d4e8acadf8e131285e0165f82359f472364e35094fe1ae3464d53f85a0",
+        "release": "https://github.com/R347H4CK3R/Orivyn/releases/tag/orivyn-v0.1.4-build20",
+        "assetId": 757796387,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     }
