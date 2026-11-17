@@ -81,16 +81,16 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="VoiceMatrix catalog icon">
 
 <p><strong>Offline character speech and voice tools</strong></p>
-<p>Unfinished 0.4.11 build 14 preview. Includes embedded on-device yt-dlp for supported public YouTube sources, with local WebKit challenge handling. Some sources still fail; no guarantee every link works. Clearer on-device speech and text-to-speech routes; optional laptop queue sends only on explicit request; recording consent resets when the source changes. Actionable video-import diagnostics and local-file fallback. YouTube pages without usable media downloads remain unsupported. Existing voices, source files and older releases preserved. Conservative overlap screening can miss quiet or partial overlap and does not prove clean single-speaker audio. Physical-iPhone operation and likeness unverified. Music separation and full RVC training incomplete. Requires compatible signing and iOS 26. Not finished 1.0.0.</p>
+<p>Unfinished 0.4.12 build 15 preview. Adds an explicitly confirmed fresh download from the admitted original source in a separate job, keeping prior receipts and tracks. Resume continues the retained plan. Fresh acquisition may still fail. Includes embedded on-device yt-dlp for supported public YouTube sources, with local WebKit challenge handling. Some sources still fail; no guarantee every link works. Clearer on-device speech and text-to-speech routes; optional laptop queue sends only on explicit request; recording consent resets when the source changes. Actionable video-import diagnostics and local-file fallback. YouTube pages without usable media downloads remain unsupported. Existing voices, source files and older releases preserved. Conservative overlap screening can miss quiet or partial overlap and does not prove clean single-speaker audio. Physical-iPhone operation and likeness unverified. Music separation and full RVC training incomplete. Requires compatible signing and iOS 26. Not finished 1.0.0.</p>
 
-- Version: 0.4.11 · Build: 14
-- Requires iOS 26.0 or later · Download: 1330.39 MB
+- Version: 0.4.12 · Build: 15
+- Requires iOS 26.0 or later · Download: 1330.40 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.11-build14/VoiceMatrix-0.4.11-build14.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.12-build15/VoiceMatrix-0.4.12-build15.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Unfinished preview: embedded on-device yt-dlp for supported public YouTube sources; clearer on-device voice tools, optional manual laptop queue, source-bound recording consent and actionable video-import diagnostics. YouTube pages without downloadable media remain unsupported; import a local video instead. Existing voices/files preserved. Physical-iPhone behavior and likeness unverified; full RVC training and music separation incomplete.</p>
+<p>Unfinished preview: adds an explicitly confirmed fresh download attempt that re-requests the admitted original source in a new job, preserving earlier attempts. Resume still reuses its retained plan. This may help expired links but does not guarantee download success. embedded on-device yt-dlp for supported public YouTube sources; clearer on-device voice tools, optional manual laptop queue, source-bound recording consent and actionable video-import diagnostics. YouTube pages without downloadable media remain unsupported; import a local video instead. Existing voices/files preserved. Physical-iPhone behavior and likeness unverified; full RVC training and music separation incomplete.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
