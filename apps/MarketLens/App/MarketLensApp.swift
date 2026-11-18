@@ -61,6 +61,13 @@ struct Dashboard: View {
                 do { try await Task.sleep(for: .seconds(15)) } catch { return }
             }
         }
+        .task(id: scenePhase) {
+            guard scenePhase == .active else { return }
+            while !Task.isCancelled {
+                await monitor.refreshSettlements()
+                do { try await Task.sleep(for: .seconds(60)) } catch { return }
+            }
+        }
         .alert("Paper journal", isPresented: Binding(get: { notice != nil }, set: { if !$0 { notice = nil } })) { Button("OK") { notice = nil } } message: { Text(notice ?? "") }
     }
     private var hero: some View {
@@ -103,7 +110,7 @@ struct Dashboard: View {
         panel {
             Label("Independent research", systemImage: "sparkle.magnifyingglass").font(.headline)
             Text("No reliable win-probability estimate").font(.title3.bold())
-            if s.blockingReason(at: now) == nil, let p = s.forecast.proxyProbability {
+            if s.blockingReason(at: now) == nil, let p = s.proxyProbability(at: now) {
                 HStack { Text("Experimental endpoint proxy · YES"); Spacer(); Text(percent(p)).monospacedDigit().bold() }.font(.subheadline)
                 Text(s.forecast.reason).font(.footnote).foregroundStyle(.orange)
                 if let evidence = s.forecast.evidenceTime { Text("Last completed Coinbase candle: \(evidence.formatted(date: .omitted, time: .standard))").font(.caption).foregroundStyle(.secondary) }
@@ -124,12 +131,12 @@ struct Dashboard: View {
                 valueRow("Estimated taker fee", money(cost.fee))
                 valueRow("Net profit if correct", money(cost.maximumProfit))
                 valueRow("Break-even probability", percent(NSDecimalNumber(decimal: cost.breakEven).doubleValue))
-                if let pYes = s.forecast.proxyProbability {
+                if let pYes = s.proxyProbability(at: now) {
                     let p = side == .yes ? pYes : 1 - pYes
                     let ev = try? cost.expectedProfit(probability: Decimal(p))
-                    valueRow("Proxy chance of profit (unvalidated)", percent(p))
+                    valueRow("Proxy settlement probability", percent(p))
                     valueRow("Proxy average profit/loss", money(ev))
-                    Text("These are conditional model outputs, not a prediction that this bet will profit. No statistical confidence bound is available.").font(.caption).foregroundStyle(.orange)
+                    Text("A correct settlement produces the displayed profit only if filled at the assumed price and fees. These are conditional model outputs, not a prediction that this bet will profit. No statistical confidence bound is available.").font(.caption).foregroundStyle(.orange)
                 }
                 Text("Fees estimated from the current series multiplier and published taker formula. Holding to settlement assumed; no fill/slippage guarantee.").font(.caption).foregroundStyle(.secondary)
                 Button {

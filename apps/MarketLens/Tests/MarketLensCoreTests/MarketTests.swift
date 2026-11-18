@@ -24,6 +24,18 @@ final class MarketTests: XCTestCase {
         XCTAssertEqual(book.ask(.yes)?.quantity, 3)
         XCTAssertThrowsError(try PublicAPI.decodeBook(Data(#"{"orderbook_fp":{"yes_dollars":[["bad","1"]],"no_dollars":[]}}"#.utf8)))
     }
+    func testDecodeBothPublicCoinbaseCandleFormats() throws {
+        let classic = try PublicAPI.decodeCandles(Data("[[1800000000,99,102,100,101,4]]".utf8))
+        XCTAssertEqual(classic.first?.close, 101)
+        let advanced = try PublicAPI.decodeCandles(Data(#"{"candles":[{"start":"1800000000","close":"101"}]}"#.utf8))
+        XCTAssertEqual(advanced.first?.time, now)
+        XCTAssertEqual(advanced.first?.close, 101)
+        XCTAssertThrowsError(try PublicAPI.decodeCandles(Data(#"{"candles":[{"start":"bad","close":"101"}]}"#.utf8)))
+    }
+    func testRejectsTrailingGarbageInFixedPointDecimal() {
+        XCTAssertThrowsError(try PublicAPI.decodeBook(Data(#"{"orderbook_fp":{"yes_dollars":[["0.49garbage","1"]],"no_dollars":[]}}"#.utf8)))
+        XCTAssertThrowsError(try PublicAPI.decodeBook(Data(#"{"orderbook_fp":{"yes_dollars":[["0.49","1e2"]],"no_dollars":[]}}"#.utf8)))
+    }
     func testSnapshotGateRejectsStaleClosedAndClockSkew() throws {
         let m = try market()
         XCTAssertNil(Snapshot.blockingReason(market: m, receivedAt: now, serverTime: now, latency: 1, now: now))

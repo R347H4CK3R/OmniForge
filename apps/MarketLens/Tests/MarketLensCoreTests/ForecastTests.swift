@@ -20,6 +20,16 @@ final class ForecastTests: XCTestCase {
         XCTAssertNil(Forecast.evaluate(candles: candles(), target: 100, close: now.addingTimeInterval(300), now: now, receivedAt: now.addingTimeInterval(-31), rulesSupported: true).proxyProbability)
         XCTAssertNil(Forecast.evaluate(candles: candles(), target: 100, close: now.addingTimeInterval(300), now: now, receivedAt: now, rulesSupported: false).proxyProbability)
     }
+    func testExtremeProxyDoesNotImplyCertainty() {
+        let r = Forecast.evaluate(candles: candles(), target: 0.01, close: now.addingTimeInterval(300), now: now, receivedAt: now, rulesSupported: true)
+        XCTAssertNil(r.proxyProbability)
+    }
+    func testForecastExpiresAtFinalMinuteWithoutRefresh() {
+        let r = Forecast.evaluate(candles: candles(), target: 100, close: now.addingTimeInterval(65), now: now, receivedAt: now, rulesSupported: true)
+        XCTAssertNotNil(r.probability(at: now))
+        XCTAssertNil(r.probability(at: now.addingTimeInterval(5)))
+        XCTAssertNil(r.probability(at: now.addingTimeInterval(31)))
+    }
     func testIncompleteBucketIgnored() {
         let data = candles() + [Candle(time: now, close: 999_999)]
         let r = Forecast.evaluate(candles: data, target: 100, close: now.addingTimeInterval(300), now: now, receivedAt: now, rulesSupported: true)

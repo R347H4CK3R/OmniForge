@@ -58,6 +58,10 @@ public struct Snapshot: Sendable {
         return nil
     }
     public func blockingReason(at now: Date) -> String? { Self.blockingReason(market: market, receivedAt: receivedAt, serverTime: serverTime, latency: latency, now: now) }
+    public func proxyProbability(at now: Date) -> Double? {
+        guard blockingReason(at: now) == nil else { return nil }
+        return forecast.probability(at: now)
+    }
     public func cost(side: Side, contracts: Int, now: Date) throws -> Cost {
         guard blockingReason(at: now) == nil else { throw LensError.stale }
         guard let multiplier = feeMultiplier, let feeReceivedAt, now.timeIntervalSince(feeReceivedAt) <= 300 else { throw LensError.unsupportedFees }

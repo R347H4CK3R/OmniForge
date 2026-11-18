@@ -10,11 +10,16 @@ public struct Forecast: Codable, Sendable {
     public let reason: String
     public let evidenceTime: Date?
     public let sigma: Double?
+    public let validUntil: Date?
+    public func probability(at now: Date) -> Double? {
+        guard let validUntil, now < validUntil else { return nil }
+        return proxyProbability
+    }
     public var reliable: Bool { false }
     public var canRecommend: Bool { false }
     public static let modelVersion = "coinbase-endpoint-proxy-v1"
     public static let limitation = "Unvalidated Coinbase endpoint proxy, not the official BRTI 60-second settlement average. No measured probability uncertainty or proven advantage."
-    public static func unavailable(_ reason: String) -> Forecast { Forecast(proxyProbability: nil, reason: reason, evidenceTime: nil, sigma: nil) }
+    public static func unavailable(_ reason: String) -> Forecast { Forecast(proxyProbability: nil, reason: reason, evidenceTime: nil, sigma: nil, validUntil: nil) }
     public static func evaluate(candles: [Candle], target: Double?, close: Date, now: Date, receivedAt: Date, rulesSupported: Bool) -> Forecast {
         guard rulesSupported else { return .unavailable("Official settlement rules not recognized.") }
         guard let target, target.isFinite, target > 0 else { return .unavailable("Official target unavailable.") }
@@ -36,7 +41,7 @@ public struct Forecast: Codable, Sendable {
         let horizon = close.timeIntervalSince(latest.time.addingTimeInterval(60)) / 60
         let z = log(latest.close / target) / (sigma * sqrt(horizon))
         let p = 0.5 * (1 + erf(z / sqrt(2)))
-        guard p.isFinite else { return .unavailable("Numerical estimate unavailable.") }
-        return Forecast(proxyProbability: min(1, max(0, p)), reason: limitation, evidenceTime: latest.time.addingTimeInterval(60), sigma: sigma)
+        guard p.isFinite, p > 0.001, p < 0.999 else { return .unavailable("Proxy is outside the stable reporting range; uncertainty is unmeasured.") }
+        return Forecast(proxyProbability: min(1, max(0, p)), reason: limitation, evidenceTime: latest.time.addingTimeInterval(60), sigma: sigma, validUntil: min(close.addingTimeInterval(-60), receivedAt.addingTimeInterval(30), latest.time.addingTimeInterval(150)))
     }
 }
