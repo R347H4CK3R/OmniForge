@@ -27,6 +27,7 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 | [ScopePilot](#scopepilot) | Offline captured-traffic evidence review | iOS 16.0+ |
 | [Luma Preview](#luma-preview) | Offline tools and private iPhone AI | iOS 14.0+ |
 | [Orivyn](#orivyn) | Private local AI with free model downloads | iOS 26.0+ |
+| [Market Lens](#market-lens) | Live BTC market research and paper evaluation | iOS 26.0+ |
 
 ## Screenshots
 
@@ -445,6 +446,55 @@ Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/44081221328
 IPA: Orivyn-0.1.6-build22-unsigned.ipa
 Bytes: 38104220
 SHA-256: c8b0bf8f4179303ac9e0d5371bfeb0c9bffeb3825a959e53c8ae6add54bc795d
+</p>
+</details>
+
+**Preview coming soon** · No reviewed screenshot available yet.
+
+---
+
+## Market Lens
+
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/market-lens-0.1.0-build1/MarketLens-icon.png" width="72" height="72" alt="Market Lens catalog icon">
+
+<p><strong>Live BTC market research and paper evaluation</strong></p>
+<p>Read-only iOS26+ research preview for Kalshi BTC15-minute markets: foreground public quotes, order-book depth, official rules, estimated after-fee scenarios and local paper outcomes. Independent Coinbase endpoint proxy is experimental and not the exact BRTI settlement average. No proven profitable edge, calibrated confidence, betting alerts, account access or orders. $25 limit is local paper risk only. Unsigned IPA requires compatible signing/container. Physical iPhone and Strata installation remain unverified.</p>
+
+- Version: 0.1.0 · Build: 1
+- Requires iOS 26.0 or later · Download: 0.29 MB
+- Bundle ID: com.r347h4ck3r.marketlens
+
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/market-lens-0.1.0-build1/MarketLens-0.1.0-build1.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p># Market Lens 0.1.0 build 1 — research preview
+
+Native read-only iPhone app, iOS 26+. Public Kalshi BTC 15-minute markets, depth, official targets and rules; Coinbase candle evidence; Decimal estimated taker fees and hypothetical scenarios; local paper journal with official settlement checks.
+
+## Important limitations
+- No proven profitable edge, calibrated confidence interval, automated betting, account access, or favorable-edge alerts.
+- Independent probability is an explicitly unvalidated Coinbase endpoint proxy, not a forecast of the exact official BRTI 60-second average. Extreme, stale, missing and final-minute estimates are suppressed.
+- Refreshes 15 seconds after each completed foreground check. Slow connections can delay data. Continuous iOS background monitoring is not supported.
+- Paper limit of $25 includes hypothetical fees and realized losses. It does not monitor or protect a real account. One contract is the default, not a recommendation.
+- Local paper calibration uses user-selected observations and cannot establish a profitable strategy. After-fee results assume filling at the quoted ask; execution is not guaranteed.
+- Unsigned IPA needs compatible signing/container. Physical iPhone, Strata installation, and device-network behavior remain unverified.
+
+## Verification
+Exact source: f6e638c591273ff38a0180c693cedd37da7417eb.
+Successful native workflow: https://github.com/R347H4CK3R/OmniForge/actions/runs/44398185929
+
+- 24 Swift core tests passed on macOS and independently on Linux.
+- 3 Python package-validator tests passed.
+- ARM64 iPhone Release compilation passed using Xcode 26.3.
+- Native iOS simulator navigation smoke test passed (1 test, zero failures). Actual live quotes and depth rendered in the captured app screenshot.
+- IPA identity, iOS-device Mach-O platform/minimum OS, size and SHA256 independently rechecked. No embedded credential markers, signing profiles, paper data or diagnostic files were found in the package.
+- Physical iPhone, signing and Strata installation remain untested; a simulator check is not physical-device verification.
+
+IPA: MarketLens-0.1.0-build1.ipa
+Size: 286071 bytes
+SHA256: e32a1549b01a1dc38a1f77def1573f3df4da3e36c4eff1f0c7322ebadf07f89f
+
+This is a working research preview, not a validated profitable trading system.
 </p>
 </details>
 
