@@ -265,5 +265,23 @@
       "SHA256SUMS",
       "verified-ipa.json"
     ]
+  },
+  {
+    "repository": "R347H4CK3R/OmniForge",
+    "bundleIdentifier": "com.r347h4ck3r.marketlens",
+    "name": "Market Lens",
+    "developerName": "R347H4CK3R",
+    "subtitle": "Live BTC market research and paper evaluation",
+    "localizedDescription": "Read-only iOS26+ research preview for Kalshi BTC15-minute markets: foreground public quotes, order-book depth, official rules, estimated after-fee scenarios and local paper outcomes. Independent Coinbase endpoint proxy is experimental and not the exact BRTI settlement average. No proven profitable edge, calibrated confidence, betting alerts, account access or orders. $25 limit is local paper risk only. Unsigned IPA requires compatible signing/container. Physical iPhone and Strata installation remain unverified.",
+    "category": "finance",
+    "tagPattern": "market-lens-0\\.1\\.0-build1",
+    "assetPattern": "MarketLens-0\\.1\\.0-build1\\.ipa",
+    "allowPrerelease": true,
+    "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/market-lens-0.1.0-build1/MarketLens-icon.png",
+    "requiredEvidenceAssets": [
+      "SHA256SUMS",
+      "verified-ipa.json",
+      "RELEASE-NOTES.md"
+    ]
   }
 ]
