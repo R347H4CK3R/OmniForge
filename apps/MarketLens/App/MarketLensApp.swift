@@ -79,7 +79,7 @@ struct Dashboard: View {
             }
             Text("Evidence before instinct.").font(.largeTitle.bold())
             Text("No verified edge. Research and paper scenarios only.").font(.subheadline).foregroundStyle(.secondary)
-            Text("Checks every 15 seconds while open. iOS background monitoring is not continuous.").font(.caption).foregroundStyle(.secondary)
+            Text("Refreshes 15 seconds after each check while open. Slow connections can delay data; background monitoring is not continuous.").font(.caption).foregroundStyle(.secondary)
         }
     }
     private func marketCard(_ s: Snapshot, now: Date) -> some View {

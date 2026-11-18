@@ -11,7 +11,7 @@ Core tests are executable with Swift6.0+. Native Xcode build, simulator, signing
 - CI builds ARM64 unsigned Release, runs native UI smoke tests, produces IPA, SHA256SUMS, verified-ipa.json. No CI publication or catalog writes.
 
 ## What is real and what is not
-Public markets, books, official rules, fee multipliers, Coinbase candles, local paper journal and official settlement checks are functional code. Foreground checks occur every15s; suspended iOS apps do not monitor continuously. REST receive timestamps are not quote timestamps. Empty, crossed, stale, unknown and closed states fail closed.
+Public markets, books, official rules, fee multipliers, Coinbase candles, local paper journal and official settlement checks are functional code. Foreground checks start15s after the previous check completes; suspended iOS apps do not monitor continuously. REST receive timestamps are not quote timestamps. Empty, crossed, stale, unknown and closed states fail closed.
 
 The independent probability shown, when inputs pass quality checks, is an **unvalidated zero-log-drift Coinbase endpoint proxy**. It is not the exact BRTI60s settlement average, not a trained model, not a confidence bound, and not evidence of a favorable edge. No favorable alert is enabled. Model validation requires chronological independent holdouts, no leakage, real execution costs and prospective evaluation. Local paper Brier scores are descriptive, not validation.
 

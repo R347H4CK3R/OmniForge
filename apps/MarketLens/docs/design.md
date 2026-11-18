@@ -2,7 +2,7 @@
 Native SwiftUI research-only iPhone app, iOS 26+, standalone unsigned IPA intended for Strata. No authentication, orders, private keys, paid services or promises of profit.
 
 ## User-approved purpose
-Live BTC 15-minute Kalshi market monitoring with independently sourced research, probability estimates only when justified, transparent hypothetical after-fee economics, and paper outcomes. Foreground automatic refresh every 15 seconds; no false claim of continuous iOS background service.
+Live BTC 15-minute Kalshi market monitoring with independently sourced research, probability estimates only when justified, transparent hypothetical after-fee economics, and paper outcomes. Foreground automatic refresh 15 seconds after each completed check; no false claim of continuous iOS background service.
 
 ## Design
 Core Swift package separates Kalshi API decoding, market/orderbook quality gates, Decimal cost calculator, independent Coinbase baseline, and a local paper journal. App displays quotes/depth, countdown, official target/rules, response receive times and latency, model assumptions and calibration status. API metadata update times are not quote timestamps. Fail closed on missing/stale/mismatched data, closed windows, sparse candles or unsupported settlement semantics.

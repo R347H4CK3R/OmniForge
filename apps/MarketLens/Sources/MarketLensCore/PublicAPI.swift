@@ -16,7 +16,7 @@ public struct PublicAPI: Sendable {
     public init(transport: @escaping Transport = PublicAPI.get) { self.transport = transport }
     public static func get(_ url: URL) async throws -> HTTPResult {
         guard url.scheme == "https", ["external-api.kalshi.com", "api.exchange.coinbase.com", "api.coinbase.com"].contains(url.host ?? "") else { throw LensError.invalidInput }
-        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 12)
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: url.host == "external-api.kalshi.com" ? 12 : 4)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         let start = Date()
