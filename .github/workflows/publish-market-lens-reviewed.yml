@@ -1,0 +1,108 @@
+# Exact reviewed candidate only; no source rebuild or unrelated release mutation.
+name: Publish exact reviewed Market Lens preview
+on:
+  push:
+    branches: [release/market-lens-0.1.0-build1]
+    paths: [.github/workflows/publish-market-lens-reviewed.yml]
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: market-lens-reviewed-publication
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPO: R347H4CK3R/OmniForge
+      SOURCE_SHA: f6e638c591273ff38a0180c693cedd37da7417eb
+      VERIFIED_RUN: '44398185929'
+      TAG: market-lens-0.1.0-build1
+      IPA: MarketLens-0.1.0-build1.ipa
+      EXPECTED_SHA256: e32a1549b01a1dc38a1f77def1573f3df4da3e36c4eff1f0c7322ebadf07f89f
+      EXPECTED_SIZE: '286071'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: f6e638c591273ff38a0180c693cedd37da7417eb
+      - name: Verify exact successful source run
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = "$REPO"
+          test "$(git rev-parse HEAD)" = "$SOURCE_SHA"
+          gh api "repos/$REPO/actions/runs/$VERIFIED_RUN" > run.json
+          python3 - <<'PY'
+          import json,os
+          r=json.load(open('run.json'))
+          assert r['head_sha']==os.environ['SOURCE_SHA']
+          assert str(r['id'])==os.environ['VERIFIED_RUN']
+          assert r['conclusion']=='success'
+          assert r['path']=='.github/workflows/market-lens-native.yml'
+          PY
+          gh run download "$VERIFIED_RUN" --repo "$REPO" --name market-lens-verification --dir candidate
+      - name: Reinspect and stage only whitelisted public assets
+        run: |
+          set -euo pipefail
+          mkdir release
+          python3 - <<'PY'
+          import hashlib,json,os,sys,shutil
+          from pathlib import Path
+          sys.path.insert(0,'apps/MarketLens/scripts')
+          from verify_ipa import verify
+          p=Path('candidate/build/artifacts')/os.environ['IPA']
+          proof=json.loads((p.parent/'verified-ipa.json').read_text())
+          actual=verify(p)
+          assert proof['sourceCommit']==os.environ['SOURCE_SHA']
+          assert str(proof['workflowRun'])==os.environ['VERIFIED_RUN']
+          assert actual['sha256']==os.environ['EXPECTED_SHA256']
+          assert actual['size']==int(os.environ['EXPECTED_SIZE'])
+          for k in ['filename','bundleIdentifier','version','buildVersion','minOSVersion','size','sha256','architecture']:
+              assert proof[k]==actual[k], k
+          assert proof['physicalDeviceVerified'] is False and proof['forecastValidated'] is False
+          shutil.copy2(p,Path('release')/p.name)
+          shutil.copy2(p.parent/'verified-ipa.json','release/verified-ipa.json')
+          Path('release/SHA256SUMS').write_text(actual['sha256']+'  '+p.name+'\n')
+          shutil.copy2('apps/MarketLens/App/Assets.xcassets/AppIcon.appiconset/AppIcon.png','release/MarketLens-icon.png')
+          PY
+          cat > release/RELEASE-NOTES.md <<'NOTES'
+          # Market Lens 0.1.0 build 1 — research preview
+          
+          Native read-only iPhone app, iOS 26+. Public Kalshi BTC 15-minute markets, depth, official targets and rules; Coinbase candle evidence; Decimal estimated taker fees and hypothetical scenarios; local paper journal with official settlement checks.
+          
+          ## Important limitations
+          - No proven profitable edge, calibrated confidence interval, automated betting, account access, or favorable-edge alerts.
+          - Independent probability is an explicitly unvalidated Coinbase endpoint proxy, not a forecast of the exact official BRTI 60-second average. Extreme, stale, missing and final-minute estimates are suppressed.
+          - Refreshes 15 seconds after each completed foreground check. Slow connections can delay data. Continuous iOS background monitoring is not supported.
+          - Paper limit of $25 includes hypothetical fees and realized losses. It does not monitor or protect a real account. One contract is the default, not a recommendation.
+          - Local paper calibration uses user-selected observations and cannot establish a profitable strategy. After-fee results assume filling at the quoted ask; execution is not guaranteed.
+          - Unsigned IPA needs compatible signing/container. Physical iPhone, Strata installation, and device-network behavior remain unverified.
+          
+          ## Verification
+          Exact source: f6e638c591273ff38a0180c693cedd37da7417eb.
+          Successful native workflow: https://github.com/R347H4CK3R/OmniForge/actions/runs/44398185929
+          
+          - 24 Swift core tests passed on macOS and independently on Linux.
+          - 3 Python package-validator tests passed.
+          - ARM64 iPhone Release compilation passed using Xcode 26.3.
+          - Native iOS simulator navigation smoke test passed (1 test, zero failures). Actual live quotes and depth rendered in the captured app screenshot.
+          - IPA identity, iOS-device Mach-O platform/minimum OS, size and SHA256 independently rechecked. No embedded credential markers, signing profiles, paper data or diagnostic files were found in the package.
+          - Physical iPhone, signing and Strata installation remain untested; a simulator check is not physical-device verification.
+          
+          IPA: MarketLens-0.1.0-build1.ipa
+          Size: 286071 bytes
+          SHA256: e32a1549b01a1dc38a1f77def1573f3df4da3e36c4eff1f0c7322ebadf07f89f
+          
+          This is a working research preview, not a validated profitable trading system.
+          NOTES
+          test -f release/RELEASE-NOTES.md
+          test "$(find release -maxdepth 1 -type f | wc -l)" -eq 5
+      - name: Create new prerelease without changing existing releases
+        run: |
+          set -euo pipefail
+          if gh release view "$TAG" --repo "$REPO" >/dev/null 2>&1; then
+            echo 'Release already exists. Stop; do not overwrite.'; exit 1
+          fi
+          gh release create "$TAG" "release/$IPA" release/SHA256SUMS release/verified-ipa.json release/MarketLens-icon.png release/RELEASE-NOTES.md --repo "$REPO" --target "$SOURCE_SHA" --prerelease --title 'Market Lens 0.1.0 (build 1) research preview' --notes-file release/RELEASE-NOTES.md
+          gh release view "$TAG" --repo "$REPO" --json tagName,isDraft,isPrerelease,targetCommitish,assets
