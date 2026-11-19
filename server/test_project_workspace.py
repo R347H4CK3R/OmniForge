@@ -1,4 +1,5 @@
 """Local-only allowlisted operations, using disposable repositories exclusively."""
+import errno
 import hashlib
 import json
 import os
@@ -6,6 +7,58 @@ from pathlib import Path
 import tempfile
 import unittest
 from unittest.mock import patch
+
+
+def _process_has_exited(status):
+    try:
+        return status.read_text().split()[2] == 'Z'
+    except OSError as exc:
+        # A dead child can be reaped before or during the /proc read.
+        if exc.errno in (errno.ENOENT, errno.ESRCH):
+            return True
+        raise
+
+
+class ProcessExitAssertionTests(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tmp.cleanup)
+        self.status = Path(self.tmp.name) / 'stat'
+
+    def test_missing_process_has_exited(self):
+        self.assertTrue(_process_has_exited(self.status))
+
+    def test_zombie_process_has_exited(self):
+        self.status.write_text('123 (python) Z\n')
+        self.assertTrue(_process_has_exited(self.status))
+
+    def test_live_process_has_not_exited(self):
+        for state in ['R', 'S', 'D', 'T', 't', 'I']:
+            with self.subTest(state=state):
+                self.status.write_text(f'123 (python) {state}\n')
+                self.assertFalse(_process_has_exited(self.status))
+
+    def test_process_reaped_during_read_has_exited(self):
+        self.status.write_text('123 (python) Z\n')
+        for error_number in [errno.ENOENT, errno.ESRCH]:
+            with self.subTest(errno=error_number):
+                with patch.object(Path, 'read_text', side_effect=OSError(error_number, 'Process reaped')):
+                    self.assertTrue(_process_has_exited(self.status))
+
+    def test_exit_check_does_not_stat_a_process_being_reaped(self):
+        self.status.write_text('123 (python) Z\n')
+        with patch.object(Path, 'stat', side_effect=ProcessLookupError(errno.ESRCH, 'Process reaped')):
+            self.assertTrue(_process_has_exited(self.status))
+
+    def test_unexpected_read_errors_are_not_treated_as_process_exit(self):
+        self.status.write_text('123 (python) Z\n')
+        for error_number in [errno.EACCES, errno.EPERM, errno.EIO, None]:
+            with self.subTest(errno=error_number):
+                error = OSError(error_number, 'Cannot inspect process')
+                with patch.object(Path, 'read_text', side_effect=error):
+                    with self.assertRaises(OSError) as caught:
+                        _process_has_exited(self.status)
+                self.assertIs(caught.exception, error)
 
 
 class ProjectWorkspaceTests(unittest.TestCase):
@@ -212,7 +265,7 @@ class ProjectWorkspaceTests(unittest.TestCase):
                 finally: kernel.CloseHandle(handle)
         else:
             status = Path(f'/proc/{pid}/stat')
-            if status.exists(): self.assertEqual(status.read_text().split()[2], 'Z')
+            self.assertTrue(_process_has_exited(status), f'Child process {pid} is still running')
 
     def test_timeout_and_output_bounds(self):
         self.fixture('time.sleep(5)')
