@@ -31,8 +31,7 @@
   {
     "repository": "R347H4CK3R/Ghostline",
     "bundleIdentifier": "com.voicematrix.app",
-    "sourceURL": "https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/strata-source.json",
-    "tagPattern": "voicematrix-v0\\.4\\.13-build16",
+    "tagPattern": "voicematrix\\-v0\\.4\\.15\\-build18",
     "allowPrerelease": true,
     "requiredEvidenceAssets": [
       "character-inspection.json",
@@ -43,7 +42,7 @@
     ],
     "name": "VoiceMatrix",
     "subtitle": "Offline character speech and voice tools",
-    "localizedDescription": "Unfinished 0.4.13 build 16. Unfinished preview: explicit per-speaker actions select the exact saved voice by ID and reference hash, then open speech or voice-changing controls without starting generation. Missing, changed or ambiguous voices leave selection and retained files unchanged. Retains confirmed fresh download recovery and embedded on-device yt-dlp; some sources remain unsupported. No new download support, inference engine, training or likeness claim. Physical-iPhone behavior remains unverified. Existing library refresh may contact an already-paired laptop for metadata. Requires compatible signing and iOS26. Not finished1.0.0.",
+    "localizedDescription": "Free noncommercial VoiceMatrix preview with a clearer video-to-voice workflow. Unsigned ARM64 iPhone IPA; signing or a compatible container is required. Physical-device installation and synthesis, live YouTube link acquisition, and character likeness remain unverified.",
     "category": "entertainment",
     "evidencePolicy": "packaging-preview-v1",
     "screenshots": [
@@ -59,13 +58,17 @@
       }
     ],
     "previewApproval": {
-      "tag": "voicematrix-v0.4.13-build16",
-      "version": "0.4.13",
-      "buildVersion": "16",
-      "sha256": "04d199d356a5fde59101d3909a35abf05e8dd1129141e0add66e1e45006c5d11",
-      "size": 1330407101,
-      "sourceCommit": "bb4b6e2137566008143f6b17c8610880828f0750"
-    }
+      "tag": "voicematrix-v0.4.15-build18",
+      "version": "0.4.15",
+      "buildVersion": "18",
+      "sha256": "0ca301717b02b9e10976aaa141a3e1642667f8d1fd5d7d6e1a2a99fd35cb4038",
+      "size": 1330532529,
+      "sourceCommit": "5c0d71108a751c18a434d7b40e6357ce215d582e"
+    },
+    "assetPattern": "VoiceMatrix\\-0\\.4\\.15\\-build18\\.ipa",
+    "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
+    "developerName": "VoiceMatrix",
+    "releaseNotes": "Free noncommercial preview. F5-TTS and its paired converted vocoder use CC BY-NC 4.0; model credits and third-party notices are bundled. Native ARM64 Release build and host extraction passed. Physical iPhone installation and synthesis, live YouTube link acquisition, and character likeness were not verified. No RVC checkpoint exporter."
   },
   {
     "repository": "R347H4CK3R/NativeZombies-IOS",

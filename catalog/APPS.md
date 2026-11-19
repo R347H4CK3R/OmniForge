@@ -82,16 +82,16 @@ Screenshots are reviewed simulator previews, not proof of physical-device behavi
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Ghostline/main/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="VoiceMatrix catalog icon">
 
 <p><strong>Offline character speech and voice tools</strong></p>
-<p>Unfinished 0.4.13 build 16. Unfinished preview: explicit per-speaker actions select the exact saved voice by ID and reference hash, then open speech or voice-changing controls without starting generation. Missing, changed or ambiguous voices leave selection and retained files unchanged. Retains confirmed fresh download recovery and embedded on-device yt-dlp; some sources remain unsupported. No new download support, inference engine, training or likeness claim. Physical-iPhone behavior remains unverified. Existing library refresh may contact an already-paired laptop for metadata. Requires compatible signing and iOS26. Not finished1.0.0.</p>
+<p>Free noncommercial VoiceMatrix preview with a clearer video-to-voice workflow. Unsigned ARM64 iPhone IPA; signing or a compatible container is required. Physical-device installation and synthesis, live YouTube link acquisition, and character likeness remain unverified.</p>
 
-- Version: 0.4.13 · Build: 16
-- Requires iOS 26.0 or later · Download: 1330.41 MB
+- Version: 0.4.15 · Build: 18
+- Requires iOS 26.0 or later · Download: 1330.53 MB
 - Bundle ID: com.voicematrix.app
 
-<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.13-build16/VoiceMatrix-0.4.13-build16.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Ghostline/releases/download/voicematrix-v0.4.15-build18/VoiceMatrix-0.4.15-build18.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Unfinished preview: explicit per-speaker actions select the exact saved voice by ID and reference hash, then open speech or voice-changing controls without starting generation. Missing, changed or ambiguous voices leave selection and retained files unchanged. Retains confirmed fresh download recovery and embedded on-device yt-dlp; some sources remain unsupported. No new download support, inference engine, training or likeness claim. Physical-iPhone behavior remains unverified.</p>
+<p>Free noncommercial preview. F5-TTS and its paired converted vocoder use CC BY-NC 4.0; model credits and third-party notices are bundled. Native ARM64 Release build and host extraction passed. Physical iPhone installation and synthesis, live YouTube link acquisition, and character likeness were not verified. No RVC checkpoint exporter.</p>
 </details>
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/OmniForge/main/catalog/screenshots/voicematrix-speech-simulator.png" width="220" alt="VoiceMatrix simulator preview">
