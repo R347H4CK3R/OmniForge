@@ -501,10 +501,10 @@
       "name": "Orivyn",
       "bundleIdentifier": "app.jarvisevo.ios",
       "developerName": "R347H4CK3R",
-      "subtitle": "Private local AI with free model downloads",
-      "localizedDescription": "Unfinished Orivyn 0.1.6 build 22, unsigned iOS 26+ preview. Adds reviewed manual attachment restoration for eligible completed imports: choose a retained supported image, PDF or text file up to 10 MiB, independently choose a message, review and confirm. This is a user-selected association, not automatic or exporter-verified mapping. Exact hashes, current-message checks and transactional receipts protect edits and prevent replay. Original archives, unsupported files and unresolved counts remain preserved. Mixed imports that retained existing conversations are ineligible. Exact-source 301-test simulator gate, 38 host tests, large-archive resource probes and Release IPA checks passed. Physical-device/private-backup acceptance remains unverified. No video downloading or broader autonomy. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.",
+      "subtitle": "Offline AI chat, free online choices, and web tools",
+      "localizedDescription": "Chat offline with downloaded models, or let Auto choose among installed models. Free online chat is opt-in: bring your own OpenRouter key and choose from the free-model catalog. Provider availability and usage limits apply. The Web panel offers reviewed search and links, a Reader, bookmarks, and explicit copy controls. This is an unsigned iOS 26+ preview. Screenshots are from an iPhone 16 Plus simulator; signing and physical-device operation were not verified.",
       "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
-      "category": "productivity",
+      "category": "utilities",
       "appPermissions": {
         "privacy": {
           "NSCameraUsageDescription": "Take a photo to attach and recognize its text on this iPhone.",
@@ -516,23 +516,45 @@
       },
       "versions": [
         {
-          "date": "2026-11-17T13:13:02Z",
-          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.6-build22/Orivyn-0.1.6-build22-unsigned.ipa",
-          "size": 38104220,
-          "version": "0.1.6",
-          "buildVersion": "22",
+          "date": "2026-11-20T09:21:16Z",
+          "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/Orivyn-0.1.8-build24-unsigned.ipa",
+          "size": 38434379,
+          "version": "0.1.8",
+          "buildVersion": "24",
           "minOSVersion": "26.0",
-          "localizedDescription": "Orivyn 0.1.6 build 22 \u2014 unfinished unsigned iOS 26+ preview.\n\nChanges: eligible completed archive imports now offer an explicitly reviewed manual attachment path. Choose a retained supported file, independently choose the target imported-plan message, review that exact association and confirm. Supported images, PDFs and text files up to 10 MiB use the existing importer and previews. This is your manual association, not an exporter-verified mapping. Exact hashes, original archive evidence, current message snapshots and one-time transactional receipts protect against changed files, stale edits and duplicate replay. Original ZIPs, unsupported files, existing edits and unresolved-reference counts remain preserved. Version and in-app release information are updated together.\n\nVerification: exact-source iPhone 16 Plus / iOS 26.1 Simulator gate passed all 301 selected tests with zero failures/skips, including actual ZIP selection, manual file/message review, cancellation, QuickLook preview, persistence across relaunch, replay protection and plugin execution-review boundaries. All 38 macOS preservation/service tests passed, including a near-limit synthetic inventory plan under a 256 MiB process-memory ceiling. Large-archive native resource probes passed again. Combined runtime and Release device build/IPA structure checks passed on the same source. Two earlier gated attempts were held for plugin-approval explanation checks; the production requirement was clarified and a separately reviewed lexical oracle correction recognizes exact user approval without requiring the literal word review. Failed evidence is retained. Packaging SCOPE marks tests not_run for that separate packaging step; the preceding simulator step ran independently.\n\nLimits remain: no end-to-end acceptance of the user's private backup or physical iPhone has occurred. This is not automatic attachment restoration or verified legacy/current export mapping. Mixed imports that preserved preexisting conversations cannot prove message ownership and are ineligible for supplemental attachment changes. Unsupported media, alternative branches and unknown formats remain retained rather than activated; counts are not a total missing-media census. No video downloading, broader autonomy or ChatGPT parity is claimed. Inventory pages bound displayed rows but still decode a bounded retained plan. Plugin execution requires exact-call user review. Signing refresh, device thermal/resource behavior, voice, broad vision and live-sync acceptance remain unverified or unfinished. Models download separately; no weights are bundled. Optional remote providers may charge.\n\nPreserve existing app data and signing identity when updating. SideStore or another compatible installer must sign this unsigned IPA. Earlier builds remain available. Not completed 1.0.0 and not an OpenAI product.\n\nExact source: c60c6b94b0223d41f435268ea7d41838f9dff136\nGate: https://github.com/R347H4CK3R/Orivyn/actions/runs/44081221328\nIPA: Orivyn-0.1.6-build22-unsigned.ipa\nBytes: 38104220\nSHA-256: c8b0bf8f4179303ac9e0d5371bfeb0c9bffeb3825a959e53c8ae6add54bc795d\n"
+          "localizedDescription": "Orivyn 0.1.8 build 24 is an unsigned iOS 26+ preview. Choose an on-device AI or opt into free online models separately. Free online requires an OpenRouter key, internet and available free capacity; there is no paid fallback in that route. Web uses Safari for manual browsing, with local bookmarks and optional on-device explanations of pasted passages.\n\nThe four pictures are unedited captures from a synthetic iPhone 16 Plus simulator session. No physical iPhone installation, live online-provider availability or private archive was verified. Sign with a compatible installer and preserve the existing app identity and data when updating.\n\nExact native, package and simulator capture evidence: https://github.com/R347H4CK3R/Orivyn/actions/runs/44697888500\nSource: https://github.com/R347H4CK3R/Orivyn/commit/c6ab6306f8db407b0da131befe1d62bac7ee5443\nIPA size: 38434379 bytes\nIPA SHA-256: f6263390bd9e5626d7d4f66f47590a291b76889861b51eb2fa6a095ceda6e9c5\n"
         }
       ],
-      "version": "0.1.6",
-      "versionDate": "2026-11-17T13:13:02Z",
-      "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.6-build22/Orivyn-0.1.6-build22-unsigned.ipa",
-      "size": 38104220,
+      "version": "0.1.8",
+      "versionDate": "2026-11-20T09:21:16Z",
+      "downloadURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/Orivyn-0.1.8-build24-unsigned.ipa",
+      "size": 38434379,
+      "screenshots": [
+        {
+          "imageURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/01-chat-auto.png",
+          "width": 1290,
+          "height": 2796
+        },
+        {
+          "imageURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/02-choose-ai.png",
+          "width": 1290,
+          "height": 2796
+        },
+        {
+          "imageURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/03-free-online.png",
+          "width": 1290,
+          "height": 2796
+        },
+        {
+          "imageURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/04-web.png",
+          "width": 1290,
+          "height": 2796
+        }
+      ],
       "_verification": {
-        "sha256": "c8b0bf8f4179303ac9e0d5371bfeb0c9bffeb3825a959e53c8ae6add54bc795d",
-        "release": "https://github.com/R347H4CK3R/Orivyn/releases/tag/orivyn-v0.1.6-build22",
-        "assetId": 759126451,
+        "sha256": "f6263390bd9e5626d7d4f66f47590a291b76889861b51eb2fa6a095ceda6e9c5",
+        "release": "https://github.com/R347H4CK3R/Orivyn/releases/tag/orivyn-v0.1.8-build24-shared-preview",
+        "assetId": 771193629,
         "level": "IPA structure and published release metadata; physical device behavior not certified"
       }
     },

@@ -26,7 +26,7 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 | [Prism Puzzle](#prism-puzzle) | Seven puzzles. Always offline. | iOS 15.0+ |
 | [ScopePilot](#scopepilot) | Offline captured-traffic evidence review | iOS 16.0+ |
 | [Luma Preview](#luma-preview) | Offline tools and private iPhone AI | iOS 14.0+ |
-| [Orivyn](#orivyn) | Private local AI with free model downloads | iOS 26.0+ |
+| [Orivyn](#orivyn) | Offline AI chat, free online choices, and web tools | iOS 26.0+ |
 | [Market Lens](#market-lens) | Live BTC market research and paper evaluation | iOS 26.0+ |
 
 ## Screenshots
@@ -421,35 +421,33 @@ Third-party notices are bundled and supplied alongside the release. No credentia
 
 <img src="https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png" width="72" height="72" alt="Orivyn catalog icon">
 
-<p><strong>Private local AI with free model downloads</strong></p>
-<p>Unfinished Orivyn 0.1.6 build 22, unsigned iOS 26+ preview. Adds reviewed manual attachment restoration for eligible completed imports: choose a retained supported image, PDF or text file up to 10 MiB, independently choose a message, review and confirm. This is a user-selected association, not automatic or exporter-verified mapping. Exact hashes, current-message checks and transactional receipts protect edits and prevent replay. Original archives, unsupported files and unresolved counts remain preserved. Mixed imports that retained existing conversations are ineligible. Exact-source 301-test simulator gate, 38 host tests, large-archive resource probes and Release IPA checks passed. Physical-device/private-backup acceptance remains unverified. No video downloading or broader autonomy. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.</p>
+<p><strong>Offline AI chat, free online choices, and web tools</strong></p>
+<p>Chat offline with downloaded models, or let Auto choose among installed models. Free online chat is opt-in: bring your own OpenRouter key and choose from the free-model catalog. Provider availability and usage limits apply. The Web panel offers reviewed search and links, a Reader, bookmarks, and explicit copy controls. This is an unsigned iOS 26+ preview. Screenshots are from an iPhone 16 Plus simulator; signing and physical-device operation were not verified.</p>
 
-- Version: 0.1.6 · Build: 22
-- Requires iOS 26.0 or later · Download: 38.10 MB
+- Version: 0.1.8 · Build: 24
+- Requires iOS 26.0 or later · Download: 38.43 MB
 - Bundle ID: app.jarvisevo.ios
 
-<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.6-build22/Orivyn-0.1.6-build22-unsigned.ipa">Download published IPA</a>
+<a href="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/Orivyn-0.1.8-build24-unsigned.ipa">Download published IPA</a>
 
 <details><summary>Release notes</summary>
-<p>Orivyn 0.1.6 build 22 — unfinished unsigned iOS 26+ preview.
+<p>Orivyn 0.1.8 build 24 is an unsigned iOS 26+ preview. Choose an on-device AI or opt into free online models separately. Free online requires an OpenRouter key, internet and available free capacity; there is no paid fallback in that route. Web uses Safari for manual browsing, with local bookmarks and optional on-device explanations of pasted passages.
 
-Changes: eligible completed archive imports now offer an explicitly reviewed manual attachment path. Choose a retained supported file, independently choose the target imported-plan message, review that exact association and confirm. Supported images, PDFs and text files up to 10 MiB use the existing importer and previews. This is your manual association, not an exporter-verified mapping. Exact hashes, original archive evidence, current message snapshots and one-time transactional receipts protect against changed files, stale edits and duplicate replay. Original ZIPs, unsupported files, existing edits and unresolved-reference counts remain preserved. Version and in-app release information are updated together.
+The four pictures are unedited captures from a synthetic iPhone 16 Plus simulator session. No physical iPhone installation, live online-provider availability or private archive was verified. Sign with a compatible installer and preserve the existing app identity and data when updating.
 
-Verification: exact-source iPhone 16 Plus / iOS 26.1 Simulator gate passed all 301 selected tests with zero failures/skips, including actual ZIP selection, manual file/message review, cancellation, QuickLook preview, persistence across relaunch, replay protection and plugin execution-review boundaries. All 38 macOS preservation/service tests passed, including a near-limit synthetic inventory plan under a 256 MiB process-memory ceiling. Large-archive native resource probes passed again. Combined runtime and Release device build/IPA structure checks passed on the same source. Two earlier gated attempts were held for plugin-approval explanation checks; the production requirement was clarified and a separately reviewed lexical oracle correction recognizes exact user approval without requiring the literal word review. Failed evidence is retained. Packaging SCOPE marks tests not_run for that separate packaging step; the preceding simulator step ran independently.
-
-Limits remain: no end-to-end acceptance of the user&#x27;s private backup or physical iPhone has occurred. This is not automatic attachment restoration or verified legacy/current export mapping. Mixed imports that preserved preexisting conversations cannot prove message ownership and are ineligible for supplemental attachment changes. Unsupported media, alternative branches and unknown formats remain retained rather than activated; counts are not a total missing-media census. No video downloading, broader autonomy or ChatGPT parity is claimed. Inventory pages bound displayed rows but still decode a bounded retained plan. Plugin execution requires exact-call user review. Signing refresh, device thermal/resource behavior, voice, broad vision and live-sync acceptance remain unverified or unfinished. Models download separately; no weights are bundled. Optional remote providers may charge.
-
-Preserve existing app data and signing identity when updating. SideStore or another compatible installer must sign this unsigned IPA. Earlier builds remain available. Not completed 1.0.0 and not an OpenAI product.
-
-Exact source: c60c6b94b0223d41f435268ea7d41838f9dff136
-Gate: https://github.com/R347H4CK3R/Orivyn/actions/runs/44081221328
-IPA: Orivyn-0.1.6-build22-unsigned.ipa
-Bytes: 38104220
-SHA-256: c8b0bf8f4179303ac9e0d5371bfeb0c9bffeb3825a959e53c8ae6add54bc795d
+Exact native, package and simulator capture evidence: https://github.com/R347H4CK3R/Orivyn/actions/runs/44697888500
+Source: https://github.com/R347H4CK3R/Orivyn/commit/c6ab6306f8db407b0da131befe1d62bac7ee5443
+IPA size: 38434379 bytes
+IPA SHA-256: f6263390bd9e5626d7d4f66f47590a291b76889861b51eb2fa6a095ceda6e9c5
 </p>
 </details>
 
-**Preview coming soon** · No reviewed screenshot available yet.
+<img src="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/01-chat-auto.png" width="220" alt="Orivyn simulator preview">
+<img src="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/02-choose-ai.png" width="220" alt="Orivyn simulator preview">
+<img src="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/03-free-online.png" width="220" alt="Orivyn simulator preview">
+<img src="https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/04-web.png" width="220" alt="Orivyn simulator preview">
+
+Screenshots are reviewed simulator previews, not proof of physical-device behavior.
 
 ---
 

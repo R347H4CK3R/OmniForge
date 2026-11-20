@@ -257,16 +257,38 @@
     "bundleIdentifier": "app.jarvisevo.ios",
     "name": "Orivyn",
     "developerName": "R347H4CK3R",
-    "subtitle": "Private local AI with free model downloads",
-    "localizedDescription": "Unfinished Orivyn 0.1.6 build 22, unsigned iOS 26+ preview. Adds reviewed manual attachment restoration for eligible completed imports: choose a retained supported image, PDF or text file up to 10 MiB, independently choose a message, review and confirm. This is a user-selected association, not automatic or exporter-verified mapping. Exact hashes, current-message checks and transactional receipts protect edits and prevent replay. Original archives, unsupported files and unresolved counts remain preserved. Mixed imports that retained existing conversations are ineligible. Exact-source 301-test simulator gate, 38 host tests, large-archive resource probes and Release IPA checks passed. Physical-device/private-backup acceptance remains unverified. No video downloading or broader autonomy. Preserve app data and signing identity; models download separately. Not completed 1.0.0 or an OpenAI product.",
-    "category": "productivity",
-    "tagPattern": "orivyn-v[0-9.]+-build[0-9]+",
+    "subtitle": "Offline AI chat, free online choices, and web tools",
+    "localizedDescription": "Chat offline with downloaded models, or let Auto choose among installed models. Free online chat is opt-in: bring your own OpenRouter key and choose from the free-model catalog. Provider availability and usage limits apply. The Web panel offers reviewed search and links, a Reader, bookmarks, and explicit copy controls. This is an unsigned iOS 26+ preview. Screenshots are from an iPhone 16 Plus simulator; signing and physical-device operation were not verified.",
+    "category": "utilities",
+    "tagPattern": "orivyn\\-v0\\.1\\.8\\-build24\\-shared\\-preview",
     "assetPattern": "Orivyn-[0-9.]+-build[0-9]+(?:-distribution)?-unsigned\\.ipa",
     "allowPrerelease": true,
     "iconURL": "https://raw.githubusercontent.com/R347H4CK3R/Orivyn/3f96a41b363e3b663f69497fef4bd698fb1fa514/JarvisEVO/Assets.xcassets/AppIcon.appiconset/AppIcon.png",
     "requiredEvidenceAssets": [
       "SHA256SUMS",
       "verified-ipa.json"
+    ],
+    "screenshots": [
+      {
+        "imageURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/01-chat-auto.png",
+        "width": 1290,
+        "height": 2796
+      },
+      {
+        "imageURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/02-choose-ai.png",
+        "width": 1290,
+        "height": 2796
+      },
+      {
+        "imageURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/03-free-online.png",
+        "width": 1290,
+        "height": 2796
+      },
+      {
+        "imageURL": "https://github.com/R347H4CK3R/Orivyn/releases/download/orivyn-v0.1.8-build24-shared-preview/04-web.png",
+        "width": 1290,
+        "height": 2796
+      }
     ]
   },
   {
