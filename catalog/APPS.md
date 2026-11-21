@@ -28,6 +28,7 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 | [Luma Preview](#luma-preview) | Offline tools and private iPhone AI | iOS 14.0+ |
 | [Orivyn](#orivyn) | Offline AI chat, free online choices, and web tools | iOS 26.0+ |
 | [Market Lens](#market-lens) | Live BTC market research and paper evaluation | iOS 26.0+ |
+| [Bolt (AI Desktop Pet)](#bolt-(ai-desktop-pet)) | Animated robot and optional offline AI chat | iOS 26.0+ |
 
 ## Screenshots
 
@@ -494,6 +495,27 @@ SHA256: e32a1549b01a1dc38a1f77def1573f3df4da3e36c4eff1f0c7322ebadf07f89f
 
 This is a working research preview, not a validated profitable trading system.
 </p>
+</details>
+
+**Preview coming soon** · No reviewed screenshot available yet.
+
+---
+
+## Bolt (AI Desktop Pet)
+
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/bolt-0.1.0-build1/BoltIcon.png" width="72" height="72" alt="Bolt (AI Desktop Pet) catalog icon">
+
+<p><strong>Animated robot and optional offline AI chat</strong></p>
+<p>An animated, draggable robot pet for iPhone. Keep chat on device with a separately imported compatible local model. No model weights are bundled. Bolt only appears within its app. This unsigned ARM64 preview requires iOS 26 or later and compatible signing or a container.</p>
+
+- Version: 0.1.0 · Build: 1
+- Requires iOS 26.0 or later · Download: 8.49 MB
+- Bundle ID: com.nickel.offlineaipet
+
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/bolt-0.1.0-build1/AIPet-unsigned.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>Unsigned Bolt 0.1.0 build 1 for ARM64 iPhone, iOS 26.0 or later. Native Release compilation and IPA inspection passed. Physical iPhone installation, signing/container operation, and real model inference were not verified. No model is bundled; local AI chat requires importing a compatible model separately.</p>
 </details>
 
 **Preview coming soon** · No reviewed screenshot available yet.

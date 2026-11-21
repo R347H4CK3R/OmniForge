@@ -494,6 +494,34 @@
       "versionDate": "2026-11-18T21:20:26Z",
       "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/market-lens-0.1.0-build1/MarketLens-0.1.0-build1.ipa",
       "size": 286071
+    },
+    {
+      "name": "Bolt (AI Desktop Pet)",
+      "bundleIdentifier": "com.nickel.offlineaipet",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Animated robot and optional offline AI chat",
+      "localizedDescription": "An animated, draggable robot pet for iPhone. Keep chat on device with a separately imported compatible local model. No model weights are bundled. Bolt only appears within its app. This unsigned ARM64 preview requires iOS 26 or later and compatible signing or a container.",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/bolt-0.1.0-build1/BoltIcon.png",
+      "category": "utilities",
+      "appPermissions": {
+        "privacy": {}
+      },
+      "versions": [
+        {
+          "date": "2026-11-21T23:44:13Z",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/bolt-0.1.0-build1/AIPet-unsigned.ipa",
+          "size": 8487176,
+          "version": "0.1.0",
+          "buildVersion": "1",
+          "minOSVersion": "26.0",
+          "localizedDescription": "Unsigned Bolt 0.1.0 build 1 for ARM64 iPhone, iOS 26.0 or later. Native Release compilation and IPA inspection passed. Physical iPhone installation, signing/container operation, and real model inference were not verified. No model is bundled; local AI chat requires importing a compatible model separately."
+        }
+      ],
+      "version": "0.1.0",
+      "versionDate": "2026-11-21T23:44:13Z",
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/bolt-0.1.0-build1/AIPet-unsigned.ipa",
+      "size": 8487176,
+      "screenshots": []
     }
   ],
   "news": [],
