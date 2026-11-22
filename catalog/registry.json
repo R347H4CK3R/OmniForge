@@ -314,18 +314,18 @@
     "bundleIdentifier": "com.nickel.offlineaipet",
     "name": "Bolt (AI Desktop Pet)",
     "developerName": "R347H4CK3R",
-    "subtitle": "Animated robot and optional offline AI chat",
-    "localizedDescription": "An animated, draggable robot pet for iPhone. Keep chat on device with a separately imported compatible local model. No model weights are bundled. Bolt only appears within its app. This unsigned ARM64 preview requires iOS 26 or later and compatible signing or a container.",
+    "subtitle": "Animated robot, offline Qwen chat and optional Image Studio",
+    "localizedDescription": "An animated robot pet inside Bolt, with three bundled Qwen text models for offline chat. Includes accessible chat controls, Shortcuts and local Image Studio with separate Standard and opt-in Realistic Vision 5.1 (18+) model downloads. Unsigned ARM64 preview for iOS 26 or later; compatible signing is required.",
     "category": "utilities",
-    "tagPattern": "bolt-0\\.1\\.0-build1",
-    "assetPattern": "AIPet-unsigned\\.ipa",
+    "tagPattern": "bolt\\-0\\.8\\.0\\-build8",
+    "assetPattern": "AIPet\\-unsigned\\.ipa",
     "allowPrerelease": true,
-    "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/bolt-0.1.0-build1/BoltIcon.png",
+    "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/bolt-0.8.0-build8/BoltIcon.png",
     "requiredEvidenceAssets": [
       "BoltIcon.png",
       "SHA256SUMS.txt"
     ],
     "screenshots": [],
-    "releaseNotes": "Unsigned Bolt 0.1.0 build 1 for ARM64 iPhone, iOS 26.0 or later. Native Release compilation and IPA inspection passed. Physical iPhone installation, signing/container operation, and real model inference were not verified. No model is bundled; local AI chat requires importing a compatible model separately."
+    "releaseNotes": "Bolt 0.8.0 build 8 is an unsigned ARM64 iPhone preview for iOS 26 or later. It bundles three 4-bit Qwen text models: Qwen2.5 0.5B Instruct, Qwen2.5 Coder 0.5B Instruct, and Qwen2.5 1.5B Instruct. Includes a draggable pet, local chat history, accessibility settings, and iOS Shortcut entry points. Image Studio runs locally; install the Standard model separately, or optionally install Realistic Vision 5.1 (18+) separately. Neither image model is bundled. The separate Windows Companion provides manual chat-copy transfer and local PC Activity; it is not included in this iPhone update and does not provide remote screen control. Bolt appears only inside its own app. Signing/container compatibility, installation and model inference on a physical iPhone are not certified by this catalog."
   }
 ]
