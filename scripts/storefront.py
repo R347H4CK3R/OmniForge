@@ -11,8 +11,11 @@ def render_storefront(source):
     for app in source['apps']:
         v=app['versions'][0]
         category=app.get('category','apps').title()
-        previews=''.join(f'<a href="{e(s["imageURL"])}" target="_blank" rel="noopener"><img loading="lazy" src="{e(s["imageURL"])}" alt="{e(app["name"])} reviewed simulator screenshot {i+1}"></a>' for i,s in enumerate(app.get('screenshots',[])))
-        gallery=f'<div class="gallery">{previews}</div><p class="caption">Reviewed simulator previews · Tap to view full size. Development UI may differ from the current release. Not proof of device behavior.</p>' if previews else '<div class="missing"><span aria-hidden="true">▧</span><strong>Preview coming soon</strong><small>No reviewed screenshot available yet.</small></div>'
+        desktop_capture=app.get('bundleIdentifier')=='com.nickel.nightrelay'
+        screenshot_type='desktop gameplay screenshot' if desktop_capture else 'reviewed simulator screenshot'
+        caption='Desktop gameplay captures with the touch HUD enabled, not iPhone or simulator captures. Tap to view full size.' if desktop_capture else 'Reviewed simulator previews · Tap to view full size. Development UI may differ from the current release. Not proof of device behavior.'
+        previews=''.join(f'<a href="{e(s["imageURL"])}" target="_blank" rel="noopener"><img loading="lazy" src="{e(s["imageURL"])}" alt="{e(app["name"])} {e(screenshot_type)} {i+1}"></a>' for i,s in enumerate(app.get('screenshots',[])))
+        gallery=f'<div class="gallery">{previews}</div><p class="caption">{e(caption)}</p>' if previews else '<div class="missing"><span aria-hidden="true">▧</span><strong>Preview coming soon</strong><small>No reviewed screenshot available yet.</small></div>'
         cards.append(f'''<article class="app" data-category="{e(category)}" data-search="{e((app['name']+' '+app.get('subtitle','')+' '+category).lower())}">
 <header class="app-head"><img class="icon" src="{e(app['iconURL'])}" alt=""><div><span class="category">{e(category)}</span><h2>{e(app['name'])}</h2><p>{e(app.get('subtitle',''))}</p></div></header>
 {gallery}

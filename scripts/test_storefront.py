@@ -42,3 +42,14 @@ class StorefrontTests(unittest.TestCase):
                 self.assertEqual(path.read_text(),render(source))
         self.assertEqual(source,original)
 
+
+    def test_night_relay_gallery_identifies_desktop_captures(self):
+        from storefront import render_storefront
+        source=json.loads(Path('unified-source.json').read_text())
+        night=next(a for a in source['apps'] if a['bundleIdentifier']=='com.nickel.nightrelay')
+        original=copy.deepcopy(night)
+        rendered=render_storefront({'apps':[night]})
+        self.assertIn('Desktop gameplay captures with the touch HUD enabled', rendered)
+        self.assertIn('Night Relay: Portal Royale desktop gameplay screenshot 1', rendered)
+        self.assertNotIn('reviewed simulator screenshot', rendered)
+        self.assertEqual(night,original)
