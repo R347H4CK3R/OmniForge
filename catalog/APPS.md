@@ -29,6 +29,7 @@ Physical-device installation and behavior are not certified by this catalog. Uns
 | [Orivyn](#orivyn) | Offline AI chat, free online choices, and web tools | iOS 26.0+ |
 | [Market Lens](#market-lens) | Live BTC market research and paper evaluation | iOS 26.0+ |
 | [Bolt (AI Desktop Pet)](#bolt-(ai-desktop-pet)) | Animated robot, offline Qwen chat and optional Image Studio | iOS 26.0+ |
+| [Night Relay: Portal Royale](#night-relay:-portal-royale) | Offline first-person battle royale against 120 bots | iOS 26.0+ |
 
 ## Screenshots
 
@@ -519,6 +520,36 @@ This is a working research preview, not a validated profitable trading system.
 </details>
 
 **Preview coming soon** · No reviewed screenshot available yet.
+
+---
+
+## Night Relay: Portal Royale
+
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/NightRelay-icon.png" width="72" height="72" alt="Night Relay: Portal Royale catalog icon">
+
+<p><strong>Offline first-person battle royale against 120 bots</strong></p>
+<p>Offline first-person battle royale for iPhone. Play Rick with Morty as your only teammate; 120 AI opponents compete against each other and your duo in a six-district arena with a closing ring. Pick up 78 original weapons, 32 attachments, 29 streaks and 18 perks. Separate endless Survival offers six arenas and local best scores. Play with touch or mapped controller inputs, including manual fire, hold-to-aim, sprint and slide. No accounts, multiplayer or in-app purchases. Unofficial fan-game preview with original procedural assets and effects; no TV audio or imported commercial game assets. Screenshots are desktop renders with the touch HUD, not physical iPhone captures. Unsigned ARM64 preview for iOS 26 or later. Requires compatible signing or a supported iOS container. Native device binary and bundled content were checked; physical installation, Strata behavior, controller hardware and performance remain unverified.</p>
+
+- Version: 0.1.0 · Build: 1
+- Requires iOS 26.0 or later · Download: 24.45 MB
+- Bundle ID: com.nickel.nightrelay
+
+<a href="https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/NightRelay-0.1.0-build1.ipa">Download published IPA</a>
+
+<details><summary>Release notes</summary>
+<p>Offline first-person battle royale for iPhone. Play Rick with Morty as your only teammate; 120 AI opponents compete against each other and your duo in a six-district arena with a closing ring. Pick up 78 original weapons, 32 attachments, 29 streaks and 18 perks. Separate endless Survival offers six arenas and local best scores. Play with touch or mapped controller inputs, including manual fire, hold-to-aim, sprint and slide. No accounts, multiplayer or in-app purchases. Unofficial fan-game preview with original procedural assets and effects; no TV audio or imported commercial game assets. Screenshots are desktop renders with the touch HUD, not physical iPhone captures.
+
+Unsigned ARM64 preview for iOS 26 or later. Requires compatible signing or a supported iOS container. Native device binary and bundled content were checked; physical installation, Strata behavior, controller hardware and performance remain unverified.
+
+IPA SHA-256: 4a938d18ead6672a2bcc2793927ed6d2c15368393f57fd762738cbd457e11c14</p>
+</details>
+
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/02-portal-royale.png" width="220" alt="Night Relay: Portal Royale simulator preview">
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/03-ground-loot.png" width="220" alt="Night Relay: Portal Royale simulator preview">
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/01-lobby.png" width="220" alt="Night Relay: Portal Royale simulator preview">
+<img src="https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/04-armory.png" width="220" alt="Night Relay: Portal Royale simulator preview">
+
+Screenshots are reviewed simulator previews, not proof of physical-device behavior.
 
 ---
 
