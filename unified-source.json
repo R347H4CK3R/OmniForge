@@ -487,7 +487,7 @@
           "version": "0.1.0",
           "buildVersion": "1",
           "minOSVersion": "26.0",
-          "localizedDescription": "# Market Lens 0.1.0 build 1 \u2014 research preview\n\nNative read-only iPhone app, iOS 26+. Public Kalshi BTC 15-minute markets, depth, official targets and rules; Coinbase candle evidence; Decimal estimated taker fees and hypothetical scenarios; local paper journal with official settlement checks.\n\n## Important limitations\n- No proven profitable edge, calibrated confidence interval, automated betting, account access, or favorable-edge alerts.\n- Independent probability is an explicitly unvalidated Coinbase endpoint proxy, not a forecast of the exact official BRTI 60-second average. Extreme, stale, missing and final-minute estimates are suppressed.\n- Refreshes 15 seconds after each completed foreground check. Slow connections can delay data. Continuous iOS background monitoring is not supported.\n- Paper limit of $25 includes hypothetical fees and realized losses. It does not monitor or protect a real account. One contract is the default, not a recommendation.\n- Local paper calibration uses user-selected observations and cannot establish a profitable strategy. After-fee results assume filling at the quoted ask; execution is not guaranteed.\n- Unsigned IPA needs compatible signing/container. Physical iPhone, Strata installation, and device-network behavior remain unverified.\n\n## Verification\nExact source: f6e638c591273ff38a0180c693cedd37da7417eb.\nSuccessful native workflow: https://github.com/R347H4CK3R/OmniForge/actions/runs/44398185929\n\n- 24 Swift core tests passed on macOS and independently on Linux.\n- 3 Python package-validator tests passed.\n- ARM64 iPhone Release compilation passed using Xcode 26.3.\n- Native iOS simulator navigation smoke test passed (1 test, zero failures). Actual live quotes and depth rendered in the captured app screenshot.\n- IPA identity, iOS-device Mach-O platform/minimum OS, size and SHA256 independently rechecked. No embedded credential markers, signing profiles, paper data or diagnostic files were found in the package.\n- Physical iPhone, signing and Strata installation remain untested; a simulator check is not physical-device verification.\n\nIPA: MarketLens-0.1.0-build1.ipa\nSize: 286071 bytes\nSHA256: e32a1549b01a1dc38a1f77def1573f3df4da3e36c4eff1f0c7322ebadf07f89f\n\nThis is a working research preview, not a validated profitable trading system.\n"
+          "localizedDescription": "# Market Lens 0.1.0 build 1 — research preview\n\nNative read-only iPhone app, iOS 26+. Public Kalshi BTC 15-minute markets, depth, official targets and rules; Coinbase candle evidence; Decimal estimated taker fees and hypothetical scenarios; local paper journal with official settlement checks.\n\n## Important limitations\n- No proven profitable edge, calibrated confidence interval, automated betting, account access, or favorable-edge alerts.\n- Independent probability is an explicitly unvalidated Coinbase endpoint proxy, not a forecast of the exact official BRTI 60-second average. Extreme, stale, missing and final-minute estimates are suppressed.\n- Refreshes 15 seconds after each completed foreground check. Slow connections can delay data. Continuous iOS background monitoring is not supported.\n- Paper limit of $25 includes hypothetical fees and realized losses. It does not monitor or protect a real account. One contract is the default, not a recommendation.\n- Local paper calibration uses user-selected observations and cannot establish a profitable strategy. After-fee results assume filling at the quoted ask; execution is not guaranteed.\n- Unsigned IPA needs compatible signing/container. Physical iPhone, Strata installation, and device-network behavior remain unverified.\n\n## Verification\nExact source: f6e638c591273ff38a0180c693cedd37da7417eb.\nSuccessful native workflow: https://github.com/R347H4CK3R/OmniForge/actions/runs/44398185929\n\n- 24 Swift core tests passed on macOS and independently on Linux.\n- 3 Python package-validator tests passed.\n- ARM64 iPhone Release compilation passed using Xcode 26.3.\n- Native iOS simulator navigation smoke test passed (1 test, zero failures). Actual live quotes and depth rendered in the captured app screenshot.\n- IPA identity, iOS-device Mach-O platform/minimum OS, size and SHA256 independently rechecked. No embedded credential markers, signing profiles, paper data or diagnostic files were found in the package.\n- Physical iPhone, signing and Strata installation remain untested; a simulator check is not physical-device verification.\n\nIPA: MarketLens-0.1.0-build1.ipa\nSize: 286071 bytes\nSHA256: e32a1549b01a1dc38a1f77def1573f3df4da3e36c4eff1f0c7322ebadf07f89f\n\nThis is a working research preview, not a validated profitable trading system.\n"
         }
       ],
       "version": "0.1.0",
@@ -524,6 +524,56 @@
       "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/bolt-0.8.0-build8/AIPet-unsigned.ipa",
       "size": 1306912339,
       "screenshots": []
+    },
+    {
+      "name": "Night Relay: Portal Royale",
+      "bundleIdentifier": "com.nickel.nightrelay",
+      "developerName": "R347H4CK3R",
+      "subtitle": "Offline first-person battle royale against 120 bots",
+      "localizedDescription": "Offline first-person battle royale for iPhone. Play Rick with Morty as your only teammate; 120 AI opponents compete against each other and your duo in a six-district arena with a closing ring. Pick up 78 original weapons, 32 attachments, 29 streaks and 18 perks. Separate endless Survival offers six arenas and local best scores. Play with touch or mapped controller inputs, including manual fire, hold-to-aim, sprint and slide. No accounts, multiplayer or in-app purchases. Unofficial fan-game preview with original procedural assets and effects; no TV audio or imported commercial game assets. Screenshots are desktop renders with the touch HUD, not physical iPhone captures. Unsigned ARM64 preview for iOS 26 or later. Requires compatible signing or a supported iOS container. Native device binary and bundled content were checked; physical installation, Strata behavior, controller hardware and performance remain unverified.",
+      "iconURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/NightRelay-icon.png",
+      "tintColor": "307A68",
+      "category": "games",
+      "appPermissions": {
+        "privacy": {}
+      },
+      "versions": [
+        {
+          "date": "2026-11-27T21:03:54Z",
+          "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/NightRelay-0.1.0-build1.ipa",
+          "size": 24445778,
+          "version": "0.1.0",
+          "buildVersion": "1",
+          "minOSVersion": "26.0",
+          "localizedDescription": "Offline first-person battle royale for iPhone. Play Rick with Morty as your only teammate; 120 AI opponents compete against each other and your duo in a six-district arena with a closing ring. Pick up 78 original weapons, 32 attachments, 29 streaks and 18 perks. Separate endless Survival offers six arenas and local best scores. Play with touch or mapped controller inputs, including manual fire, hold-to-aim, sprint and slide. No accounts, multiplayer or in-app purchases. Unofficial fan-game preview with original procedural assets and effects; no TV audio or imported commercial game assets. Screenshots are desktop renders with the touch HUD, not physical iPhone captures.\n\nUnsigned ARM64 preview for iOS 26 or later. Requires compatible signing or a supported iOS container. Native device binary and bundled content were checked; physical installation, Strata behavior, controller hardware and performance remain unverified.\n\nIPA SHA-256: 4a938d18ead6672a2bcc2793927ed6d2c15368393f57fd762738cbd457e11c14"
+        }
+      ],
+      "version": "0.1.0",
+      "versionDate": "2026-11-27T21:03:54Z",
+      "downloadURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/NightRelay-0.1.0-build1.ipa",
+      "size": 24445778,
+      "screenshots": [
+        {
+          "imageURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/02-portal-royale.png",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "imageURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/03-ground-loot.png",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "imageURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/01-lobby.png",
+          "width": 1280,
+          "height": 720
+        },
+        {
+          "imageURL": "https://github.com/R347H4CK3R/OmniForge/releases/download/night-relay-0.1.0-build1/04-armory.png",
+          "width": 1280,
+          "height": 720
+        }
+      ]
     }
   ],
   "news": [],
